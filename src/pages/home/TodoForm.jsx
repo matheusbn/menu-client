@@ -10,15 +10,14 @@ import {
 import { Send as SendIcon } from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
-  root: {
+  form: {
     display: "flex",
     alignItems: "center",
-    marginTop: theme.spacing(7),
+    marginTop: "1.2rem",
     width: "90%",
     maxWidth: "500px",
-  },
-}));
-
+  }
+}))
 
 function TodoForm({ addTodo }) {
   const classes = useStyles()
@@ -38,8 +37,8 @@ function TodoForm({ addTodo }) {
   const handleInputChange = (e) => setTodoText(e.target.value)
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit}>
-      <FormControl fullWidth className={classes.formControl} variant="filled">
+    <form className={classes.form} onSubmit={handleSubmit}>
+      <FormControl fullWidth variant="filled">
         <InputLabel htmlFor="todo-input">Todo</InputLabel>
         <FilledInput
           id="todo-input"

@@ -35,11 +35,10 @@ module.exports = env => {
         'react-dom': 'preact/compat',
       }
     },
-    devtool: 'source-map',
     output: {
       path: path.resolve(__dirname, 'build'),
-      filename: '[name].[contenthash].bundle.js',
-      chunkFilename: '[name].[contenthash].bundle.js',
+      filename: '[name].bundle.js',
+      chunkFilename: '[name].bundle.js',
     },
     plugins: [
       new CleanWebpackPlugin(),

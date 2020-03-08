@@ -10,18 +10,21 @@ import {
 } from '@material-ui/core';
 import Todo from './Todo';
 
+
 const useStyles = makeStyles(theme => ({
-  root: {
+  list: {
     width: "90%",
     maxWidth: "600px",
-    marginTop: theme.spacing(3)
+    marginTop: "0.7rem",
   },
   dialogContent: {
-    width: 300,
+    width: "300px",
     padding: "30px 25px",
   },
-  dialogText: { fontSize: "1.2rem" }
-}));
+  dialogText: {
+    fontSize: "1.2rem",
+  }
+}))
 
 function TodoList(props) {
   const classes = useStyles()
@@ -42,7 +45,7 @@ function TodoList(props) {
 
   return (
     <>
-      <List className={classes.root}>
+      <List className={classes.list}>
         {todos.map((todo, i) =>
           <Todo key={todo.id || i} todo={todo} confirmRemoveTodo={confirmRemoveTodo} loading={todo.loading} />
         )}

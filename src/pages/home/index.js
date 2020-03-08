@@ -5,18 +5,21 @@ import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import Todo from "../../models/Todo"
 
-const useStyles = makeStyles(theme => ({
-  loading: {
-    marginTop: "20vh"
-  },
-  container: {
+const useStyles = makeStyles({
+  root: {
     height: "90vh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    paddingTop: "40px",
+    paddingTop: 40,
+    // "@media (min-width: 768px)": {
+    //   width: "20%"
+    // }
+  },
+  loading: {
+    marginTop: "20vh"
   }
-}));
+})
 
 function Home() {
   const classes = useStyles()
@@ -40,7 +43,7 @@ function Home() {
     .then(() => setTodos(todos.filter(todo => todo.id !== id)))
 
   return (
-    <section className={classes.container}>
+    <section className={classes.root}>
       <Typography variant="h3">
         welcome home
       </Typography>
@@ -50,7 +53,7 @@ function Home() {
 
       <TodoForm addTodo={addTodo} />
       {todos ? <TodoList todos={todos} removeTodo={removeTodo} />
-        : <CircularProgress className={classes.loading} />
+        : <CircularProgress className={classes.loading}/>
       }
     </section>
   );

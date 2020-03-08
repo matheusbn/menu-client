@@ -15,12 +15,16 @@ import { Skeleton } from '@material-ui/lab';
 import { MoreVert as MoreVertIcon  } from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    marginTop: theme.spacing(1)
+  paper: {
+    marginTop: "0.2rem"
   },
-  skeletonCheckbox: { margin: 11 },
-  skeletonVertMenu: { marginRight: theme.spacing(2) },
-}));
+  skeletonCheckbox: {
+    margin: 11
+  },
+  skeletonVertMenu: {
+    marginRight: 20
+  }
+}))
 
 function Todo({ todo, confirmRemoveTodo, loading }) {
   const classes = useStyles()
@@ -40,7 +44,7 @@ function Todo({ todo, confirmRemoveTodo, loading }) {
 
   return (
     <>
-      <Paper elevation={1} className={classes.root}>
+      <Paper elevation={1} className={classes.paper}>
         <ListItem button onClick={toggleTodo}>
           <ListItemIcon>
             {
@@ -64,7 +68,7 @@ function Todo({ todo, confirmRemoveTodo, loading }) {
             )
           }
 
-          <ListItemSecondaryAction className={classes.todoOptions}>
+          <ListItemSecondaryAction>
             {
               loading ? (
                 <Skeleton variant="rect" height={30} width={10}  className={classes.skeletonVertMenu} />
