@@ -1,0 +1,45 @@
+{
+  "name": "ztodo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=development webpack-dev-server --open --mode development --config webpack.dev.js --hot",
+    "build": "NODE_ENV=production webpack -p --mode production --config webpack.prod.js",
+    "deploy": "NODE_ENV=production webpack --mode production  --config webpack.prod.js && firebase deploy",
+    "analyze": "webpack --profile --json > stats.json && webpack-bundle-analyzer ./stats.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-react": "^7.8.3",
+    "@svgr/webpack": "^5.2.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-emotion": "^10.0.29",
+    "babel-plugin-transform-imports": "^2.0.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "html-webpack-plugin": "^4.0.0-beta.11",
+    "inline-source-map": "^0.6.2",
+    "preload-webpack-plugin": "^3.0.0-beta.4",
+    "webpack": "^5.0.0-beta.13",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
+    "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "@hot-loader/react-dom": "^16.12.0",
+    "@material-ui/core": "^4.9.4",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.44",
+    "firebase": "^7.9.1",
+    "preact": "^10.3.3",
+    "react-hot-loader": "^4.12.19"
+  }
+}
