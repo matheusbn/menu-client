@@ -1,9 +1,9 @@
-const CACHE_NAME = 'static-cache-v4';
-const DATA_CACHE_NAME = 'data-cache-v4';
+const CACHE_NAME = 'static-cache-v1';
+const DATA_CACHE_NAME = 'data-cache-v1';
 
 const FILES_TO_CACHE = [
   '/',
-  '/bundle.js',
+  '/app.bundle.js',
   '/manifest.json',
   '/index.html',
   '/favicon.ico',
@@ -18,6 +18,7 @@ self.addEventListener('install', (e) => {
       console.log('[Service Worker] Caching all files')
       return cache.addAll(FILES_TO_CACHE)
     })
+      .catch(e => console.error("on install:", e))
   )
 })
 
@@ -36,6 +37,7 @@ self.addEventListener('fetch', (e) => {
           }
           return response
         })
+          .catch(e => console.error("on fetch:", e))
       })
     })
   )
@@ -50,6 +52,7 @@ self.addEventListener('activate', (e) => {
           return caches.delete(key)
         }
       }))
+        .catch(e => console.error("on activate:", e))
     })
   )
 })

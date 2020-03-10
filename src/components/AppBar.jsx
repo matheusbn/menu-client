@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-// import InstallIcon from  '../assets/install.svg';
+import InstallIcon from  '../assets/install.svg';
 import promptInstall from '../install'
 
 const useStyles = makeStyles(theme => ({
@@ -39,7 +39,7 @@ export default function ButtonAppBar() {
             Todoz
           </Typography>
           <Button color="inherit" ref={installButton} style={{ display: 'none' }}>
-            {/* <InstallIcon /> */}
+            <InstallIcon />
           </Button>
           <Button color="inherit">Login</Button>
         </Toolbar>
