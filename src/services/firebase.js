@@ -20,9 +20,17 @@ export default async function importFirebase() {
       messagingSenderId: "606873914981",
       appId: "1:606873914981:web:7ab0ef689aba67486fc08c",
       measurementId: "G-TZWZ78FE4Y"
-    };
+    }
 
     firebase.initializeApp(firebaseConfig)
+
+    firebase.firestore().enablePersistence()
+      .then(() => console.log('firestore offline mode enabled'))
+      .catch(e => {
+        if (err.code == 'failed-precondition') console.error('multiple tabs open')
+        if (err.code == 'unimplemented') console.error('browser not supported')
+      });
+
     isInitialized = true
   }
 

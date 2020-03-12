@@ -22,26 +22,26 @@ self.addEventListener('install', (e) => {
   )
 })
 
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then(result => {
-      if(result) {
-        return result
-      }
+// self.addEventListener('fetch', (e) => {
+//   e.respondWith(
+//     caches.match(e.request).then(result => {
+//       if(result) {
+//         return result
+//       }
 
-      return fetch(e.request).then(response => {
-        return caches.open(DATA_CACHE_NAME).then(cache => {
-          if (shouldCache(e)) {
-            console.log('[Service Worker] Fetching and caching:', e.request)
-            cache.put(e.request, response.clone())
-          }
-          return response
-        })
-          .catch(e => console.error("on fetch:", e))
-      })
-    })
-  )
-})
+//       return fetch(e.request).then(response => {
+//         return caches.open(DATA_CACHE_NAME).then(cache => {
+//           if (shouldCache(e)) {
+//             console.log('[Service Worker] Fetching and caching:', e.request)
+//             cache.put(e.request, response.clone())
+//           }
+//           return response
+//         })
+//           .catch(e => console.error("on fetch:", e))
+//       })
+//     })
+//   )
+// })
 
 self.addEventListener('activate', (e) => {
   console.log('[Service Worker] Activate')
