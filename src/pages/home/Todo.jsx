@@ -47,50 +47,44 @@ function Todo({ todo, confirmRemoveTodo, loading }) {
       <Paper elevation={1} className={classes.paper}>
         <ListItem button onClick={toggleTodo}>
           <ListItemIcon>
-            {
-              loading ? (
-                <Skeleton variant="rect" height={20} width={20} className={classes.skeletonCheckbox} />
-              ) : (
-              <Checkbox
-                checked={done}
-                color="primary"
-                disableRipple
-              />
-              )
-            }
+            {loading ? (
+              <Skeleton variant="rect" height={20} width={20} className={classes.skeletonCheckbox} />
+            ) : (
+            <Checkbox
+              checked={done}
+              color="primary"
+              disableRipple
+            />
+            )}
           </ListItemIcon>
 
-          {
-            loading ? (
-              <Skeleton height={25} width="50%" />
-            ) : (
-              <ListItemText>{todo.text}</ListItemText>
-            )
-          }
+          {loading ? (
+            <Skeleton height={25} width="50%" />
+          ) : (
+            <ListItemText>{todo.text}</ListItemText>
+          )}
 
           <ListItemSecondaryAction>
-            {
-              loading ? (
-                <Skeleton variant="rect" height={30} width={10}  className={classes.skeletonVertMenu} />
-              ) : (
-                <>
-                  <IconButton onClick={handleMenuClick}>
-                    <MoreVertIcon />
-                  </IconButton>
-                  <Menu
-                    id="todo-menu"
-                    anchorEl={menuAnchorEl}
-                    keepMounted
-                    open={menuOpen}
-                    onClose={handleMenuClose}
-                  >
-                    <MenuItem onClick={handleMenuClose}>Share</MenuItem>
-                    <MenuItem onClick={handleMenuClose}>Edit</MenuItem>
-                    <MenuItem onClick={() => confirmRemoveTodo(todo)}>Remove</MenuItem>
-                  </Menu>
-                </>
-              )
-            }
+            {loading ? (
+              <Skeleton variant="rect" height={30} width={10}  className={classes.skeletonVertMenu} />
+            ) : (
+              <>
+                <IconButton onClick={handleMenuClick}>
+                  <MoreVertIcon />
+                </IconButton>
+                <Menu
+                  id="todo-menu"
+                  anchorEl={menuAnchorEl}
+                  keepMounted
+                  open={menuOpen}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={handleMenuClose}>Share</MenuItem>
+                  <MenuItem onClick={handleMenuClose}>Edit</MenuItem>
+                  <MenuItem onClick={() => confirmRemoveTodo(todo)}>Remove</MenuItem>
+                </Menu>
+              </>
+            )}
           </ListItemSecondaryAction>
         </ListItem>
       </Paper>

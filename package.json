@@ -6,6 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --mode development --config webpack.dev.js",
     "build": "NODE_ENV=production webpack -p --mode production --config webpack.prod.js",
+    "build-dev": "NODE_ENV=development webpack -d --mode development --config webpack.dev.js",
     "deploy": "npm run build && firebase deploy",
     "profile": "NODE_ENV=production webpack --mode production --config webpack.prod.js --profile --json",
     "analyze": "source-map-explorer build/app.*.js",
@@ -29,7 +30,7 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2",
-    "workbox-webpack-plugin": "^5.0.0"
+    "workbox-webpack-plugin": "^4.x"
   },
   "dependencies": {
     "@hot-loader/react-dom": "^16.12.0",

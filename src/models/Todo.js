@@ -12,10 +12,20 @@ const list = () => callOnTodos(async todos => {
   return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}) )
 })
 
+const subscribe = (callback) => callOnTodos(async todos => {
+  return todos.onSnapshot(querySnapshot => {
+    // console.log(querySnapshot.docs)
+    const todos = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}) )
+    // querySnapshot.forEach(doc => todos.push(doc.data()))
+    callback(todos)
+  })
+})
+
 const add = (todo) => callOnTodos(todos => todos.add(todo))
 const remove = (id) => callOnTodos(todos => todos.doc(id.toString()).delete())
 
 export default {
+  subscribe,
   list,
   add,
   remove

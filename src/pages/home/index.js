@@ -25,12 +25,10 @@ function Home() {
   const classes = useStyles()
   const [todos, setTodos] = useState(null)
 
-  useEffect(() => {
-    Todo.list().then(setTodos)
-  }, [])
+  useEffect(() => Todo.subscribe(setTodos), [])
 
   const addTodo = todo => {
-    setTodos([...todos, { loading: true }])
+    setTodos(prev => [...prev, { loading: true }])
 
     Todo.add(todo)
       .then(({ id }) => {
@@ -44,6 +42,7 @@ function Home() {
 
   return (
     <section className={classes.root}>
+    {console.log(todos)}
       <Typography variant="h3">
         welcome home
       </Typography>
