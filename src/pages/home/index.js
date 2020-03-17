@@ -42,7 +42,6 @@ function Home() {
 
   return (
     <section className={classes.root}>
-    {console.log(todos)}
       <Typography variant="h3">
         welcome home
       </Typography>

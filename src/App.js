@@ -4,6 +4,8 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from "./components/AppBar";
 import Home from "./pages/home/index";
+import Signup from "./pages/Signup/index";
+import { Switch, Route } from "./router"
 
 const colors = {
   primary: "#D55A00",
@@ -42,7 +44,14 @@ function App() {
       <CssBaseline />
 
       <AppBar />
-      <Home />
+      <Switch>
+        <Route path="/signup">
+          <Signup />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
     </ThemeProvider>
   );
 }

@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import InstallIcon from  '../assets/install.svg';
 import promptInstall from '../install'
+import { Link } from '../router'
 
 const useStyles = makeStyles(theme => ({
   menuButton: {
@@ -41,7 +42,9 @@ export default function ButtonAppBar() {
           <Button color="inherit" ref={installButton} style={{ display: 'none' }}>
             <InstallIcon />
           </Button>
-          <Button color="inherit">Login</Button>
+          <Link to="signup">
+            <Button color="inherit">Signup</Button>
+          </Link>
         </Toolbar>
       </AppBar>
 
