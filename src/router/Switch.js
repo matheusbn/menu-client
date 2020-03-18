@@ -4,9 +4,6 @@ export default function Switch(props) {
   const routes = React.Children.toArray(props.children)
   const [currentRelativeUrl, setCurrentRelativeUrl] = useState(window.location.pathname)
 
-  console.log(currentRelativeUrl)
-  console.log(routes.find(route => route.props.path === currentRelativeUrl))
-
   useState(() => {
     const handler = (e) => setCurrentRelativeUrl(window.location.pathname)
 

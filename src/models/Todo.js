@@ -14,9 +14,7 @@ const list = () => callOnTodos(async todos => {
 
 const subscribe = (callback) => callOnTodos(async todos => {
   return todos.onSnapshot(querySnapshot => {
-    // console.log(querySnapshot.docs)
     const todos = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}) )
-    // querySnapshot.forEach(doc => todos.push(doc.data()))
     callback(todos)
   })
 })

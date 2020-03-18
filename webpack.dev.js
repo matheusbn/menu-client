@@ -8,6 +8,7 @@ module.exports = merge(common(), {
     contentBase: './build',
     port: 3000,
     open: false,
-    hot: true
+    hot: true,
+    historyApiFallback: true
   },
 });

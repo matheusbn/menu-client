@@ -3,8 +3,8 @@ import React from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from "./components/AppBar";
-import Home from "./pages/home/index";
-import Signup from "./pages/Signup/index";
+import Home from "./pages/home";
+import Signup from "./pages/signup";
 import { Switch, Route } from "./router"
 
 const colors = {
@@ -32,7 +32,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiInputBase: {
       input: {
-        caretColor: colors.primary
+        caretColor: colors.primary,
       }
     }
   }
@@ -44,6 +44,7 @@ function App() {
       <CssBaseline />
 
       <AppBar />
+
       <Switch>
         <Route path="/signup">
           <Signup />

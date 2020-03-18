@@ -18,7 +18,6 @@ export default ({ to, children, external, ...props }) => {
 
       const locationChangeEvent = new CustomEvent("locationchange")
       locationChangeEvent.state = { name: "matheus" }
-      console.log("before", window.location.pathname)
       window.dispatchEvent(locationChangeEvent)
     }
   };
