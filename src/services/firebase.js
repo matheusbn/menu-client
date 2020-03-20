@@ -9,6 +9,10 @@ export default async function importFirebase() {
     /* webpackChunkName: 'firebase' */
     /* webpackPrefetch: true */
     'firebase/firestore')
+  await import(
+    /* webpackChunkName: 'firebase' */
+    /* webpackPrefetch: true */
+    'firebase/auth')
 
   if (!isInitialized) {
     const firebaseConfig = {
@@ -30,6 +34,8 @@ export default async function importFirebase() {
         if (err.code == 'failed-precondition') console.error('multiple tabs open')
         if (err.code == 'unimplemented') console.error('browser not supported')
       });
+
+    // firebase.auth().languageCode = 'it'
 
     isInitialized = true
   }

@@ -1,75 +1,110 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import useSetState from '../../hooks/useSetState'
-import {
-  IconButton,
-  FormControl,
-  FilledInput,
-  InputLabel,
-  InputAdornment,
-  Button,
-} from '@material-ui/core';
-import Step1 from './Step1'
-import Step2 from './Step2'
-import Confirm from './Final'
+import importFirebase from '../../services/firebase'
+import Toast from '../../components/Toast'
+import PhoneStep from "./PhoneStep"
+import VerificationCodeStep from "./VerificationCodeStep"
 
 const useStyles = makeStyles({
   root: {
     "--width": "400px",
     height: "80vh",
     width: "100%",
-    maxWidth: "400px",//"var(--width)",
+    maxWidth: "var(--width)",
     margin: "0 auto",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    '& input': {
-      width: "var(--width)"
-    },
-    '& .step-form-buttons': {
+    padding: "0 15px",
+    overflow: "hidden",
+
+    '& form': {
+      height: "50%",
+      marginTop: "60%",
       display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
       justifyContent: "space-between",
-      marginTop: "40px",
-      width: "var(--width)"
+    },
+
+    '& input': {
+      width: "100%"
+    },
+
+    '& .submit-button': {
+      paddingLeft: "25px",
+      paddingRight: "25px",
     }
   }
 });
 
+const isPhoneValid = (phone) => /\+\d{14}/i.test(phone)
+
 function Signup() {
   const classes = useStyles()
-  const [step, setStep] = useState(1)
-  const [values, setValues] = useSetState({
-    name: null,
-    age: null
-  })
+  const [phone, setPhone] = useState("+55048991321617")
+  const [verificationCode, setVerificationCode] = useState(null)
+  const [confirmationResult, setConfirmationResult] = useState(null)
+  const recaptchaVerifier = useRef(null)
+  const toast = useRef(null)
 
-  const prev = () => setStep(prev => prev > 1 ? prev-1 : 1)
-  const next = () => setStep(prev => prev+1)
 
-  const selectStep = () => {
-    const stepProps = {
-      values,
-      setValues,
-      next,
-      prev,
+  const sentVerificationCode = (firebase) => {
+    console.log(1)
+
+    if (isPhoneValid(phone)) {
+      console.log(2)
+      firebase.auth().signInWithPhoneNumber(phone, recaptchaVerifier.current)
+        .then(confirmationResult => {
+          console.log("code sent")
+          setConfirmationResult(confirmationResult)
+        })
+        .catch(error => console.error("error on signing in:", error))
+
+        return
     }
-
-    if (step === 1) return <Step1 {...stepProps} />
-    if (step === 2) return <Step2 {...stepProps} />
-    if (step > 2) return <Confirm {...stepProps} />
+    // display error
   }
+
+  const handleCodeSubmit = (e) => {
+    console.log(1)
+    e.preventDefault()
+    console.log(2)
+
+    confirmationResult.confirm(verificationCode).then(result => {
+      console.log(3)
+      toast.current.show()
+      console.log("LOGOU CARALHOO", result)
+    })
+      .catch(error => console.error("error on confirm", error))
+  }
+
+  useEffect(() => {
+    importFirebase().then(firebase => {
+      recaptchaVerifier.current = new firebase.auth.RecaptchaVerifier('sign-in-button', {
+        size: 'invisible',
+        callback: (response) => {
+          console.log("captcha verified", response)
+
+          sentVerificationCode(firebase)
+        }
+      })
+
+      recaptchaVerifier.current.render()
+        .catch(error => console.error("error rendering recaptcha", error))
+    })
+  }, [])
 
   return (
     <section className={classes.root}>
-      <form>
-        { selectStep() }
-      </form>
+      {confirmationResult ? (
+        <VerificationCodeStep
+          verificationCode={verificationCode}
+          setVerificationCode={setVerificationCode}
+          onSubmit={handleCodeSubmit}
+        />
+      ) : (
+        <PhoneStep phone={phone} setPhone={setPhone}/>
+      )}
 
-      <div className="step-form-buttons">
-        {step > 1 && <Button onClick={prev}>Back</Button>}
-        <Button variant="contained" onClick={next}>Continue</Button>
-      </div>
+      < Toast message="Succesfully signed in!" ref={toast} />
     </section>
   );
 }
