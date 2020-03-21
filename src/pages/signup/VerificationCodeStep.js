@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   FormControl,
   FilledInput,
@@ -8,6 +8,10 @@ import {
 
 const VerificationCodeStep = (props) => {
   const handleVerificationCode = (e) => props.setVerificationCode(e.target.value)
+
+  useEffect(() => {
+    return props.onUnmount
+  }, [])
 
   return (
     <form style={{ marginTop: 50 }} onSubmit={props.onSubmit}>

@@ -1,20 +1,32 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import history from 'router/history'
 
 export default function Switch(props) {
   const routes = React.Children.toArray(props.children)
-  const [currentRelativeUrl, setCurrentRelativeUrl] = useState(window.location.pathname)
+  const [currentRelativeUrl, setCurrentRelativeUrl] = useState(history.location)
 
-  useState(() => {
-    const handler = (e) => setCurrentRelativeUrl(window.location.pathname)
-
-  window.addEventListener("popstate", handler);
-  window.addEventListener("locationchange", handler);
+  useEffect(() => {
+    const handler = (e) => setCurrentRelativeUrl(history.location)
+    window.addEventListener("locationchange", handler);
 
     return () => {
-      window.removeEventListener("popstate", handler);
       window.removeEventListener("locationchange", handler);
     };
   }, []);
 
-  return routes.find(route => route.props.path === currentRelativeUrl)
+
+  const route = routes.find(route => {
+    const { path, exact } = route.props
+
+    if (exact) return currentRelativeUrl === path
+
+    if(currentRelativeUrl.match(new RegExp(path))) {
+      history.replace(path)
+      return true
+    }
+
+    return false
+  })
+
+  return route
 }

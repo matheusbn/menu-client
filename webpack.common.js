@@ -53,6 +53,7 @@ module.exports = env => {
       path: path.resolve(__dirname, 'build'),
       filename: 'static/[name].js',
       chunkFilename: 'static/[name].js',
+      publicPath: '/'
     },
     plugins: [
       new CleanWebpackPlugin(),

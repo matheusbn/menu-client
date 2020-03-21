@@ -20,14 +20,13 @@ const useStyles = makeStyles({
 
 const PhoneStep = (props) => {
   const classes = useStyles()
-  const [countryCode, setCountryCode] = useState(null)
+  const [countryCode, setCountryCode] = useState("+55")
   const [ddd, setDdd] = useState(null)
   const [phone, setPhone] = useState(null)
 
   const setValues = () => {
-    setCountryCode("+55")
     setDdd("048")
-    setPhone("991321616")
+    setPhone("991321617")
   }
 
   setValues()
@@ -36,8 +35,9 @@ const PhoneStep = (props) => {
   const handleDdd = (e) => setDdd(e.target.value)
   const handlePhone = (e) => setPhone(e.target.value)
 
-  useEffect(() => {
+  useEffect(() => {console.log('mounted')
     props.setPhone(countryCode + ddd + phone)
+    return () => console.log("unmount")
   }, [countryCode, ddd, phone])
 
   return (
@@ -47,7 +47,7 @@ const PhoneStep = (props) => {
           label="Pais"
           value={countryCode}
           onChange={handleCountryCode}
-          autoFocus
+          onFocus={() => console.log(countryCode, ddd, phone)}
           size="small"
           margin="dense"
           variant="outlined"
@@ -57,7 +57,6 @@ const PhoneStep = (props) => {
           label="DDD"
           value={ddd}
           onChange={handleDdd}
-          autoFocus
           size="small"
           margin="dense"
           variant="outlined"
@@ -67,7 +66,6 @@ const PhoneStep = (props) => {
           label="Celular"
           value={phone}
           onChange={handlePhone}
-          autoFocus
           size="small"
           margin="dense"
           variant="outlined"

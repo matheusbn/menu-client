@@ -1,5 +1,6 @@
 import React from "react"
 import { makeStyles } from '@material-ui/core/styles';
+import history from 'router/history'
 
 const useStyles = makeStyles(theme => ({
   link: {
@@ -13,12 +14,7 @@ export default ({ to, children, external, ...props }) => {
   const onClick = e => {
     if (!external) {
       e.preventDefault()
-
-      window.history.pushState({}, "", to)
-
-      const locationChangeEvent = new CustomEvent("locationchange")
-      locationChangeEvent.state = { name: "matheus" }
-      window.dispatchEvent(locationChangeEvent)
+      history.push(to)
     }
   };
 
