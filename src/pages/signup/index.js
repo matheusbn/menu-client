@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Slide } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import importFirebase from '../../services/firebase'
 import Toast from '../../components/Toast'
@@ -29,9 +30,9 @@ const useStyles = makeStyles({
     },
 
     '& .submit-button': {
-      paddingLeft: "25px",
-      paddingRight: "25px",
-    }
+      paddingLeft: "35px",
+      paddingRight: "35px",
+    },
   }
 });
 
@@ -95,11 +96,13 @@ function Signup() {
   return (
     <section className={classes.root}>
       {confirmationResult ? (
-        <VerificationCodeStep
-          verificationCode={verificationCode}
-          setVerificationCode={setVerificationCode}
-          onSubmit={handleCodeSubmit}
-        />
+        <Slide direction="left" in={confirmationResult} mountOnEnter unmountOnExit>
+          <VerificationCodeStep
+            verificationCode={verificationCode}
+            setVerificationCode={setVerificationCode}
+            onSubmit={handleCodeSubmit}
+          />
+        </Slide>
       ) : (
         <PhoneStep phone={phone} setPhone={setPhone}/>
       )}

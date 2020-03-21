@@ -24,6 +24,14 @@ const PhoneStep = (props) => {
   const [ddd, setDdd] = useState(null)
   const [phone, setPhone] = useState(null)
 
+  const setValues = () => {
+    setCountryCode("+55")
+    setDdd("048")
+    setPhone("991321616")
+  }
+
+  setValues()
+
   const handleCountryCode = (e) => setCountryCode(e.target.value)
   const handleDdd = (e) => setDdd(e.target.value)
   const handlePhone = (e) => setPhone(e.target.value)
