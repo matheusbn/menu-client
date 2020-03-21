@@ -41,6 +41,7 @@ const isPhoneValid = (phone) => /\+\d{14}/i.test(phone)
 function Signup() {
   const classes = useStyles()
   const [phone, setPhone] = useState("+55048991321617")
+  const [loading, setLoading] = useState(false)
   const [verificationCode, setVerificationCode] = useState(null)
   const [confirmationResult, setConfirmationResult] = useState(null)
   const recaptchaVerifier = useRef(null)
@@ -48,12 +49,10 @@ function Signup() {
 
 
   const sentVerificationCode = (firebase) => {
-    console.log(1)
-
     if (isPhoneValid(phone)) {
-      console.log(2)
       firebase.auth().signInWithPhoneNumber(phone, recaptchaVerifier.current)
         .then(confirmationResult => {
+          setLoading(false)
           console.log("code sent")
           setConfirmationResult(confirmationResult)
         })
@@ -65,12 +64,9 @@ function Signup() {
   }
 
   const handleCodeSubmit = (e) => {
-    console.log(1)
     e.preventDefault()
-    console.log(2)
 
     confirmationResult.confirm(verificationCode).then(result => {
-      console.log(3)
       toast.current.show()
       console.log("LOGOU CARALHOO", result)
     })
@@ -83,7 +79,6 @@ function Signup() {
         size: 'invisible',
         callback: (response) => {
           console.log("captcha verified", response)
-
           sentVerificationCode(firebase)
         }
       })
@@ -104,10 +99,15 @@ function Signup() {
           />
         </Slide>
       ) : (
-        <PhoneStep phone={phone} setPhone={setPhone}/>
+        <PhoneStep
+          phone={phone}
+          setPhone={setPhone}
+          loading={loading}
+          setLoading={setLoading}
+        />
       )}
 
-      < Toast message="Succesfully signed in!" ref={toast} />
+      <Toast message="Succesfully signed in!" ref={toast} />
     </section>
   );
 }

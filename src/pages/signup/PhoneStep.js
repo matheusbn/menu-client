@@ -5,7 +5,7 @@ import {
   FilledInput,
   TextField,
   OutlinedInput,
-  InputLabel,
+  CircularProgress,
   Button,
 } from '@material-ui/core';
 
@@ -79,7 +79,8 @@ const PhoneStep = (props) => {
         variant="contained"
         id="sign-in-button"
         className={"submit-button"}
-        // disabled={!captchaVerified || !isPhoneValid(phone)}
+        onClick={() => props.setLoading(true)}
+        endIcon={props.loading && <CircularProgress color="white" size={20} />}
       >
         Confirm
       </Button>
