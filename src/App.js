@@ -46,7 +46,7 @@ function App() {
       <AppBar />
 
       <Switch>
-        <Route path="/signup">
+        <Route path="/signup" component={Signup}>
           <Signup />
         </Route>
         <Route path="/">
