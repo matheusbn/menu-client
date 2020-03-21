@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { isFunction } from "../helpers/utils"
+import { isFunction } from "helpers/utils"
 
 export default (initialSate) => {
   const [state, setState] = useState(initialSate);

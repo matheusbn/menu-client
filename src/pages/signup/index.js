@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Slide } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import importFirebase from '../../services/firebase'
-import Toast from '../../components/Toast'
+import importFirebase from 'services/firebase'
+import Toast from 'components/Toast'
 import PhoneStep from "./PhoneStep"
 import VerificationCodeStep from "./VerificationCodeStep"
 

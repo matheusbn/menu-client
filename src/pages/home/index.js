@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Typography, CircularProgress } from '@material-ui/core';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
-import Todo from "../../models/Todo"
+import Todo from "models/Todo"
 
 const useStyles = makeStyles({
   root: {

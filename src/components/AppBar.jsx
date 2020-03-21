@@ -8,9 +8,9 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import InstallIcon from  '../assets/install.svg';
-import promptInstall from '../install'
-import { Link } from '../router'
+import InstallIcon from  'assets/install.svg';
+import promptInstall from 'services/install'
+import { Link } from 'router'
 
 const useStyles = makeStyles(theme => ({
   menuButton: {

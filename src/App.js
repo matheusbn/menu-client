@@ -2,10 +2,10 @@ import React from 'react';
 // import { hot } from 'react-hot-loader/root';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from "./components/AppBar";
-import Home from "./pages/home";
-import Signup from "./pages/signup";
-import { Switch, Route } from "./router"
+import AppBar from "components/AppBar";
+import Home from "pages/home";
+import Signup from "pages/signup";
+import { Switch, Route } from "router"
 
 const colors = {
   primary: "#D55A00",
@@ -46,12 +46,8 @@ function App() {
       <AppBar />
 
       <Switch>
-        <Route path="/signup" component={Signup}>
-          <Signup />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
+        <Route path="/signup" component={Signup} />
+        <Route path="/" component={Home} />
       </Switch>
     </ThemeProvider>
   );

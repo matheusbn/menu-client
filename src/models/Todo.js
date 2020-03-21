@@ -1,4 +1,4 @@
-import importFirebase from '../services/firebase'
+import importFirebase from 'services/firebase'
 
 const callOnTodos = async (callback) => {
   const firebase = await importFirebase()
