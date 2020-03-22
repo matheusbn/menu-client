@@ -39,6 +39,8 @@ const theme = createMuiTheme({
 })
 
 function App() {
+  const toast = useRef(null)
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -49,6 +51,9 @@ function App() {
         <Route path="/auth" component={Auth} />
         <Route path="/" component={Home} />
       </Switch>
+
+
+        <Toast message="Succesfully signed in!" ref={toast} />
     </ThemeProvider>
   );
 }

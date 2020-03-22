@@ -75,6 +75,7 @@ const PhoneStep = (props) => {
             margin="dense"
             variant="outlined"
             error={props.error}
+            helperText={props.error && "Digite um número válido"}
           />
         </div>
       </div>

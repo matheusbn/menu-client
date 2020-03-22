@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Switch, Route } from "router"
+import React, { useState, useEffect, useRef } from 'react'
+import { Switch, Route, SlideRoute } from "router"
 import history from 'router/history'
 import { Slide } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -37,6 +37,7 @@ const useStyles = makeStyles({
       position: "absolute",
       top: "40%",
     },
+
     '& .submit-button': {
       paddingLeft: "35px",
       paddingRight: "35px",
@@ -50,8 +51,9 @@ function Auth() {
   const classes = useStyles()
   const [loading, setLoading] = useState(false)
   const [verificationCode, setVerificationCode] = useState(null)
-  const [confirmationResult, setConfirmationResult] = useState(null)
+  const confirmationResult = useRef(null)
   const [phoneError, setPhoneError] = useState(false)
+  const [codeError, setCodeError] = useState(false)
   const phoneE164 = useRef(null) // it's a ref to avoid a stale closures in the mount only setEffect
   const recaptchaVerifier = useRef(null)
   const toast = useRef(null)
@@ -69,15 +71,14 @@ function Auth() {
     }
 
     firebase.auth().signInWithPhoneNumber(phoneE164.current, recaptchaVerifier.current)
-      .then(confirmationResult => {
+      .then(result => {
         setLoading(false)
         console.log("code sent")
 
-        setConfirmationResult(confirmationResult)
+        confirmationResult.current = result
       })
-      .catch(error => console.error("error on signing in:", error))
-    // display error
-
+        .catch(error => console.error("Error on code send", error))
+      // display error
       history.push("/auth/code")
   }
 
@@ -85,11 +86,14 @@ function Auth() {
     try {
       e.preventDefault()
 
-      confirmationResult.confirm(verificationCode).then(result => {
+      confirmationResult.current.confirm(verificationCode).then(result => {
         toast.current.show()
-        console.log("LOGOU CARALHOO", result)
+        history.push("/")
       })
-        .catch(error => console.error("error on confirm", error))
+        .catch(error => {
+          console.error("Error on confirm", error)
+          setCodeError(true)
+        })
     }
     catch (e) {
       console.error(e)
@@ -118,6 +122,12 @@ function Auth() {
 
   useEffect(() => {
     initRecaptcha()
+
+    importFirebase().then(firebase => {
+      firebase.auth().onAuthStateChanged(user => {
+        console.log("AUTH STATE CHANGED", user)
+      })
+    })
   }, [])
 
   return (
@@ -131,17 +141,16 @@ function Auth() {
             error={phoneError}
           />
         </Route>
-        <Route path="/auth/code">
-          <Slide direction="left" in={true} mountOnEnter unmountOnExit>
-            <VerificationCodeStep
-              verificationCode={verificationCode}
-              setVerificationCode={setVerificationCode}
-              phone={phoneE164.current}
-              onUnmount={resetRecaptcha}
-              onSubmit={handleCodeSubmit}
-            />
-          </Slide>
-        </Route>
+        <SlideRoute path="/auth/code">
+          <VerificationCodeStep
+            verificationCode={verificationCode}
+            setVerificationCode={setVerificationCode}
+            phone={phoneE164.current}
+            onUnmount={resetRecaptcha}
+            onSubmit={handleCodeSubmit}
+            error={codeError}
+          />
+        </SlideRoute>
       </Switch>
 
       <Toast message="Succesfully signed in!" ref={toast} />

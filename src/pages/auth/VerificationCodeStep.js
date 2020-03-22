@@ -40,6 +40,8 @@ const VerificationCodeStep = (props) => {
               textAlign: "center"
             }
           }}
+          error={props.error}
+          helperText={props.error && "Código inválido"}
           autoFocus
         />
       </FormControl>

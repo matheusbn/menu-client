@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, CircularProgress } from '@material-ui/core';
+import { Typography, CircularProgress, Button } from '@material-ui/core';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import Todo from "models/Todo"
+import Toast from 'components/Toast'
 
 const useStyles = makeStyles({
   root: {
@@ -48,6 +49,8 @@ function Home() {
       <Typography variant="h6">
         feel free to add some todos below aye
       </Typography>
+
+      <Button variant="contained" onClick={showToast}>show toast</Button>
 
       <TodoForm addTodo={addTodo} />
       {todos ? <TodoList todos={todos} removeTodo={removeTodo} />

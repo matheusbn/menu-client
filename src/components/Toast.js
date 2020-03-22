@@ -12,8 +12,9 @@ export default class Toast extends Component {
 
   show = () => this.setState({isOpen: true})
 
-  handleClose = () => {
-    setTimeout(() => this.setState({isOpen: false}), 2500)
+  handleClose = (e, reason) => {
+    if (reason === "timeout") this.setState({ isOpen: false })
+    // setTimeout(() => this.setState({isOpen: false}), 2500)
   }
 
   render() {
@@ -21,7 +22,7 @@ export default class Toast extends Component {
       <Snackbar
         open={this.state.isOpen}
         onClose={this.handleClose}
-        autoHideDuration={0}
+        autoHideDuration={2000}
       >
         <Alert severity="success">
           {this.props.message}

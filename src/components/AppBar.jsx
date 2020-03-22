@@ -11,6 +11,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import InstallIcon from  'assets/install.svg';
 import promptInstall from 'services/install'
 import { Link } from 'router'
+import importFirebase from 'services/firebase'
 
 const useStyles = makeStyles(theme => ({
   menuButton: {
@@ -29,6 +30,13 @@ export default function ButtonAppBar() {
     promptInstall(installButton.current)
   }, [])
 
+  const signOut = () => {
+    // importFirebase().then(firebase => firebase.auth().signOut())
+    importFirebase().then(firebase =>
+      console.log("CURRENT USER:", firebase.auth().currentUser)
+    )
+  }
+
   return (
     <>
       <AppBar>
@@ -45,6 +53,7 @@ export default function ButtonAppBar() {
           <Link to="/auth">
             <Button color="inherit">Entrar</Button>
           </Link>
+          <Button color="inherit" onClick={signOut}>SAIR</Button>
         </Toolbar>
       </AppBar>
 
