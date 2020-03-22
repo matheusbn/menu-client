@@ -44,7 +44,7 @@ function Home() {
     .then(() => setTodos(todos.filter(todo => todo.id !== id)))
 
   const handleToaster = () => {
-    showToast('e ai mlk doido')
+    showToast('e ai mlk doido', { severity: "success" })
   }
 
   return (

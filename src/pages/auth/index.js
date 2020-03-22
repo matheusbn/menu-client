@@ -86,7 +86,7 @@ function Auth() {
       e.preventDefault()
 
       confirmationResult.current.confirm(verificationCode).then(result => {
-        showToast("Succesfully signed in!")
+        showToast("Succesfully signed in!", { severity: "success" })
         history.push("/")
       })
         .catch(error => {
