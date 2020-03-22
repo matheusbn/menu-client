@@ -35,7 +35,7 @@ export default async function importFirebase() {
         if (err.code == 'unimplemented') console.error('browser not supported')
       });
 
-    // firebase.auth().languageCode = 'it'
+    firebase.auth().languageCode = 'pt'
 
     isInitialized = true
   }

@@ -42,8 +42,8 @@ export default function ButtonAppBar() {
           <Button color="inherit" ref={installButton} style={{ display: 'none' }}>
             <InstallIcon />
           </Button>
-          <Link to="signup">
-            <Button color="inherit">Signup</Button>
+          <Link to="/auth">
+            <Button color="inherit">Entrar</Button>
           </Link>
         </Toolbar>
       </AppBar>

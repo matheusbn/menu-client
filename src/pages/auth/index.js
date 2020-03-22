@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Switch, Route } from "router"
 import history from 'router/history'
 import { Slide } from '@material-ui/core'
@@ -11,16 +11,17 @@ import VerificationCodeStep from "./VerificationCodeStep"
 const useStyles = makeStyles({
   root: {
     "--width": "400px",
-    height: "80vh",
+    height: "90vh",
     width: "100%",
     maxWidth: "var(--width)",
     margin: "0 auto",
     padding: "0 15px",
     overflow: "hidden",
+    display: "flex",
+    alignItems: "center",
 
     '& form': {
-      height: "50%",
-      marginTop: "60%",
+      height: "80%",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -40,30 +41,41 @@ const useStyles = makeStyles({
 
 const isPhoneValid = (phone) => /\+\d{14}/i.test(phone)
 
-function Signup() {
+function Auth() {
   const classes = useStyles()
-  const [phone, setPhone] = useState("+55048991321617")
+  const [phone, setPhone] = useState(null)
   const [loading, setLoading] = useState(false)
   const [verificationCode, setVerificationCode] = useState(null)
   const [confirmationResult, setConfirmationResult] = useState(null)
+  const [phoneError, setPhoneError] = useState(false)
   const recaptchaVerifier = useRef(null)
   const toast = useRef(null)
 
 
+  useEffect(() => {
+    console.log(phone)
+  }, [phone])
+
   const sendVerificationCode = (firebase) => {
+    console.log("PHONE: ", phone)
+    if (!isPhoneValid(phone)) {
+      console.log(phone)
+      setLoading(false)
+      setPhoneError(true)
+      return
+    }
+
+    history.push("/auth/code")
+
     try {
-      if (isPhoneValid(phone)) {
-        firebase.auth().signInWithPhoneNumber(phone, recaptchaVerifier.current)
-          .then(confirmationResult => {
-            setLoading(false)
-            console.log("code sent")
+      firebase.auth().signInWithPhoneNumber(phone, recaptchaVerifier.current)
+        .then(confirmationResult => {
+          setLoading(false)
+          console.log("code sent")
 
-            setConfirmationResult(confirmationResult)
-          })
-          .catch(error => console.error("error on signing in:", error))
-
-          return
-      }
+          setConfirmationResult(confirmationResult)
+        })
+        .catch(error => console.error("error on signing in:", error))
       // display error
     }
     catch (e) {
@@ -91,12 +103,11 @@ function Signup() {
       importFirebase().then(firebase => {
         recaptchaVerifier.current = new firebase.auth.RecaptchaVerifier('sign-in-button', {
           size: 'invisible',
-          callback: (recaptchaToken) => {
+          callback: useCallback((recaptchaToken) => {
             console.log("captcha verified")
 
             sendVerificationCode(firebase)
-            history.push("/signup/code")
-          }
+          }, [phone])
         })
 
         recaptchaVerifier.current.render()
@@ -115,18 +126,20 @@ function Signup() {
   return (
     <section className={classes.root}>
       <Switch>
-        <Route exact path="/signup">
+        <Route exact path="/auth">
           <PhoneStep
             setPhone={setPhone}
             loading={loading}
             setLoading={setLoading}
+            error={phoneError}
           />
         </Route>
-        <Route path="/signup/code">
+        <Route path="/auth/code">
           <Slide direction="left" in={true} mountOnEnter unmountOnExit>
             <VerificationCodeStep
               verificationCode={verificationCode}
               setVerificationCode={setVerificationCode}
+              phone={phone}
               onUnmount={initRecaptcha}
               onSubmit={handleCodeSubmit}
             />
@@ -139,4 +152,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Auth;

@@ -7,6 +7,7 @@ import {
   OutlinedInput,
   CircularProgress,
   Button,
+  Typography
 } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -17,40 +18,42 @@ const useStyles = makeStyles({
   }
 })
 
-
 const PhoneStep = (props) => {
   const classes = useStyles()
   const [countryCode, setCountryCode] = useState("+55")
-  const [ddd, setDdd] = useState(null)
-  const [phone, setPhone] = useState(null)
-
-  const setValues = () => {
-    setDdd("048")
-    setPhone("991321617")
-  }
-
-  setValues()
+  const [ddd, setDdd] = useState("048")
+  const [phone, setPhone] = useState(991321617)
 
   const handleCountryCode = (e) => setCountryCode(e.target.value)
   const handleDdd = (e) => setDdd(e.target.value)
   const handlePhone = (e) => setPhone(e.target.value)
 
-  useEffect(() => {console.log('mounted')
+  useEffect(() => {
     props.setPhone(countryCode + ddd + phone)
-    return () => console.log("unmount")
+    console.log(props.phone)
   }, [countryCode, ddd, phone])
 
   return (
     <form>
+      <div>
+        <Typography variant="h5" component="h1" align="center" gutterBottom>
+          Acesse ou crie sua conta
+        </Typography>
+        <Typography variant="body2" align="center">
+          Você receberá um código de acesso por SMS. <br />
+          Seus dados ficarão seguros e não é necessário
+          lembrar de uma senha :)
+        </Typography>
+      </div>
       <div className={classes.root}>
         <TextField
           label="Pais"
           value={countryCode}
           onChange={handleCountryCode}
-          onFocus={() => console.log(countryCode, ddd, phone)}
           size="small"
           margin="dense"
           variant="outlined"
+          error={props.error}
         />
 
         <TextField
@@ -60,6 +63,7 @@ const PhoneStep = (props) => {
           size="small"
           margin="dense"
           variant="outlined"
+          error={props.error}
         />
 
         <TextField
@@ -69,6 +73,7 @@ const PhoneStep = (props) => {
           size="small"
           margin="dense"
           variant="outlined"
+          error={props.error}
         />
       </div>
 
@@ -80,7 +85,7 @@ const PhoneStep = (props) => {
         onClick={() => props.setLoading(true)}
         endIcon={props.loading && <CircularProgress color="white" size={20} />}
       >
-        Confirm
+        Confirmar
       </Button>
     </form>
   )

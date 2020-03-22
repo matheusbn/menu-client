@@ -4,7 +4,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from "components/AppBar";
 import Home from "pages/home";
-import Signup from "pages/signup";
+import Auth from "pages/auth";
 import { Switch, Route } from "router"
 
 const colors = {
@@ -46,7 +46,7 @@ function App() {
       <AppBar />
 
       <Switch>
-        <Route path="/signup" component={Signup} />
+        <Route path="/auth" component={Auth} />
         <Route path="/" component={Home} />
       </Switch>
     </ThemeProvider>
