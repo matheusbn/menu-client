@@ -27,8 +27,7 @@ const VerificationCodeStep = (props) => {
           Insira o código que enviamos para o seu celular: <span style={{fontWeight: 600}}>{props.phone}</span>
         </Typography>
       </div>
-      <FormControl fullWidth variant="filled">
-
+      <FormControl fullWidth variant="filled" className="phone-input">
         <TextField
           label="Código"
           value={props.verificationCode}

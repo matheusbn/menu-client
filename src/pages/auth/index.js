@@ -21,6 +21,7 @@ const useStyles = makeStyles({
     alignItems: "center",
 
     '& form': {
+      position: 'relative',
       height: "80%",
       display: "flex",
       flexDirection: "column",
@@ -29,9 +30,13 @@ const useStyles = makeStyles({
     },
 
     '& input': {
-      width: "100%"
+      width: "100%",
     },
 
+    '& .phone-input': {
+      position: "absolute",
+      top: "40%",
+    },
     '& .submit-button': {
       paddingLeft: "35px",
       paddingRight: "35px",
@@ -43,44 +48,37 @@ const isPhoneValid = (phone) => /\+\d{14}/i.test(phone)
 
 function Auth() {
   const classes = useStyles()
-  const [phone, setPhone] = useState(null)
   const [loading, setLoading] = useState(false)
   const [verificationCode, setVerificationCode] = useState(null)
   const [confirmationResult, setConfirmationResult] = useState(null)
   const [phoneError, setPhoneError] = useState(false)
+  const phoneE164 = useRef(null) // it's a ref to avoid a stale closures in the mount only setEffect
   const recaptchaVerifier = useRef(null)
   const toast = useRef(null)
 
-
-  useEffect(() => {
-    console.log(phone)
-  }, [phone])
+  const setPhone = (phone) => {
+    phoneE164.current = phone
+  }
 
   const sendVerificationCode = (firebase) => {
-    console.log("PHONE: ", phone)
-    if (!isPhoneValid(phone)) {
-      console.log(phone)
+    console.log("PHONE: ", phoneE164.current)
+    if (!isPhoneValid(phoneE164.current)) {
       setLoading(false)
       setPhoneError(true)
       return
     }
 
-    history.push("/auth/code")
+    firebase.auth().signInWithPhoneNumber(phoneE164.current, recaptchaVerifier.current)
+      .then(confirmationResult => {
+        setLoading(false)
+        console.log("code sent")
 
-    try {
-      firebase.auth().signInWithPhoneNumber(phone, recaptchaVerifier.current)
-        .then(confirmationResult => {
-          setLoading(false)
-          console.log("code sent")
+        setConfirmationResult(confirmationResult)
+      })
+      .catch(error => console.error("error on signing in:", error))
+    // display error
 
-          setConfirmationResult(confirmationResult)
-        })
-        .catch(error => console.error("error on signing in:", error))
-      // display error
-    }
-    catch (e) {
-      console.error(e)
-    }
+      history.push("/auth/code")
   }
 
   const handleCodeSubmit = (e) => {
@@ -99,24 +97,23 @@ function Auth() {
   }
 
   const initRecaptcha = () => {
-    try {
       importFirebase().then(firebase => {
         recaptchaVerifier.current = new firebase.auth.RecaptchaVerifier('sign-in-button', {
           size: 'invisible',
-          callback: useCallback((recaptchaToken) => {
+          callback: (recaptchaToken) => {
             console.log("captcha verified")
-
             sendVerificationCode(firebase)
-          }, [phone])
+          }
         })
 
         recaptchaVerifier.current.render()
           .catch(error => console.error("error rendering recaptcha", error))
       })
-    }
-    catch (e) {
-      console.error(e)
-    }
+  }
+
+  const resetRecaptcha = () => {
+    initRecaptcha()
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -139,8 +136,8 @@ function Auth() {
             <VerificationCodeStep
               verificationCode={verificationCode}
               setVerificationCode={setVerificationCode}
-              phone={phone}
-              onUnmount={initRecaptcha}
+              phone={phoneE164.current}
+              onUnmount={resetRecaptcha}
               onSubmit={handleCodeSubmit}
             />
           </Slide>

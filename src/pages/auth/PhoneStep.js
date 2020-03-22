@@ -30,7 +30,6 @@ const PhoneStep = (props) => {
 
   useEffect(() => {
     props.setPhone(countryCode + ddd + phone)
-    console.log(props.phone)
   }, [countryCode, ddd, phone])
 
   return (
@@ -45,36 +44,39 @@ const PhoneStep = (props) => {
           lembrar de uma senha :)
         </Typography>
       </div>
-      <div className={classes.root}>
-        <TextField
-          label="Pais"
-          value={countryCode}
-          onChange={handleCountryCode}
-          size="small"
-          margin="dense"
-          variant="outlined"
-          error={props.error}
-        />
 
-        <TextField
-          label="DDD"
-          value={ddd}
-          onChange={handleDdd}
-          size="small"
-          margin="dense"
-          variant="outlined"
-          error={props.error}
-        />
+      <div className="phone-input">
+        <div className={classes.root}>
+          <TextField
+            label="Pais"
+            value={countryCode}
+            onChange={handleCountryCode}
+            size="small"
+            margin="dense"
+            variant="outlined"
+            error={props.error}
+          />
 
-        <TextField
-          label="Celular"
-          value={phone}
-          onChange={handlePhone}
-          size="small"
-          margin="dense"
-          variant="outlined"
-          error={props.error}
-        />
+          <TextField
+            label="DDD"
+            value={ddd}
+            onChange={handleDdd}
+            size="small"
+            margin="dense"
+            variant="outlined"
+            error={props.error}
+          />
+
+          <TextField
+            label="Celular"
+            value={phone}
+            onChange={handlePhone}
+            size="small"
+            margin="dense"
+            variant="outlined"
+            error={props.error}
+          />
+        </div>
       </div>
 
       <Button
