@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Switch, Route, SlideRoute } from "router"
 import history from 'router/history'
-import { Slide } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import importFirebase from 'services/firebase'
-import Toast from 'components/Toast'
 import PhoneStep from "./PhoneStep"
 import VerificationCodeStep from "./VerificationCodeStep"
+import useToast from 'hooks/useToast'
 
 const useStyles = makeStyles({
   root: {
@@ -56,7 +55,7 @@ function Auth() {
   const [codeError, setCodeError] = useState(false)
   const phoneE164 = useRef(null) // it's a ref to avoid a stale closures in the mount only setEffect
   const recaptchaVerifier = useRef(null)
-  const toast = useRef(null)
+  const showToast = useToast()
 
   const setPhone = (phone) => {
     phoneE164.current = phone
@@ -87,7 +86,7 @@ function Auth() {
       e.preventDefault()
 
       confirmationResult.current.confirm(verificationCode).then(result => {
-        toast.current.show()
+        showToast("Succesfully signed in!")
         history.push("/")
       })
         .catch(error => {
@@ -152,8 +151,6 @@ function Auth() {
           />
         </SlideRoute>
       </Switch>
-
-      <Toast message="Succesfully signed in!" ref={toast} />
     </section>
   );
 }

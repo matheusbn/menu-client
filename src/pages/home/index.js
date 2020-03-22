@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, CircularProgress, Button } from '@material-ui/core';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import Todo from "models/Todo"
-import Toast from 'components/Toast'
+import useToast from 'hooks/useToast'
 
 const useStyles = makeStyles({
   root: {
@@ -25,7 +25,9 @@ const useStyles = makeStyles({
 function Home() {
   const classes = useStyles()
   const [todos, setTodos] = useState(null)
+  const showToast = useToast()
 
+  // TODO: fix the return clean function
   useEffect(() => Todo.subscribe(setTodos), [])
 
   const addTodo = todo => {
@@ -41,6 +43,10 @@ function Home() {
   const removeTodo = id => Todo.remove(id)
     .then(() => setTodos(todos.filter(todo => todo.id !== id)))
 
+  const handleToaster = () => {
+    showToast('e ai mlk doido')
+  }
+
   return (
     <section className={classes.root}>
       <Typography variant="h3">
@@ -50,7 +56,7 @@ function Home() {
         feel free to add some todos below aye
       </Typography>
 
-      <Button variant="contained" onClick={showToast}>show toast</Button>
+      <Button variant="contained" onClick={handleToaster}>show toast</Button>
 
       <TodoForm addTodo={addTodo} />
       {todos ? <TodoList todos={todos} removeTodo={removeTodo} />

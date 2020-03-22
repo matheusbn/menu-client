@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 // import { hot } from 'react-hot-loader/root';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -6,6 +6,8 @@ import AppBar from "components/AppBar";
 import Home from "pages/home";
 import Auth from "pages/auth";
 import { Switch, Route } from "router"
+import ToastContext from 'src/toast-context'
+import Toast from 'components/Toast'
 
 const colors = {
   primary: "#D55A00",
@@ -43,17 +45,18 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+      <ToastContext.Provider value={toast}>
+        <CssBaseline />
 
-      <AppBar />
+        <AppBar />
 
-      <Switch>
-        <Route path="/auth" component={Auth} />
-        <Route path="/" component={Home} />
-      </Switch>
+        <Switch>
+          <Route path="/auth" component={Auth} />
+          <Route path="/" component={Home} />
+        </Switch>
+      </ToastContext.Provider>
 
-
-        <Toast message="Succesfully signed in!" ref={toast} />
+      <Toast ref={toast} />
     </ThemeProvider>
   );
 }

@@ -39,6 +39,7 @@ module.exports = env => {
         // Use Preact instead of React.
         react: 'preact/compat',
         'react-dom': 'preact/compat',
+        src: path.resolve(__dirname, './src'),
         assets: path.resolve(__dirname, './src/assets'),
         components: path.resolve(__dirname, './src/components'),
         helpers: path.resolve(__dirname, './src/helpers'),

@@ -14,7 +14,6 @@ export default class Toast extends Component {
 
   handleClose = (e, reason) => {
     if (reason === "timeout") this.setState({ isOpen: false })
-    // setTimeout(() => this.setState({isOpen: false}), 2500)
   }
 
   render() {
