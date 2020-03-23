@@ -1,6 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography, CircularProgress, Button } from '@material-ui/core';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {
+  Typography,
+  CircularProgress,
+  Button,
+  TextField,
+} from '@material-ui/core';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import Todo from "models/Todo"
@@ -8,7 +13,7 @@ import useToast from 'hooks/useToast'
 
 const useStyles = makeStyles({
   root: {
-    height: "90vh",
+    height: "80vh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -16,11 +21,40 @@ const useStyles = makeStyles({
     // "@media (min-width: 768px)": {
     //   width: "20%"
     // }
+    display: "grid",
+    padding: "20px",
+
+    "& .home-title": {
+      width: "80%",
+      margin: "0 auto",
+      marginBottom: "50px",
+      "& h1": {
+        marginBottom: "40px",
+      }
+    },
+    "& .home-actions": {
+      width: "100%",
+      height: "100%",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+    },
   },
   loading: {
     marginTop: "20vh"
   }
 })
+
+const Divider = withStyles({
+  root: {
+    width: "60%",
+    margin: "0 auto",
+    borderBottom: "1px solid lightgray",
+
+  }
+})(({classes}) => (
+  <div className={classes.root} />
+))
 
 function Home() {
   const classes = useStyles()
@@ -49,19 +83,35 @@ function Home() {
 
   return (
     <section className={classes.root}>
-      <Typography variant="h3">
-        welcome home
-      </Typography>
-      <Typography variant="h6">
-        feel free to add some todos below aye
-      </Typography>
+      <div className="home-title">
+        <Typography variant="h4" component="h1" align="center">
+          Bem-vindo!
+        </Typography>
+        <Typography variant="body2" align="center">
+          Para começar, escaneie o QR Code ou insira o código de sua mesa.
+        </Typography>
+      </div>
+      <div className="home-actions">
+        <Button
+          block
+          variant="contained"
+          onClick={handleToaster}
+          style={{ width: "100%" }}
+        >
+          Escanear QR Code
+        </Button>
 
-      <Button variant="contained" onClick={handleToaster}>show toast</Button>
+        <Divider />
 
-      <TodoForm addTodo={addTodo} />
-      {todos ? <TodoList todos={todos} removeTodo={removeTodo} />
-        : <CircularProgress className={classes.loading}/>
-      }
+        <TextField
+          label="Código"
+          // value={}
+          // onChange={handlePhone}
+          // size="small"
+          // margin="dense"
+          variant="outlined"
+        />
+      </div>
     </section>
   );
 }
