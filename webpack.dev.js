@@ -9,6 +9,7 @@ module.exports = merge(common(), {
     port: 3000,
     open: false,
     hot: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    host: '0.0.0.0' // enables external access
   },
 });

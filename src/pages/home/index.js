@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {
   Typography,
@@ -6,21 +6,22 @@ import {
   Button,
   TextField,
 } from '@material-ui/core';
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import Todo from "models/Todo"
 import useToast from 'hooks/useToast'
+import QRScannerDialog from './QRScannerDialog'
 
 const useStyles = makeStyles({
   root: {
     height: "80vh",
+    maxWidth: "800px",
+    margin: "0 auto",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     paddingTop: 40,
-    // "@media (min-width: 768px)": {
-    //   width: "20%"
-    // }
     display: "grid",
     padding: "20px",
 
@@ -38,6 +39,10 @@ const useStyles = makeStyles({
       display: "flex",
       flexDirection: "column",
       justifyContent: "space-between",
+      "& .MuiButton-startIcon": {
+        marginLeft: "-20px",
+        marginRight: "20px",
+      }
     },
   },
   loading: {
@@ -58,27 +63,14 @@ const Divider = withStyles({
 
 function Home() {
   const classes = useStyles()
-  const [todos, setTodos] = useState(null)
+  const [code, setCode] = useState(null)
   const showToast = useToast()
+  const qrScanner = useRef(null)
 
-  // TODO: fix the return clean function
-  useEffect(() => Todo.subscribe(setTodos), [])
+  const handleCode = (e) => setCode(e.target.value)
 
-  const addTodo = todo => {
-    setTodos(prev => [...prev, { loading: true }])
-
-    Todo.add(todo)
-      .then(({ id }) => {
-        const readyTodos = todos.filter(todo => !todo.loading)
-        setTodos([...readyTodos, {id, ...todo}])
-      })
-  }
-
-  const removeTodo = id => Todo.remove(id)
-    .then(() => setTodos(todos.filter(todo => todo.id !== id)))
-
-  const handleToaster = () => {
-    showToast('e ai mlk doido', { severity: "success" })
+  const handleQrScaner = () => {
+    qrScanner.current.open()
   }
 
   return (
@@ -95,7 +87,8 @@ function Home() {
         <Button
           block
           variant="contained"
-          onClick={handleToaster}
+          onClick={handleQrScaner}
+          startIcon={<CameraAltIcon />}
           style={{ width: "100%" }}
         >
           Escanear QR Code
@@ -105,13 +98,18 @@ function Home() {
 
         <TextField
           label="Código"
-          // value={}
-          // onChange={handlePhone}
-          // size="small"
-          // margin="dense"
+          value={code}
+          onChange={handleCode}
           variant="outlined"
+          inputProps={{
+            style: {
+              textAlign: "center"
+            }
+          }}
         />
       </div>
+
+      <QRScannerDialog ref={qrScanner} />
     </section>
   );
 }

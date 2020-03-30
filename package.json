@@ -7,7 +7,7 @@
     "start": "NODE_ENV=development webpack-dev-server --mode development --config webpack.dev.js",
     "build": "NODE_ENV=production webpack -p --mode production --config webpack.prod.js",
     "build-dev": "NODE_ENV=development webpack -d --mode development --config webpack.dev.js",
-    "deploy": "npm run build && firebase deploy",
+    "deploy": "firebase deploy",
     "profile": "NODE_ENV=production webpack --mode production --config webpack.prod.js --profile --json",
     "analyze": "source-map-explorer build/app.*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -41,7 +41,10 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.44",
     "firebase": "^7.10.0",
+    "jsqr": "^1.2.0",
+    "jsqr-es6": "^1.2.0-3",
     "preact": "^10.3.3",
+    "qr-scanner": "^1.1.1",
     "react-hot-loader": "^4.12.19"
   }
 }
