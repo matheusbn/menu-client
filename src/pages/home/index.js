@@ -77,7 +77,7 @@ function Home() {
     <section className={classes.root}>
       <div className="home-title">
         <Typography variant="h4" component="h1" align="center">
-          Bem-vindo!
+          FALA TU CI!
         </Typography>
         <Typography variant="body2" align="center">
           Para começar, escaneie o QR Code ou insira o código de sua mesa.
