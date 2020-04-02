@@ -1,4 +1,4 @@
-name: CI
+name: CI-S3
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
         with:
-          node_version; '10.x'
+          node_version: '10.x'
       - run: npm run install
       - run: npm run build
 
