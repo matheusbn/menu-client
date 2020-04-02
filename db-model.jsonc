@@ -1,0 +1,41 @@
+// top level
+users: [{
+  name: "",
+  lastName: "",
+  birthdate: date,
+  paymentInfo: {},
+}]
+
+// top level
+restaurants: [{
+  name: "",
+  culinaryType: "",
+  location: "",
+}]
+
+items: [{
+  name: "",
+  description: "",
+  price: 12.5,
+  optionals: "",
+  pictures: [url]
+}]
+
+conta: [{
+  dateCheckin: date,
+  dateCheckout: date,
+  peopleAmout: 8,
+  totalPrice: 100,
+  openedBy: id,
+}]
+
+subcontas: [{
+  orderedItems: [{
+    id,
+    selectedOptionals,
+    amount,
+    price // it varies depending on the optionals
+  }],
+  price
+}]
+
