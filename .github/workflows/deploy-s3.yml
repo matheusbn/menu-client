@@ -18,13 +18,13 @@ jobs:
       - run: npm run install
       - run: npm run build
 
-      - uses: jakejarvis/s3-sync-action
-          with:
-            args: --acl public-read
-          env:
-            AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: 'us-east-2'
-            SOURCE_DIR: 'build'
-            DEST_DIR: 'build'
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: 'us-east-2'
+          SOURCE_DIR: 'build'
+          DEST_DIR: 'build'
 
