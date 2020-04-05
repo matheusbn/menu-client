@@ -9,8 +9,9 @@ users: [{
 // top level
 restaurants: [{
   name: "",
-  culinaryType: "",
-  location: "",
+  foodType: "",
+  location: {},
+  maxCapacity: 15
 }]
 
 items: [{
@@ -21,7 +22,7 @@ items: [{
   pictures: [url]
 }]
 
-conta: [{
+restaurantSessions: [{
   dateCheckin: date,
   dateCheckout: date,
   peopleAmout: 8,
@@ -29,7 +30,7 @@ conta: [{
   openedBy: id,
 }]
 
-subcontas: [{
+sessionOrder: [{
   orderedItems: [{
     id,
     selectedOptionals,
