@@ -2,14 +2,19 @@ import React, { useRef, useState, useContext, useEffect } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import {
   Typography,
-  CircularProgress,
   Button,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
   TextField,
+  FormHelperText,
+  InputAdornment,
+  IconButton
 } from '@material-ui/core';
-import CameraAltIcon from '@material-ui/icons/CameraAlt';
-import TodoForm from './TodoForm';
-import TodoList from './TodoList';
-import Todo from "models/Todo"
+import {
+  Send as SendIcon,
+  CameraAlt as CameraAltIcon,
+} from '@material-ui/icons';
 import useToast from 'hooks/useToast'
 import QRScannerDialog from './QRScannerDialog'
 
@@ -69,9 +74,9 @@ function Home() {
 
   const handleCode = (e) => setCode(e.target.value)
 
-  const handleQrScaner = () => {
-    qrScanner.current.open()
-  }
+  const handleQrScaner = () => qrScanner.current.open()
+
+  const openSession = () => {}
 
   return (
     <section className={classes.root}>
@@ -96,17 +101,26 @@ function Home() {
 
         <Divider />
 
-        <TextField
-          label="Código"
-          value={code}
-          onChange={handleCode}
-          variant="outlined"
-          inputProps={{
-            style: {
-              textAlign: "center"
+        <FormControl variant="outlined">
+          <InputLabel htmlFor="code-input" variant="outlined">Código</InputLabel>
+          <OutlinedInput
+            id="code-input"
+            value={code}
+            onChange={handleCode}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton type="submit" edge="end" onClick={openSession}>
+                  <SendIcon />
+                </IconButton>
+              </InputAdornment>
             }
-          }}
-        />
+            label="Código"
+            inputProps={{
+              style: { textAlign: "center" },
+            }}
+          />
+          <FormHelperText>Procure pelo código em sua mesa</FormHelperText>
+        </FormControl>
       </div>
 
       <QRScannerDialog ref={qrScanner} />
