@@ -21,7 +21,7 @@ export default function Switch(props) {
     if (exact) return currentRelativeUrl === path
 
     if(currentRelativeUrl.match(new RegExp(path))) {
-      history.replace(path)
+      window.history.replaceState({}, "", path)
       return true
     }
 

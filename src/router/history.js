@@ -15,6 +15,8 @@ class History {
 
   replace(url) {
     window.history.replaceState({}, "", url)
+
+    window.dispatchEvent(this.locationChangeEvent)
   }
 
   back() {

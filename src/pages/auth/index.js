@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Switch, Route, SlideRoute } from "router"
-import history from 'router/history'
+import { Switch, history, Route, SlideRoute } from "router"
 import { makeStyles } from '@material-ui/core/styles'
 import importFirebase from 'services/firebase'
 import PhoneStep from "./PhoneStep"
@@ -78,6 +77,7 @@ function Auth() {
       })
         .catch(error => console.error("Error on code send", error))
       // display error
+      console.log('pushing auth/code')
       history.push("/auth/code")
   }
 
@@ -140,7 +140,7 @@ function Auth() {
             error={phoneError}
           />
         </Route>
-        <SlideRoute path="/auth/code">
+        <Route path="/auth/code">
           <VerificationCodeStep
             verificationCode={verificationCode}
             setVerificationCode={setVerificationCode}
@@ -149,7 +149,7 @@ function Auth() {
             onSubmit={handleCodeSubmit}
             error={codeError}
           />
-        </SlideRoute>
+        </Route>
       </Switch>
     </section>
   );

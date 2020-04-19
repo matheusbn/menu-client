@@ -7,13 +7,6 @@ const callOnCollection = async (callback) => {
   return callback(db.collection("restaurants"))
 }
 
-const callOnRestaurantSession = async (callback) => {
-  const firebase = await importFirebase()
-  const db = firebase.firestore()
-
-  return callback(db.collection("restaurants"))
-}
-
 const list = () => callOnCollection(async restaurants => {
   const querySnapshot = await restaurants.get()
   return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}) )
@@ -41,6 +34,7 @@ const openSession = (tableCode) => callOnCollection(async restaurants => {
 
   return restaurant.ref.collection('sessions').add({
     checkinAt: new Date(),
+    checkoutAt: null,
     tableCode,
     userId: user.uid,
   })

@@ -9,6 +9,9 @@ users: [{
 // top level
 restaurants: [{
   name: "",
+  tableCodes: [
+
+  ],
   ownerID: id
   foodType: "",
   location: {},
@@ -26,8 +29,9 @@ items: [{
 restaurantSessions: [{
   dateCheckin: date,
   dateCheckout: date,
-  peopleAmout: 8,
+  peopleAmout: 8, // probably not
   totalPrice: 100,
+  tableCode: '',
   openedBy: id,
 }]
 
