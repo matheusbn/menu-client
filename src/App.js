@@ -39,6 +39,11 @@ const theme = createMuiTheme({
         caretColor: colors.primary,
       }
     }
+  },
+  custom: {
+    colors: {
+      muted: "#696969"
+    }
   }
 })
 
