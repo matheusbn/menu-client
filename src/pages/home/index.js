@@ -16,6 +16,7 @@ import {
   CameraAlt as CameraAltIcon,
 } from '@material-ui/icons';
 import useToast from 'hooks/useToast'
+import Restaurant from 'models/Restaurant'
 import QRScannerDialog from './QRScannerDialog'
 
 const useStyles = makeStyles({
@@ -72,11 +73,16 @@ function Home() {
   const showToast = useToast()
   const qrScanner = useRef(null)
 
-  const handleCode = (e) => setCode(e.target.value)
+  const handleCode = (e) => setCode(e.target.value.toUpperCase())
 
   const handleQrScaner = () => qrScanner.current.open()
 
-  const openSession = () => {}
+  const openSession = async () => {
+    Restaurant.openSession(code)
+      .catch(error => {
+        console.error('tem que ta logado vagabundo', error.name)
+      })
+  }
 
   return (
     <section className={classes.root}>

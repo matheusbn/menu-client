@@ -9,6 +9,7 @@ users: [{
 // top level
 restaurants: [{
   name: "",
+  ownerID: id
   foodType: "",
   location: {},
   maxCapacity: 15

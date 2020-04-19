@@ -28,6 +28,7 @@ export default async function importFirebase() {
 
     firebase.initializeApp(firebaseConfig)
 
+    // probably shouldnt happen on production
     firebase.firestore().enablePersistence()
       .then(() => console.log('firestore offline mode enabled'))
       .catch(e => {
@@ -42,3 +43,6 @@ export default async function importFirebase() {
 
   return firebase
 }
+
+export const getCurrentUser = () =>
+  importFirebase().then(firebase => firebase.auth().currentUser)
