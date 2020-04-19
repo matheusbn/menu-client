@@ -6,7 +6,7 @@ import AppBar from "components/AppBar";
 import Home from "pages/home";
 import Menu from "pages/menu";
 import Auth from "pages/auth";
-import { getCurrentUser, getOpenSession } from "services/firebase";
+import importFirebase, { getOpenSession } from "services/firebase";
 import { Switch, history, Route, SlideRoute } from "router"
 import ToastContext from 'src/toast-context'
 import Toast from 'components/Toast'
@@ -56,14 +56,16 @@ function App() {
   const classes = useStyles()
 
   useEffect(() => {
-    getCurrentUser().then(async user => {
-      if (!user) history.replace('/auth')
-      else {
-        const openSession = await getOpenSession()
-        if (openSession) history.replace('/menu')
-      }
+    importFirebase().then(firebase => {
+      firebase.auth().onAuthStateChanged(async user => {
+        if (!user) history.replace('/auth')
+        else {
+          const openSession = await getOpenSession()
+          if (openSession) history.replace('/menu')
+        }
 
-      setLoading(false)
+        setLoading(false)
+      })
     })
   }, [])
 

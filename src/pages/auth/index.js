@@ -121,12 +121,6 @@ function Auth() {
 
   useEffect(() => {
     initRecaptcha()
-
-    importFirebase().then(firebase => {
-      firebase.auth().onAuthStateChanged(user => {
-        console.log("AUTH STATE CHANGED", user)
-      })
-    })
   }, [])
 
   return (

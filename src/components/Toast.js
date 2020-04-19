@@ -33,7 +33,6 @@ export default class Toast extends Component {
       TransitionComponent: SlideTransition
     }
 
-    console.log(severity)
     if (severity) return (
       <Snackbar {...snackbarProps}>
         <Alert elevation={6} variant="filled" severity={severity}>

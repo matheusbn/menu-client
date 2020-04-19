@@ -45,19 +45,22 @@ export default async function importFirebase() {
 }
 
 export const getCurrentUser = () =>
-  importFirebase().then(firebase => firebase.auth().currentUser)
+  importFirebase().then(firebase => {
+    console.log(firebase.auth().currentUser)
+    return firebase.auth().currentUser
+  })
 
 export const getOpenSession = async () => {
   const firebase = await importFirebase()
 
   const user = firebase.auth().currentUser
 
-  db = firebase.firestore()
+  const db = firebase.firestore()
   const result = await db.collectionGroup('sessions')
     .where('userId', '==', user.uid)
     .where('checkoutAt', '==', null)
+    .get()
   if (result.empty) return null
   // TODO: something if result.docs.lenght > 1
-
   return result.docs[0]
 }
