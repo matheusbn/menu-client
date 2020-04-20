@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 
 export default ({ item }) => {
   const classes = useStyles()
+  console.log('item', item)
 
   return (
     <Paper className={classes.root}>

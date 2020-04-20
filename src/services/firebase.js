@@ -1,40 +1,46 @@
-let isInitialized = false;
+let isInitialized = false
 
 export default async function importFirebase() {
   const firebase = await import(
     /* webpackChunkName: 'firebase' */
     /* webpackPrefetch: true */
-    'firebase/app')
+    'firebase/app'
+  )
   await import(
     /* webpackChunkName: 'firebase' */
     /* webpackPrefetch: true */
-    'firebase/firestore')
+    'firebase/firestore'
+  )
   await import(
     /* webpackChunkName: 'firebase' */
     /* webpackPrefetch: true */
-    'firebase/auth')
+    'firebase/auth'
+  )
 
   if (!isInitialized) {
     const firebaseConfig = {
-      apiKey: "AIzaSyAA6ZzEaw6xYDXpM6fPQbBQmyvFQPjZwfw",
-      authDomain: "apptodoz.firebaseapp.com",
-      databaseURL: "https://apptodoz.firebaseio.com",
-      projectId: "apptodoz",
-      storageBucket: "apptodoz.appspot.com",
-      messagingSenderId: "606873914981",
-      appId: "1:606873914981:web:7ab0ef689aba67486fc08c",
-      measurementId: "G-TZWZ78FE4Y"
+      apiKey: 'AIzaSyAA6ZzEaw6xYDXpM6fPQbBQmyvFQPjZwfw',
+      authDomain: 'apptodoz.firebaseapp.com',
+      databaseURL: 'https://apptodoz.firebaseio.com',
+      projectId: 'apptodoz',
+      storageBucket: 'apptodoz.appspot.com',
+      messagingSenderId: '606873914981',
+      appId: '1:606873914981:web:7ab0ef689aba67486fc08c',
+      measurementId: 'G-TZWZ78FE4Y',
     }
 
     firebase.initializeApp(firebaseConfig)
 
     // probably shouldnt happen on production
-    firebase.firestore().enablePersistence()
+    firebase
+      .firestore()
+      .enablePersistence()
       .then(() => console.log('firestore offline mode enabled'))
       .catch(e => {
-        if (err.code == 'failed-precondition') console.error('multiple tabs open')
+        if (err.code == 'failed-precondition')
+          console.error('multiple tabs open')
         if (err.code == 'unimplemented') console.error('browser not supported')
-      });
+      })
 
     firebase.auth().languageCode = 'pt'
 
@@ -50,13 +56,14 @@ export const getCurrentUser = () =>
     return firebase.auth().currentUser
   })
 
-export const getOpenSession = async () => {
+export const getCurrentSession = async () => {
   const firebase = await importFirebase()
 
   const user = firebase.auth().currentUser
 
   const db = firebase.firestore()
-  const result = await db.collectionGroup('sessions')
+  const result = await db
+    .collectionGroup('sessions')
     .where('userId', '==', user.uid)
     .where('checkoutAt', '==', null)
     .get()

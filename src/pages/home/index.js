@@ -1,5 +1,5 @@
-import React, { useRef, useState, useContext, useEffect } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import React, { useRef, useState } from 'react'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 import {
   Typography,
   Button,
@@ -9,79 +9,90 @@ import {
   TextField,
   FormHelperText,
   InputAdornment,
-  IconButton
-} from '@material-ui/core';
+  IconButton,
+} from '@material-ui/core'
 import {
   Send as SendIcon,
   CameraAlt as CameraAltIcon,
-} from '@material-ui/icons';
-import useToast from 'hooks/useToast'
+} from '@material-ui/icons'
+import { history } from 'router'
+import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
 import QRScannerDialog from './QRScannerDialog'
 
 const useStyles = makeStyles({
   root: {
-    height: "80vh",
-    maxWidth: "800px",
-    margin: "0 auto",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    height: '80vh',
+    maxWidth: '800px',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     paddingTop: 40,
-    display: "grid",
-    padding: "20px",
+    display: 'grid',
+    padding: '20px',
 
-    "& .home-title": {
-      width: "80%",
-      margin: "0 auto",
-      marginBottom: "50px",
-      "& h1": {
-        marginBottom: "40px",
-      }
+    '& .home-title': {
+      width: '80%',
+      margin: '0 auto',
+      marginBottom: '50px',
+      '& h1': {
+        marginBottom: '40px',
+      },
     },
-    "& .home-actions": {
-      width: "100%",
-      height: "100%",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "space-between",
-      "& .MuiButton-startIcon": {
-        marginLeft: "-20px",
-        marginRight: "20px",
-      }
+    '& .home-actions': {
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      '& .MuiButton-startIcon': {
+        marginLeft: '-20px',
+        marginRight: '20px',
+      },
     },
   },
   loading: {
-    marginTop: "20vh"
-  }
+    marginTop: '20vh',
+  },
 })
 
 const Divider = withStyles({
   root: {
-    width: "60%",
-    margin: "0 auto",
-    borderBottom: "1px solid lightgray",
-
-  }
-})(({classes}) => (
-  <div className={classes.root} />
-))
+    width: '60%',
+    margin: '0 auto',
+    borderBottom: '1px solid lightgray',
+  },
+})(({ classes }) => <div className={classes.root} />)
 
 function Home() {
   const classes = useStyles()
+  const [state, setState] = useGlobalState()
   const [code, setCode] = useState(null)
-  const showToast = useToast()
   const qrScanner = useRef(null)
 
-  const handleCode = (e) => setCode(e.target.value.toUpperCase())
+  const handleCode = e => setCode(e.target.value.toUpperCase())
 
   const handleQrScaner = () => qrScanner.current.open()
 
   const openSession = async () => {
-    Restaurant.openSession(code)
-      .catch(error => {
-        console.error('tem que ta logado vagabundo', error.name)
-      })
+    const sessionRef = await Restaurant.openSession(code).catch(error => {
+      console.error('tem que ta logado vagabundo', error.name)
+    })
+
+    const [restaurantSnapshot, sessionSnapshot] = await Promise.all([
+      sessionRef.parent.parent.get(),
+      sessionRef.get(),
+    ])
+
+    const currentRestaurant = {
+      ...restaurantSnapshot.data(),
+      id: restaurantSnapshot.id,
+    }
+    const currentSession = { ...sessionSnapshot.data(), id: sessionSnapshot.id }
+
+    setState({ currentRestaurant, currentSession })
+    history.push('/menu')
   }
 
   return (
@@ -100,7 +111,7 @@ function Home() {
           variant="contained"
           onClick={handleQrScaner}
           startIcon={<CameraAltIcon />}
-          style={{ width: "100%" }}
+          style={{ width: '100%' }}
         >
           Escanear QR Code
         </Button>
@@ -108,7 +119,9 @@ function Home() {
         <Divider />
 
         <FormControl variant="outlined">
-          <InputLabel htmlFor="code-input" variant="outlined">Código</InputLabel>
+          <InputLabel htmlFor="code-input" variant="outlined">
+            Código
+          </InputLabel>
           <OutlinedInput
             id="code-input"
             value={code}
@@ -122,7 +135,7 @@ function Home() {
             }
             label="Código"
             inputProps={{
-              style: { textAlign: "center" },
+              style: { textAlign: 'center' },
             }}
           />
           <FormHelperText>Procure pelo código em sua mesa</FormHelperText>
@@ -131,7 +144,7 @@ function Home() {
 
       <QRScannerDialog ref={qrScanner} />
     </section>
-  );
+  )
 }
 
-export default Home;
+export default Home

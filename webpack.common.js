@@ -1,6 +1,6 @@
 const webpack = require('webpack')
 const path = require('path')
-const HtmlWebPackPlugin = require("html-webpack-plugin")
+const HtmlWebPackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin')
@@ -17,20 +17,20 @@ module.exports = env => {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
-            loader: "babel-loader"
-          }
+            loader: 'babel-loader',
+          },
         },
         {
           test: /\.css$/i,
-          use: ['style-loader', 'css-loader']
+          use: ['style-loader', 'css-loader'],
         },
         {
           test: /\.svg$/,
           use: {
             loader: '@svgr/webpack',
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     resolve: {
       modules: [path.resolve(__dirname, './src'), 'node_modules'],
@@ -48,19 +48,20 @@ module.exports = env => {
         pages: path.resolve(__dirname, './src/pages'),
         router: path.resolve(__dirname, './src/router'),
         services: path.resolve(__dirname, './src/services'),
-      }
+        contexts: path.resolve(__dirname, './src/contexts'),
+      },
     },
     output: {
       path: path.resolve(__dirname, 'build'),
       filename: 'static/[name].js',
       chunkFilename: 'static/[name].js',
-      publicPath: '/'
+      publicPath: '/',
     },
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebPackPlugin({
         template: './public/index.html',
-        filename: 'index.html'
+        filename: 'index.html',
       }),
       new CopyPlugin([
         './public/index.html',
@@ -78,7 +79,7 @@ module.exports = env => {
         swSrc: './src/service-worker.js',
         exclude: [/\.map$/, /asset-manifest\.json$/],
         importWorkboxFrom: 'cdn',
-      })
+      }),
     ],
   }
 }

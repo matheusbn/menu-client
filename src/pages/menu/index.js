@@ -15,8 +15,9 @@ import {
   Send as SendIcon,
   CameraAlt as CameraAltIcon,
 } from '@material-ui/icons'
-import useToast from 'hooks/useToast'
+import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
+
 import Item from './Item'
 
 const useStyles = makeStyles({
@@ -28,18 +29,20 @@ const useStyles = makeStyles({
 
 function Menu() {
   const classes = useStyles()
+  const [state, setState] = useGlobalState()
   const [items, setItems] = useState([])
-  const showToast = useToast()
 
   useEffect(() => {
-    setItems([
-      {
-        name: 'Classic Burger',
-        description: 'Pão de brioche com dois smash burgers e molho da casa',
-        price: 18,
-        pictures: ['https://i.imgur.com/Gi1onqz.jpg'],
-      },
-    ])
+    console.log(state)
+    Restaurant.subscribeMenu(state.currentRestaurant.id, setItems)
+    // setItems([
+    //   {
+    //     name: 'Classic Burger',
+    //     description: 'Pão de brioche com dois smash burgers e molho da casa',
+    //     price: 18,
+    //     pictures: ['https://i.imgur.com/Gi1onqz.jpg'],
+    //   },
+    // ])
   }, [])
 
   return (

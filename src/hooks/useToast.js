@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import ToastContext from 'src/toast-context'
+import { useContext } from 'react'
+import ToastContext from 'contexts/toast'
 
 export default () => {
   const toastRef = useContext(ToastContext)
@@ -10,10 +10,10 @@ export default () => {
   return (message, options) => {
     toast.props.message = message
     // map options to props
-    Object.keys(options).forEach(key => toast.props[key] = options[key])
+    Object.keys(options).forEach(key => (toast.props[key] = options[key]))
 
     console.log(toast.props)
 
     toast.show()
   }
-};
+}
