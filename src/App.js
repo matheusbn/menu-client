@@ -10,10 +10,14 @@ import AppBar from 'components/AppBar'
 import Home from 'pages/home'
 import Menu from 'pages/menu'
 import Auth from 'pages/auth'
-import importFirebase, { getCurrentSession } from 'services/firebase'
+import importFirebase, {
+  getCurrentSession,
+  getCurrentRestaurant,
+} from 'services/firebase'
 import { Switch, history, Route, SlideRoute } from 'router'
 import ToastContext from 'contexts/toast'
 import GlobalStateProvider from 'src/GlobalStateProvider'
+import useGlobalState from 'hooks/useGlobalState'
 import Toast from 'components/Toast'
 
 const colors = {
@@ -62,6 +66,7 @@ const useStyles = makeStyles({
 
 function App() {
   const [loading, setLoading] = useState(true)
+  const [session, setSession] = useState(null)
   const toast = useRef(null)
   const classes = useStyles()
 
@@ -70,7 +75,10 @@ function App() {
       firebase.auth().onAuthStateChanged(async user => {
         if (!user) history.replace('/auth')
         else {
-          const openSession = await getCurrentSession()
+          const session = await getCurrentSession()
+
+          // setSession(session)
+
           // if (openSession) history.replace('/menu')
         }
 
@@ -92,7 +100,10 @@ function App() {
           ) : (
             <Switch>
               <Route path="/auth" component={Auth} />
-              <SlideRoute path="/menu" component={Menu} />
+              <SlideRoute
+                path="/menu"
+                component={session => <Menu session={session} />}
+              />
               <Route path="/" component={Home} />
             </Switch>
           )}

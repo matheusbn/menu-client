@@ -56,7 +56,7 @@ export const getCurrentUser = () =>
     return firebase.auth().currentUser
   })
 
-export const getCurrentSession = async () => {
+const getCurrentSessionSnapshot = async () => {
   const firebase = await importFirebase()
 
   const user = firebase.auth().currentUser
@@ -67,7 +67,27 @@ export const getCurrentSession = async () => {
     .where('userId', '==', user.uid)
     .where('checkoutAt', '==', null)
     .get()
+
   if (result.empty) return null
   // TODO: something if result.docs.lenght > 1
   return result.docs[0]
+}
+
+export const getCurrentSession = async () => {
+  const session = await getCurrentSessionSnapshot()
+
+  return {
+    ...session.data(),
+    id: session.id,
+  }
+}
+
+export const getCurrentRestaurant = async () => {
+  const session = await getCurrentSessionSnapshot()
+  const restaurant = await session.ref.parent.parent.get()
+
+  return {
+    ...restaurant.data(),
+    id: restaurant.id,
+  }
 }
