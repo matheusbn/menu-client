@@ -19,7 +19,8 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 8,
   },
   img: {
-    minWidth: 90,
+    flex: 'none',
+    width: 90,
     borderRadius: 2,
     height: 90,
     objectFit: 'cover',

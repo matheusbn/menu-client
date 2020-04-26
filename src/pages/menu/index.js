@@ -29,11 +29,14 @@ const useStyles = makeStyles({
 
 const MenuSection = withStyles({
   root: {
-    borderTop: '0.8px solid #0002',
-    borderBottom: '0.8px solid #0002',
+    borderBottom: '1px solid #0002',
     padding: 10,
     paddingRight: 20,
     paddingLeft: 20,
+
+    '&:last-child': {
+      border: 'none',
+    },
   },
   sectionName: {
     paddingLeft: 5,
