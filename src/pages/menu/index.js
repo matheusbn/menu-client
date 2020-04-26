@@ -69,18 +69,18 @@ const getOrganizedSections = items => {
 }
 
 function Menu() {
+  console.log('onde estou')
   const classes = useStyles()
   const [state, setState] = useGlobalState()
   const [items, setItems] = useState([])
 
   useEffect(() => {
-    // TODO: put session and restaurant on local storage
-
-    getCurrentRestaurant().then(currentRestaurant => {
-      Restaurant.subscribeMenu(currentRestaurant.id, setItems)
-      setState({ currentRestaurant })
-    })
-  }, [])
+    console.log(1)
+    // console.log(currentRestaurant)
+    if (state.currentRestaurant) {
+      return Restaurant.subscribeMenu(state.currentRestaurant.id, setItems)
+    }
+  }, [state.currentRestaurant])
 
   const menu = getOrganizedSections(items)
 

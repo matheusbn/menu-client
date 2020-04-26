@@ -20,7 +20,6 @@ import useSetState from 'hooks/useSetState'
 import GlobalStateContext from 'contexts/global-state'
 import SetGlobalStateContext from 'contexts/set-global-state'
 import Toast from 'components/Toast'
-import useToast from 'hooks/useToast'
 
 const colors = {
   primary: '#D55A00',
@@ -75,23 +74,21 @@ const defaultGlobalState = {
 function App() {
   const [loading, setLoading] = useState(true)
   const [state, setState] = useSetState(defaultGlobalState)
-  const showToast = useToast()
   const toast = useRef(null)
   const classes = useStyles()
 
   useEffect(() => {
     importFirebase().then(firebase => {
       firebase.auth().onAuthStateChanged(async currentUser => {
-        console.log(1, Date.now())
         if (!currentUser) {
           history.replace('/auth')
           setLoading(false)
         } else {
-          showToast('Bem-vindo!', { severity: 'success' })
           const currentSession = await getCurrentSession()
           if (currentSession) {
             history.push('/menu')
             const currentRestaurant = await getCurrentRestaurant()
+
             setState({
               currentUser,
               currentSession,
@@ -101,6 +98,7 @@ function App() {
             history.push('/')
             setState({ currentUser })
           }
+          setLoading(false)
         }
       })
     })
