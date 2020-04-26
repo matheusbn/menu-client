@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from 'react'
 import {
   FormControl,
+  CircularProgress,
   TextField,
   Button,
-  Typography
-} from '@material-ui/core';
+  Typography,
+} from '@material-ui/core'
 
-const VerificationCodeStep = (props) => {
-  const handleVerificationCode = (e) => props.setVerificationCode(e.target.value)
+const VerificationCodeStep = props => {
+  const handleVerificationCode = e => props.setVerificationCode(e.target.value)
 
   useEffect(() => {
     return props.onUnmount
@@ -20,7 +21,8 @@ const VerificationCodeStep = (props) => {
           Digite o código de acesso
         </Typography>
         <Typography variant="body2" align="center">
-          Insira o código que enviamos para o seu celular: <span style={{fontWeight: 600}}>{props.phone}</span>
+          Insira o código que enviamos para o seu celular:{' '}
+          <span style={{ fontWeight: 600 }}>{props.phone}</span>
         </Typography>
       </div>
       <FormControl fullWidth variant="filled" className="phone-input">
@@ -30,14 +32,14 @@ const VerificationCodeStep = (props) => {
           onChange={handleVerificationCode}
           size="small"
           variant="outlined"
-          style={{ maxWidth: 200, margin: "0 auto" }}
+          style={{ maxWidth: 200, margin: '0 auto' }}
           inputProps={{
             style: {
-              textAlign: "center"
-            }
+              textAlign: 'center',
+            },
           }}
           error={props.error}
-          helperText={props.error && "Código inválido"}
+          helperText={props.error && 'Código inválido'}
           autoFocus
         />
       </FormControl>
@@ -45,7 +47,8 @@ const VerificationCodeStep = (props) => {
       <Button
         type="submit"
         variant="contained"
-        className={"submit-button"}
+        className={'submit-button'}
+        endIcon={props.loading && <CircularProgress color="white" size={20} />}
       >
         Confirmar
       </Button>

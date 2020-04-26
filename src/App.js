@@ -16,9 +16,11 @@ import importFirebase, {
 } from 'services/firebase'
 import { Switch, history, Route, SlideRoute } from 'router'
 import ToastContext from 'contexts/toast'
-import GlobalStateProvider from 'src/GlobalStateProvider'
-import useGlobalState from 'hooks/useGlobalState'
+import useSetState from 'hooks/useSetState'
+import GlobalStateContext from 'contexts/global-state'
+import SetGlobalStateContext from 'contexts/set-global-state'
 import Toast from 'components/Toast'
+import useToast from 'hooks/useToast'
 
 const colors = {
   primary: '#D55A00',
@@ -64,52 +66,68 @@ const useStyles = makeStyles({
   },
 })
 
+const defaultGlobalState = {
+  currentUser: null,
+  currentRestaurant: null,
+  currentSession: null,
+}
+
 function App() {
   const [loading, setLoading] = useState(true)
-  const [session, setSession] = useState(null)
+  const [state, setState] = useSetState(defaultGlobalState)
+  const showToast = useToast()
   const toast = useRef(null)
   const classes = useStyles()
 
   useEffect(() => {
     importFirebase().then(firebase => {
-      firebase.auth().onAuthStateChanged(async user => {
-        if (!user) history.replace('/auth')
-        else {
-          const session = await getCurrentSession()
-
-          // setSession(session)
-
-          // if (openSession) history.replace('/menu')
+      firebase.auth().onAuthStateChanged(async currentUser => {
+        console.log(1, Date.now())
+        if (!currentUser) {
+          history.replace('/auth')
+          setLoading(false)
+        } else {
+          showToast('Bem-vindo!', { severity: 'success' })
+          const currentSession = await getCurrentSession()
+          if (currentSession) {
+            history.push('/menu')
+            const currentRestaurant = await getCurrentRestaurant()
+            setState({
+              currentUser,
+              currentSession,
+              currentRestaurant,
+            })
+          } else {
+            history.push('/')
+            setState({ currentUser })
+          }
         }
-
-        setLoading(false)
       })
     })
   }, [])
 
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStateProvider>
-        <ToastContext.Provider value={toast}>
-          <CssBaseline />
+      <GlobalStateContext.Provider value={state}>
+        <SetGlobalStateContext.Provider value={setState}>
+          <ToastContext.Provider value={toast}>
+            <CssBaseline />
 
-          <AppBar />
+            <AppBar />
 
-          {loading ? (
-            <CircularProgress size={50} className={classes.loading} />
-          ) : (
-            <Switch>
-              <Route path="/auth" component={Auth} />
-              <SlideRoute
-                path="/menu"
-                component={session => <Menu session={session} />}
-              />
-              <Route path="/" component={Home} />
-            </Switch>
-          )}
-        </ToastContext.Provider>
-        <Toast ref={toast} />
-      </GlobalStateProvider>
+            {loading ? (
+              <CircularProgress size={50} className={classes.loading} />
+            ) : (
+              <Switch>
+                <Route path="/auth" component={Auth} />
+                <SlideRoute path="/menu" component={Menu} />
+                <Route path="/" component={Home} />
+              </Switch>
+            )}
+          </ToastContext.Provider>
+          <Toast ref={toast} />
+        </SetGlobalStateContext.Provider>
+      </GlobalStateContext.Provider>
     </ThemeProvider>
   )
 }

@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useEffect } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import {
   TextField,
   CircularProgress,
   Button,
-  Typography
-} from '@material-ui/core';
+  Typography,
+} from '@material-ui/core'
 
 const useStyles = makeStyles({
   root: {
-    display: "grid",
-    gridTemplateColumns:  "1fr 1fr 3fr",
-    gridGap: "10px"
-  }
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 3fr',
+    gridGap: '10px',
+  },
 })
 
-const PhoneStep = (props) => {
+const PhoneStep = props => {
   const classes = useStyles()
-  const [countryCode, setCountryCode] = useState("+55")
-  const [ddd, setDdd] = useState("048")
+  const [countryCode, setCountryCode] = useState('+55')
+  const [ddd, setDdd] = useState('048')
   const [phone, setPhone] = useState(991321617)
 
-  const handleCountryCode = (e) => setCountryCode(e.target.value)
-  const handleDdd = (e) => setDdd(e.target.value)
-  const handlePhone = (e) => setPhone(e.target.value)
+  const handleCountryCode = e => setCountryCode(e.target.value)
+  const handleDdd = e => setDdd(e.target.value)
+  const handlePhone = e => setPhone(e.target.value)
 
   useEffect(() => {
     props.setPhone(countryCode + ddd + phone)
@@ -37,8 +37,7 @@ const PhoneStep = (props) => {
         </Typography>
         <Typography variant="body2" align="center">
           Você receberá um código de acesso por SMS. <br />
-          Seus dados ficarão seguros e não é necessário
-          lembrar de uma senha :)
+          Seus dados ficarão seguros e não é necessário lembrar de uma senha :)
         </Typography>
       </div>
 
@@ -72,7 +71,7 @@ const PhoneStep = (props) => {
             margin="dense"
             variant="outlined"
             error={props.error}
-            helperText={props.error && "Digite um número válido"}
+            helperText={props.error && 'Digite um número válido'}
           />
         </div>
       </div>
@@ -81,7 +80,7 @@ const PhoneStep = (props) => {
         type="submit"
         variant="contained"
         id="sign-in-button"
-        className={"submit-button"}
+        className={'submit-button'}
         onClick={() => props.setLoading(true)}
         endIcon={props.loading && <CircularProgress color="white" size={20} />}
       >
