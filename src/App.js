@@ -6,7 +6,6 @@ import {
   ThemeProvider,
 } from '@material-ui/core/styles'
 import { CssBaseline, CircularProgress } from '@material-ui/core'
-import AppBar from 'components/AppBar'
 import Home from 'pages/home'
 import Menu from 'pages/menu'
 import Auth from 'pages/auth'
@@ -110,8 +109,6 @@ function App() {
         <SetGlobalStateContext.Provider value={setState}>
           <ToastContext.Provider value={toast}>
             <CssBaseline />
-
-            <AppBar />
 
             {loading ? (
               <CircularProgress size={50} className={classes.loading} />

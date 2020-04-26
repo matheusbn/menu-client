@@ -11,6 +11,7 @@ import {
   InputAdornment,
   IconButton,
 } from '@material-ui/core'
+import AppBar from 'components/AppBar'
 import {
   Send as SendIcon,
   CameraAlt as CameraAltIcon,
@@ -72,14 +73,11 @@ const getOrganizedSections = items => {
 }
 
 function Menu() {
-  console.log('onde estou')
   const classes = useStyles()
   const [state, setState] = useGlobalState()
   const [items, setItems] = useState([])
 
   useEffect(() => {
-    console.log(1)
-    // console.log(currentRestaurant)
     if (state.currentRestaurant) {
       return Restaurant.subscribeMenu(state.currentRestaurant.id, setItems)
     }
@@ -88,13 +86,17 @@ function Menu() {
   const menu = getOrganizedSections(items)
 
   return (
-    <section className={classes.itemsList}>
-      <div>
-        {menu.map(section => (
-          <MenuSection section={section} />
-        ))}
-      </div>
-    </section>
+    <>
+      <AppBar hamburguer />
+
+      <section className={classes.itemsList}>
+        <div>
+          {menu.map(section => (
+            <MenuSection section={section} />
+          ))}
+        </div>
+      </section>
+    </>
   )
 }
 

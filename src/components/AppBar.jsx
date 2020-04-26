@@ -9,62 +9,55 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
 import InstallIcon from 'assets/install.svg'
-import promptInstall from 'services/install'
+// import promptInstall from 'services/install'
 import { Link } from 'router'
 import importFirebase from 'services/firebase'
 
 const useStyles = makeStyles(theme => ({
-  menuButton: {
-    marginRight: theme.spacing(5),
+  root: {
+    // background: 'transparent',
+  },
+  menuButton: {},
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   title: {
     flexGrow: 1,
   },
 }))
 
-export default function ButtonAppBar() {
+export default function NavBar(props) {
   const classes = useStyles()
   const installButton = useRef(null)
 
   useEffect(() => {
-    promptInstall(installButton.current)
+    // promptInstall(installButton.current)
   }, [])
 
   const signOut = () => {
     importFirebase().then(firebase => firebase.auth().signOut())
-    // importFirebase().then(firebase =>
-    //   console.log("CURRENT USER:", firebase.auth().currentUser)
-    // )
   }
 
   return (
     <>
-      <AppBar>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Todoz
-          </Typography>
-          <Button
-            color="inherit"
-            ref={installButton}
-            style={{ display: 'none' }}
-          >
-            <InstallIcon />
-          </Button>
-          <Link to="/auth">
-            <Button color="inherit">Entrar</Button>
-          </Link>
-          <Button color="inherit" onClick={signOut}>
-            SAIR
-          </Button>
+      <AppBar className={classes.root}>
+        <Toolbar className={classes.toolbar}>
+          <div>
+            <Button color="inherit" onClick={signOut}>
+              SAIR
+            </Button>
+          </div>
+          {props.hamburguer ? (
+            <IconButton
+              edge="end"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+            >
+              <MenuIcon />
+            </IconButton>
+          ) : null}
         </Toolbar>
       </AppBar>
       <Toolbar /> {/* prevents elements from disappearing behind the appbar */}

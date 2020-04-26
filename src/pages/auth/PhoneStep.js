@@ -31,8 +31,18 @@ const PhoneStep = props => {
 
   return (
     <form>
-      <div>
-        <Typography variant="h5" component="h1" align="center" gutterBottom>
+      <Typography
+        variant="h3"
+        component="h1"
+        align="center"
+        gutterBottom
+        color="primary"
+        className="title"
+      >
+        MENU
+      </Typography>
+      <div className="instructions">
+        <Typography variant="h5" component="h2" align="center" gutterBottom>
           Acesse ou crie sua conta
         </Typography>
         <Typography variant="body2" align="center">

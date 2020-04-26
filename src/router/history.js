@@ -1,20 +1,19 @@
 class History {
   constructor() {
-    console.log('History constructed')
-    this.locationChangeEvent = new CustomEvent("locationchange")
-    window.addEventListener('popstate',
-      () => window.dispatchEvent(this.locationChangeEvent)
+    this.locationChangeEvent = new CustomEvent('locationchange')
+    window.addEventListener('popstate', () =>
+      window.dispatchEvent(this.locationChangeEvent)
     )
   }
 
   push(url) {
-    window.history.pushState({}, "", url)
+    window.history.pushState({}, '', url)
 
     window.dispatchEvent(this.locationChangeEvent)
   }
 
   replace(url) {
-    window.history.replaceState({}, "", url)
+    window.history.replaceState({}, '', url)
 
     window.dispatchEvent(this.locationChangeEvent)
   }
@@ -27,7 +26,7 @@ class History {
     window.history.forward()
   }
 
-  get location () {
+  get location() {
     return window.location.pathname
   }
 

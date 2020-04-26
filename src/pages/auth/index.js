@@ -24,19 +24,28 @@ const useStyles = makeStyles({
     '& form': {
       position: 'relative',
       height: '80%',
+      width: '100%',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'space-between',
     },
 
+    '& title': {
+      fontWeight: 300,
+    },
+
     '& input': {
       width: '100%',
     },
 
+    '& .instructions': {
+      position: 'absolute',
+      top: '25%',
+    },
     '& .phone-input': {
       position: 'absolute',
-      top: '40%',
+      top: '60%',
     },
 
     '& .submit-button': {

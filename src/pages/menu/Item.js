@@ -62,8 +62,6 @@ const useStyles = makeStyles(theme => ({
 
 export default ({ item }) => {
   const classes = useStyles()
-  console.log(item.description ? classes.itemInfo : classes.itemInfoCentered)
-
   return (
     <Paper className={classes.root}>
       <img src={item.pictures[0]} alt="Foto do prato" className={classes.img} />

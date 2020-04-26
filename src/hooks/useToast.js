@@ -12,8 +12,6 @@ export default () => {
     // map options to props
     Object.keys(options).forEach(key => (toast.props[key] = options[key]))
 
-    console.log(toast.props)
-
     toast.show()
   }
 }
