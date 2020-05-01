@@ -16,7 +16,7 @@ const VerificationCodeStep = props => {
 
   return (
     <form onSubmit={props.onSubmit}>
-      <div>
+      <div className="instructions">
         <Typography variant="h5" component="h1" align="center" gutterBottom>
           Digite o código de acesso
         </Typography>

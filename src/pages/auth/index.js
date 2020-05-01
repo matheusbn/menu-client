@@ -51,6 +51,8 @@ const useStyles = makeStyles({
     '& .submit-button': {
       paddingLeft: '35px',
       paddingRight: '35px',
+      position: 'absolute',
+      top: '90%',
     },
   },
 })

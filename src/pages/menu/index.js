@@ -18,10 +18,11 @@ import {
 } from '@material-ui/icons'
 import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
+import { Switch, history, Route, SlideRoute } from 'router'
 import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
 import capitalize from 'lodash/capitalize'
-
 import Item from './Item'
+import ItemProfile from './ItemProfile'
 
 const useStyles = makeStyles({
   root: {},
@@ -43,13 +44,18 @@ const MenuSection = withStyles({
     paddingLeft: 5,
     paddingBottom: 8,
   },
-})(({ classes, section }) => (
+})(({ classes, section, onItemClick }) => (
   <div className={classes.root}>
-    <Typography className={classes.sectionName} component="body1" variant="h6">
+    <Typography
+      className={classes.sectionName}
+      gutterBottom
+      component="body1"
+      variant="h6"
+    >
       {capitalize(section.name)}
     </Typography>
     {section.items.map(item => (
-      <Item item={item} />
+      <Item item={item} onClick={item => onItemClick(item)} />
     ))}
   </div>
 ))
@@ -75,6 +81,7 @@ const getOrganizedSections = items => {
 function Menu() {
   const classes = useStyles()
   const [state, setState] = useGlobalState()
+  const [currentItem, setCurrentItem] = useState([])
   const [items, setItems] = useState([])
 
   useEffect(() => {
@@ -85,17 +92,29 @@ function Menu() {
 
   const menu = getOrganizedSections(items)
 
+  const handleItemClick = item => {
+    setCurrentItem(item)
+    history.push('/menu/item')
+  }
+
   return (
     <>
-      <AppBar hamburguer />
+      <Switch>
+        <Route exact path="/menu">
+          <AppBar hamburguer />
 
-      <section className={classes.itemsList}>
-        <div>
-          {menu.map(section => (
-            <MenuSection section={section} />
-          ))}
-        </div>
-      </section>
+          <section className={classes.itemsList}>
+            <div>
+              {menu.map(section => (
+                <MenuSection onItemClick={handleItemClick} section={section} />
+              ))}
+            </div>
+          </section>
+        </Route>
+        <SlideRoute path="/menu/item">
+          <ItemProfile item={currentItem} />
+        </SlideRoute>
+      </Switch>
     </>
   )
 }

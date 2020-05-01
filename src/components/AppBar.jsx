@@ -8,9 +8,10 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import InstallIcon from 'assets/install.svg'
 // import promptInstall from 'services/install'
-import { Link } from 'router'
+import { Link, history } from 'router'
 import importFirebase from 'services/firebase'
 
 const useStyles = makeStyles(theme => ({
@@ -44,9 +45,20 @@ export default function NavBar(props) {
       <AppBar className={classes.root}>
         <Toolbar className={classes.toolbar}>
           <div>
-            <Button color="inherit" onClick={signOut}>
-              SAIR
-            </Button>
+            {props.backButton ? (
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="go-back"
+                onClick={() => history.back()}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+            ) : (
+              <Button color="inherit" onClick={signOut}>
+                SAIR
+              </Button>
+            )}
           </div>
           {props.hamburguer ? (
             <IconButton

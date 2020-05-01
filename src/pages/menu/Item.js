@@ -60,10 +60,11 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default ({ item }) => {
+export default ({ item, onClick }) => {
   const classes = useStyles()
+
   return (
-    <Paper className={classes.root}>
+    <Paper elevation={1} className={classes.root} onClick={onClick}>
       <img src={item.pictures[0]} alt="Foto do prato" className={classes.img} />
       <div
         className={
