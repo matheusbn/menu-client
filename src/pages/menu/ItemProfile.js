@@ -20,60 +20,68 @@ import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
 import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
 import capitalize from 'lodash/capitalize'
+import OptionalInput from './OptionalInput'
 
-const useStyles = makeStyles({
-  root: {},
-  itemsList: {},
-})
-
-const MenuSection = withStyles({
+const useStyles = makeStyles(theme => ({
   root: {
-    borderBottom: '1px solid #0002',
-    padding: 10,
-    paddingRight: 20,
-    paddingLeft: 20,
-
-    '&:last-child': {
-      border: 'none',
-    },
+    height: '200vh',
   },
-  sectionName: {
-    paddingLeft: 5,
-    paddingBottom: 8,
+  picture: {
+    width: '100vw',
+    height: '40vh',
   },
-})(({ classes, section }) => (
-  <div className={classes.root}>
-    <Typography
-      className={classes.sectionName}
-      gutterBottom
-      component="body1"
-      variant="h6"
-    >
-      {capitalize(section.name)}
-    </Typography>
-    {section.items.map(item => (
-      <Item item={item} />
-    ))}
-  </div>
-))
+  description: {
+    color: theme.palette.text.secondary,
+    marginBottom: theme.spacing(2),
+  },
+  optionalTitle: {
+    backgroundColor: theme.palette.grey[200],
+    width: '100vw',
+    height: 45,
+    marginBottom: theme.spacing(2),
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(2),
+    color: theme.palette.grey['900'],
+  },
+}))
 
 function ItemProfile(props) {
   const classes = useStyles()
+  const opacityThreshold = useRef(null)
   const [state, setState] = useGlobalState()
+  const { item } = props
+
+  console.log(props.item)
 
   return (
-    <>
-      <AppBar backButton />
+    <div>
+      <AppBar backButton opacityThreshold={opacityThreshold} />
 
-      <section className={classes.itemsList}>
-        <div>
-          <h1>Item profile</h1>
-          {/* {menu.map(section => (
-            <MenuSection section={section} />
-          ))} */}
+      <section>
+        <img src={item.pictures[0]} className={classes.picture} />
+
+        <div className={classes.root}>
+          <div style={{ margin: '5px 15px' }}>
+            <Typography
+              variant="h6"
+              component="h1"
+              ref={opacityThreshold}
+              gutterBottom
+            >
+              {item.name}
+            </Typography>
+            <Typography className={classes.description}>
+              {item.description}
+            </Typography>
+          </div>
+
+          {(item.optionals || []).map(optional => (
+            <OptionalInput optional={optional} />
+          ))}
         </div>
       </section>
-    </>
+    </div>
   )
 }
 

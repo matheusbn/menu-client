@@ -55,7 +55,7 @@ const MenuSection = withStyles({
       {capitalize(section.name)}
     </Typography>
     {section.items.map(item => (
-      <Item item={item} onClick={item => onItemClick(item)} />
+      <Item item={item} onClick={() => onItemClick(item)} />
     ))}
   </div>
 ))
@@ -89,6 +89,13 @@ function Menu() {
       return Restaurant.subscribeMenu(state.currentRestaurant.id, setItems)
     }
   }, [state.currentRestaurant])
+
+  useEffect(() => {
+    if (items.length) {
+      setCurrentItem(items.find(i => i.name === 'Classic Bacon'))
+      history.push('/menu/item')
+    }
+  }, [items])
 
   const menu = getOrganizedSections(items)
 
