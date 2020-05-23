@@ -17,7 +17,6 @@ import { Add as AddIcon } from '@material-ui/icons'
 import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
 import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
-import capitalize from 'lodash/capitalize'
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -46,11 +45,15 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const OptionalInput = ({ optional }) => {
+const OptionalInput = ({ optional, value, onChange }) => {
   const classes = useStyles()
 
   const handleChange = e => {
-    console.log(e.target.value)
+    const { name, checked } = e.target
+
+    value = value || []
+    if (checked) return onChange([...value, name])
+    onChange(value.filter(opt => opt !== name))
   }
 
   return (
@@ -65,7 +68,13 @@ const OptionalInput = ({ optional }) => {
         <FormGroup>
           {optional.options.map(option => (
             <FormControlLabel
-              control={<Checkbox color="primary" onChange={console.log} />}
+              control={
+                <Checkbox
+                  name={option.name}
+                  color="primary"
+                  onChange={handleChange}
+                />
+              }
               label={<Typography variant="body2">{option.name}</Typography>}
               labelPlacement="start"
               className={classes.option}

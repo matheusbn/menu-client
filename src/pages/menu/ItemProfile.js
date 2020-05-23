@@ -16,8 +16,7 @@ import {
   Send as SendIcon,
   CameraAlt as CameraAltIcon,
 } from '@material-ui/icons'
-import useGlobalState from 'hooks/useGlobalState'
-import Restaurant from 'models/Restaurant'
+import useSetState from 'hooks/useSetState'
 import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
 import capitalize from 'lodash/capitalize'
 import OptionalInput from './OptionalInput'
@@ -50,8 +49,7 @@ function ItemProfile(props) {
   const classes = useStyles()
   const opacityThreshold = useRef(null)
   const { item } = props
-
-  console.log(props.item)
+  const [state, setState] = useSetState({})
 
   return (
     <div>
@@ -76,7 +74,11 @@ function ItemProfile(props) {
           </div>
 
           {(item.optionals || []).map(optional => (
-            <OptionalInput optional={optional} />
+            <OptionalInput
+              optional={optional}
+              value={state[optional.name]}
+              onChange={value => setState({ [optional.name]: value })}
+            />
           ))}
         </div>
       </section>
