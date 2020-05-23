@@ -80,15 +80,15 @@ const getOrganizedSections = items => {
 
 function Menu() {
   const classes = useStyles()
-  const [state, setState] = useGlobalState()
+  const [global, setGlobal] = useGlobalState()
   const [currentItem, setCurrentItem] = useState([])
   const [items, setItems] = useState([])
 
   useEffect(() => {
-    if (state.currentRestaurant) {
-      return Restaurant.subscribeMenu(state.currentRestaurant.id, setItems)
+    if (global.currentRestaurant) {
+      return Restaurant.subscribeMenu(global.currentRestaurant.id, setItems)
     }
-  }, [state.currentRestaurant])
+  }, [global.currentRestaurant])
 
   useEffect(() => {
     if (items.length) {

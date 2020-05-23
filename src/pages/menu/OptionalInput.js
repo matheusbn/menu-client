@@ -49,6 +49,10 @@ const useStyles = makeStyles(theme => ({
 const OptionalInput = ({ optional }) => {
   const classes = useStyles()
 
+  const handleChange = e => {
+    console.log(e.target.value)
+  }
+
   return (
     <div>
       <FormControl component="fieldset">
@@ -72,21 +76,6 @@ const OptionalInput = ({ optional }) => {
           ))}
         </FormGroup>
       </FormControl>
-
-      {/* <Typography variant="body2" className={classes.title}>
-        {optional.name}
-      </Typography>
-
-      {optional.options.map(option => (
-        <div className={classes.option}>
-          <Typography variant="body2" className={classes.optionName}>
-            {option.name}
-          </Typography>
-          <IconButton color="primary" aria-label="adicionar ao pedido">
-            <AddIcon />
-          </IconButton>
-        </div>
-      ))} */}
     </div>
   )
 }

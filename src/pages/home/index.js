@@ -67,7 +67,7 @@ const Divider = withStyles({
 
 function Home() {
   const classes = useStyles()
-  const [state, setState] = useGlobalState()
+  const [global, setGlobal] = useGlobalState()
   const [code, setCode] = useState(null)
   const qrScanner = useRef(null)
 
@@ -91,7 +91,7 @@ function Home() {
     }
     const currentSession = { ...sessionSnapshot.data(), id: sessionSnapshot.id }
 
-    setState({ currentRestaurant, currentSession })
+    setGlobal({ currentRestaurant, currentSession })
     history.push('/menu')
   }
 

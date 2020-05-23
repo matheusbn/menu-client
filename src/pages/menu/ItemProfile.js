@@ -49,7 +49,6 @@ const useStyles = makeStyles(theme => ({
 function ItemProfile(props) {
   const classes = useStyles()
   const opacityThreshold = useRef(null)
-  const [state, setState] = useGlobalState()
   const { item } = props
 
   console.log(props.item)

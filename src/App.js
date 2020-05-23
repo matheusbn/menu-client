@@ -72,7 +72,7 @@ const defaultGlobalState = {
 
 function App() {
   const [loading, setLoading] = useState(true)
-  const [state, setState] = useSetState(defaultGlobalState)
+  const [global, setGlobal] = useSetState(defaultGlobalState)
   const toast = useRef(null)
   const classes = useStyles()
 
@@ -88,14 +88,14 @@ function App() {
             history.push('/menu')
             const currentRestaurant = await getCurrentRestaurant()
 
-            setState({
+            setGlobal({
               currentUser,
               currentSession,
               currentRestaurant,
             })
           } else {
             history.push('/')
-            setState({ currentUser })
+            setGlobal({ currentUser })
           }
           setLoading(false)
         }
@@ -105,8 +105,8 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStateContext.Provider value={state}>
-        <SetGlobalStateContext.Provider value={setState}>
+      <GlobalStateContext.Provider value={global}>
+        <SetGlobalStateContext.Provider value={setGlobal}>
           <ToastContext.Provider value={toast}>
             <CssBaseline />
 
