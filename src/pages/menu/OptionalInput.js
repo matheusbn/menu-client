@@ -18,6 +18,7 @@ import AppBar from 'components/AppBar'
 import { Add as AddIcon } from '@material-ui/icons'
 import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
+import { formatMoney } from 'helpers/utils'
 import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
 
 const useStyles = makeStyles(theme => ({
@@ -88,7 +89,16 @@ const OptionalInput = ({ optional, value, onChange }) => {
 
   const getControlLabelProps = option => ({
     value: option.name,
-    label: <Typography variant="body2">{option.name}</Typography>,
+    label: (
+      <div>
+        <Typography variant="body2">{option.name}</Typography>
+        {option.price && (
+          <Typography variant="caption">
+            + R$ {formatMoney(option.price)}
+          </Typography>
+        )}
+      </div>
+    ),
     labelPlacement: 'start',
     className: classes.option,
     classes: {

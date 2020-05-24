@@ -1,10 +1,10 @@
 # todo:
 
-- auth persistence and then check redirect to open session
+- add notes on item profile
+- price on each option
+- price on confirm btn
 
 ## ui
-
-- tirar appbar da home
 
 ## restaurants:
 
