@@ -18,14 +18,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     width: '100vw',
     height: BAR_HEIGHT,
-    boxShadow: `0 3px 6px 1px ${theme.palette.grey[700]}`,
+    boxShadow: `0 -2px 8px 1px ${theme.palette.grey[400]}`,
     backgroundColor: theme.palette.background.default,
-  },
-  title: {
-    flexGrow: 1,
-  },
-  icon: {
-    color: props => (props.transparent ? 'white' : theme.palette.primary.main),
   },
 }))
 

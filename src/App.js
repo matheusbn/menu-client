@@ -1,3 +1,4 @@
+// import 'preact/devtools'
 import React, { useEffect, useRef, useState } from 'react'
 // import { hot } from 'react-hot-loader/root';
 import {
@@ -38,6 +39,9 @@ const theme = createMuiTheme({
     tonalOffset: 0.15,
   },
   props: {
+    MuiIconButton: {
+      color: 'primary',
+    },
     MuiButton: {
       color: 'primary',
     },

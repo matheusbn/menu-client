@@ -43,7 +43,7 @@ const MenuSection = withStyles(theme => ({
   sectionName: {
     display: 'block',
   },
-}))(({ classes, section, onItemClick }) => (
+}))(({ classes, section, onItemClick, addItems }) => (
   <div className={classes.root}>
     <Typography
       className={classes.sectionName}
@@ -82,6 +82,9 @@ function Menu() {
   const [global, setGlobal] = useGlobalState()
   const [currentItem, setCurrentItem] = useState([])
   const [items, setItems] = useState([])
+  const [stagingOrder, setStagingOrder] = useState([])
+
+  const addItems = items => setStagingOrder(prev => [...prev, items])
 
   useEffect(() => {
     if (global.currentRestaurant) {
@@ -103,6 +106,8 @@ function Menu() {
     history.push('/menu/item')
   }
 
+  console.log(stagingOrder)
+
   return (
     <>
       <Switch>
@@ -118,7 +123,7 @@ function Menu() {
           </section>
         </Route>
         <SlideRoute path="/menu/item">
-          <ItemProfile item={currentItem} />
+          <ItemProfile item={currentItem} addItems={addItems} />
         </SlideRoute>
       </Switch>
     </>

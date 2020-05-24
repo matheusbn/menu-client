@@ -12,10 +12,8 @@ import {
   IconButton,
 } from '@material-ui/core'
 import AppBar from 'components/AppBar'
-import {
-  Send as SendIcon,
-  CameraAlt as CameraAltIcon,
-} from '@material-ui/icons'
+import { history } from 'router'
+import { Add as AddIcon, Remove as RemoveIcon } from '@material-ui/icons'
 import useSetState from 'hooks/useSetState'
 import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
 import capitalize from 'lodash/capitalize'
@@ -32,23 +30,58 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
     marginBottom: theme.spacing(2),
   },
-  optionalTitle: {
-    backgroundColor: theme.palette.grey[200],
-    width: '100vw',
-    height: 45,
-    marginBottom: theme.spacing(2),
+  amount: {
+    width: 100,
+    height: 32,
+    border: `2px solid ${theme.palette.grey[300]}`,
+    borderRadius: theme.shape.borderRadius,
     display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
-    padding: theme.spacing(2),
-    color: theme.palette.grey['900'],
+    marginRight: theme.spacing(1),
+  },
+  bottomBar: {
+    alignItems: 'center',
+    padding: theme.spacing(1),
   },
 }))
 
-function ItemProfile(props) {
+function ItemProfile({ item, addItems }) {
   const classes = useStyles()
   const opacityThreshold = useRef(null)
-  const { item } = props
   const [state, setState] = useSetState({})
+  const [amount, setAmount] = useState(1)
+
+  const calcPrice = () => {
+    const totalPrice = Object.entries(state).reduce(
+      (totalPrice, [optional, selectedOptions]) =>
+        Array.isArray(selectedOptions)
+          ? totalPrice +
+            selectedOptions.reduce((sum, { price = 0 }) => sum + price, 0)
+          : totalPrice + (selectedOptions.price || 0),
+      0
+    )
+
+    return (totalPrice + item.price) * amount
+  }
+
+  useEffect(() => () => console.log('dismounted'), [])
+
+  useEffect(() => {
+    console.log(opacityThreshold)
+    if (opacityThreshold) setAmount(amount)
+  }, [opacityThreshold.current])
+
+  const handleConfirm = () => {
+    addItems({
+      item: item.name,
+      amount,
+      optionals: state,
+      price: calcPrice(),
+    })
+
+    history.back()
+  }
 
   return (
     <div>
@@ -82,8 +115,26 @@ function ItemProfile(props) {
         </div>
       </section>
 
-      <BottomBar>
-        <h3>ola mundo</h3>
+      <BottomBar className={classes.bottomBar}>
+        <div className={classes.amount}>
+          <IconButton
+            onClick={() => setAmount(prev => (prev > 1 ? prev - 1 : 1))}
+          >
+            <RemoveIcon />
+          </IconButton>
+          {amount}
+          <IconButton onClick={() => setAmount(prev => prev + 1)}>
+            <AddIcon />
+          </IconButton>
+        </div>
+        <Button
+          size="small"
+          variant="contained"
+          fullWidth
+          onClick={handleConfirm}
+        >
+          Confirmar
+        </Button>
       </BottomBar>
     </div>
   )

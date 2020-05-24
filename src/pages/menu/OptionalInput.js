@@ -36,7 +36,8 @@ const useStyles = makeStyles(theme => ({
   option: {
     display: 'flex',
     borderBottom: `1px solid ${theme.palette.grey[400]}`,
-    margin: '0 10px',
+    margin: `0 ${theme.spacing(1)}px`,
+    padding: theme.spacing(1),
     '&:last-child': {
       border: 'none',
     },
@@ -45,7 +46,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     display: 'flex',
     alignItems: 'center',
-    paddingLeft: theme.spacing(2),
   },
   requiredBadge: {
     ...theme.typography.button,
