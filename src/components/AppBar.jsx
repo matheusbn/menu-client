@@ -22,7 +22,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     width: '100vw',
     height: BAR_HEIGHT,
-    boxShadow: `0 -3px 6px 1px ${theme.palette.grey[700]}`,
+    boxShadow: props =>
+      props.transparent ? 'none' : `0 -3px 6px 1px ${theme.palette.grey[700]}`,
   },
   title: {
     flexGrow: 1,

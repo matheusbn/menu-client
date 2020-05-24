@@ -20,6 +20,7 @@ import useSetState from 'hooks/useSetState'
 import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
 import capitalize from 'lodash/capitalize'
 import OptionalInput from './OptionalInput'
+import BottomBar from 'components/BottomBar'
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -80,6 +81,10 @@ function ItemProfile(props) {
           ))}
         </div>
       </section>
+
+      <BottomBar>
+        <h3>ola mundo</h3>
+      </BottomBar>
     </div>
   )
 }

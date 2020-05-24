@@ -91,8 +91,8 @@ function Menu() {
 
   useEffect(() => {
     if (items.length) {
-      // setCurrentItem(items.find(i => i.name === 'Classic Bacon'))
-      // history.push('/menu/item')
+      setCurrentItem(items.find(i => i.name === 'Classic Bacon'))
+      history.push('/menu/item')
     }
   }, [items])
 
