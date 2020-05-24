@@ -70,22 +70,20 @@ const Observation = ({ requiredObj }) => {
   return <Typography variant="caption">{text}</Typography>
 }
 
-const CustomFormGroup = ({ isRadio, ...props }) =>
-  isRadio ? <FormGroup {...props} /> : <RadioGroup {...props} />
-
 const OptionalInput = ({ optional, value, onChange }) => {
   const classes = useStyles()
   const { name, required, options } = optional
   const isRadio = required && required.max === 1
 
   const handleChange = e => {
-    const { value: inputValue, checked } = e.target
+    const { value: optionName, checked } = e.target
+    const option = options.find(option => option.name === optionName)
 
-    if (isRadio) return onChange(inputValue)
+    if (isRadio) return onChange(option)
 
     value = value || []
-    if (checked) return onChange([...value, inputValue])
-    onChange(value.filter(opt => opt !== inputValue))
+    if (checked) return onChange([...value, option])
+    onChange(value.filter(opt => opt !== option))
   }
 
   const getControlLabelProps = option => ({
