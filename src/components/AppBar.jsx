@@ -34,12 +34,9 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function NavBar(props) {
-  const { backButton, hamburguer, opacityThreshold } = props
-
+export default function NavBar({ backButton, hamburguer, opacityThreshold }) {
   const installButton = useRef(null)
   const appBar = useRef(null)
-  const thresholdEl = opacityThreshold && opacityThreshold.current
   const [transparent, setTransparent] = useState(!!opacityThreshold)
   const classes = useStyles({ transparent })
 
@@ -48,14 +45,19 @@ export default function NavBar(props) {
   }, [])
 
   useEffect(() => {
+    const thresholdEl = opacityThreshold && opacityThreshold.current
+
     if (thresholdEl) {
-      window.addEventListener('scroll', () => {
+      const handler = () => {
         if (thresholdEl.getBoundingClientRect().top <= BAR_HEIGHT)
           setTransparent(false)
         else setTransparent(true)
-      })
+      }
+
+      window.addEventListener('scroll', handler)
+      return () => window.removeEventListener('scroll', handler)
     }
-  }, [thresholdEl])
+  }, [opacityThreshold])
 
   const signOut = () => {
     importFirebase().then(firebase => firebase.auth().signOut())
