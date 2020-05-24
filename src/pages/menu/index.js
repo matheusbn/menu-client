@@ -29,27 +29,26 @@ const useStyles = makeStyles({
   itemsList: {},
 })
 
-const MenuSection = withStyles({
+const MenuSection = withStyles(theme => ({
   root: {
     borderBottom: '1px solid #0002',
-    padding: 10,
-    paddingRight: 20,
-    paddingLeft: 20,
+    padding: theme.spacing(1),
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
 
     '&:last-child': {
       border: 'none',
     },
   },
   sectionName: {
-    paddingLeft: 5,
-    paddingBottom: 8,
+    display: 'block',
   },
-})(({ classes, section, onItemClick }) => (
+}))(({ classes, section, onItemClick }) => (
   <div className={classes.root}>
     <Typography
       className={classes.sectionName}
       gutterBottom
-      component="body1"
+      component="h1"
       variant="h6"
     >
       {capitalize(section.name)}
@@ -74,7 +73,7 @@ const getOrganizedSections = items => {
 
   return sections.map(section => ({
     name: section,
-    items: items.filter(item => item.section === section),
+    items: items.filter(item => item.section.toLowerCase() === section),
   }))
 }
 
@@ -92,8 +91,8 @@ function Menu() {
 
   useEffect(() => {
     if (items.length) {
-      setCurrentItem(items.find(i => i.name === 'Classic Bacon'))
-      history.push('/menu/item')
+      // setCurrentItem(items.find(i => i.name === 'Classic Bacon'))
+      // history.push('/menu/item')
     }
   }, [items])
 

@@ -21,6 +21,9 @@ const useStyles = makeStyles(theme => ({
     maxHeight: 102,
     maxWidth: '100%',
     marginBottom: 8,
+    '& .MuiListItem-root': {
+      padding: 0,
+    },
   },
   img: {
     flex: 'none',
@@ -32,6 +35,7 @@ const useStyles = makeStyles(theme => ({
   },
   itemInfo: {
     padding: '8px',
+    height: '100%',
   },
   itemInfoCentered: {
     display: 'flex',
@@ -80,7 +84,7 @@ export default ({ item, onClick }) => {
             item.description ? classes.itemInfo : classes.itemInfoCentered
           }
         >
-          <Typography className={classes.title} component="h3" variant="h6">
+          <Typography className={classes.title} component="h2" variant="h6">
             {item.name}
           </Typography>
           {item.description ? (

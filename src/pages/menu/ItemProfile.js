@@ -22,9 +22,7 @@ import capitalize from 'lodash/capitalize'
 import OptionalInput from './OptionalInput'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    height: '200vh',
-  },
+  root: {},
   picture: {
     width: '100vw',
     height: '40vh',
