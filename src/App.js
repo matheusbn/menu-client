@@ -49,11 +49,6 @@ const theme = createMuiTheme({
       },
     },
   },
-  custom: {
-    colors: {
-      muted: '#696969',
-    },
-  },
 })
 
 const useStyles = makeStyles({
@@ -75,6 +70,8 @@ function App() {
   const [global, setGlobal] = useSetState(defaultGlobalState)
   const toast = useRef(null)
   const classes = useStyles()
+
+  console.log(theme)
 
   useEffect(() => {
     importFirebase().then(firebase => {

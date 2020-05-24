@@ -5,9 +5,11 @@ import {
   Button,
   FormControl,
   FormLabel,
-  FormGroup,
   FormControlLabel,
+  FormGroup,
   Checkbox,
+  RadioGroup,
+  Radio,
   TextField,
   FormHelperText,
   IconButton,
@@ -20,14 +22,16 @@ import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
 
 const useStyles = makeStyles(theme => ({
   title: {
-    backgroundColor: theme.palette.grey[200],
+    fontWeight: theme.typography.fontWeightMedium,
+    color: theme.palette.grey['700'],
+  },
+  titleContainer: {
     width: '100vw',
     height: 60,
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(2),
-    color: theme.palette.grey['700'],
-    fontWeight: theme.typography.fontWeightMedium,
+    backgroundColor: theme.palette.grey[200],
   },
   option: {
     display: 'flex',
@@ -43,47 +47,92 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     paddingLeft: theme.spacing(2),
   },
+  requiredBadge: {
+    ...theme.typography.button,
+    fontSize: '0.6rem',
+    letterSpacing: '0.06em',
+    padding: '2px 5px',
+    borderRadius: 100,
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+  },
 }))
+
+const Observation = ({ requiredObj }) => {
+  const { min, max } = requiredObj
+
+  if ((!min && !max) || max === 1) return null
+
+  let text = null
+  if (max > 1) text = `Escolha até ${max} opções`
+  else text = `Escolha no mínimo ${min} ${min > 1 ? 'opções' : 'opção'}`
+
+  return <Typography variant="caption">{text}</Typography>
+}
+
+const CustomFormGroup = ({ isRadio, ...props }) =>
+  isRadio ? <FormGroup {...props} /> : <RadioGroup {...props} />
 
 const OptionalInput = ({ optional, value, onChange }) => {
   const classes = useStyles()
+  const { name, required, options } = optional
+  const isRadio = required && required.max === 1
 
   const handleChange = e => {
-    const { name, checked } = e.target
+    const { value: inputValue, checked } = e.target
+
+    if (isRadio) return onChange(inputValue)
 
     value = value || []
-    if (checked) return onChange([...value, name])
-    onChange(value.filter(opt => opt !== name))
+    if (checked) return onChange([...value, inputValue])
+    onChange(value.filter(opt => opt !== inputValue))
   }
 
+  const getControlLabelProps = option => ({
+    value: option.name,
+    label: <Typography variant="body2">{option.name}</Typography>,
+    labelPlacement: 'start',
+    className: classes.option,
+    classes: {
+      label: classes.optionName,
+    },
+  })
   return (
     <div>
       <FormControl component="fieldset">
-        <FormLabel component="legend">
-          <Typography variant="body2" className={classes.title}>
-            {optional.name}
-          </Typography>
-        </FormLabel>
+        <div className={classes.titleContainer}>
+          <div style={{ flexGrow: 1 }}>
+            <FormLabel component="legend">
+              <Typography variant="body2" className={classes.title}>
+                {name}
+              </Typography>
+            </FormLabel>
 
-        <FormGroup>
-          {optional.options.map(option => (
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name={option.name}
-                  color="primary"
-                  onChange={handleChange}
-                />
-              }
-              label={<Typography variant="body2">{option.name}</Typography>}
-              labelPlacement="start"
-              className={classes.option}
-              classes={{
-                label: classes.optionName,
-              }}
-            />
-          ))}
-        </FormGroup>
+            <Observation requiredObj={required} />
+          </div>
+
+          {required && <div className={classes.requiredBadge}>Obrigatório</div>}
+        </div>
+
+        {isRadio ? (
+          <RadioGroup aria-label={optional.name} onChange={handleChange}>
+            {options.map(option => (
+              <FormControlLabel
+                {...getControlLabelProps(option)}
+                control={<Radio color="primary" />}
+              />
+            ))}
+          </RadioGroup>
+        ) : (
+          <FormGroup>
+            {options.map(option => (
+              <FormControlLabel
+                {...getControlLabelProps(option)}
+                control={<Checkbox color="primary" onChange={handleChange} />}
+              />
+            ))}
+          </FormGroup>
+        )}
       </FormControl>
     </div>
   )
