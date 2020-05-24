@@ -40,7 +40,7 @@ export default function NavBar(props) {
   const installButton = useRef(null)
   const appBar = useRef(null)
   const thresholdEl = opacityThreshold && opacityThreshold.current
-  const [transparent, setTransparent] = useState(opacityThreshold)
+  const [transparent, setTransparent] = useState(!!opacityThreshold)
   const classes = useStyles({ transparent })
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function NavBar(props) {
         ) : null}
       </div>
       {/* prevents elements from disappearing behind the appbar */}
-      {thresholdEl || <div style={{ height: BAR_HEIGHT }} />}
+      {opacityThreshold ? null : <div style={{ height: BAR_HEIGHT }} />}
     </>
   )
 }
