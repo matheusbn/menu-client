@@ -19,6 +19,7 @@ import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
 import capitalize from 'lodash/capitalize'
 import OptionalInput from './OptionalInput'
 import BottomBar from 'components/BottomBar'
+import { formatMoney } from 'helpers/utils'
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -44,6 +45,10 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     padding: theme.spacing(1),
   },
+  confirmButton: {
+    display: 'flex',
+    justifyContent: 'space-around',
+  },
 }))
 
 function ItemProfile({ item, addItems }) {
@@ -51,21 +56,24 @@ function ItemProfile({ item, addItems }) {
   const opacityThreshold = useRef(null)
   const [state, setState] = useSetState({})
   const [amount, setAmount] = useState(1)
+  const [totalPrice, setTotalPrice] = useState(item.price)
 
-  const calcPrice = () => {
-    const totalPrice = Object.entries(state).reduce(
-      (totalPrice, [optional, selectedOptions]) =>
-        Array.isArray(selectedOptions)
-          ? totalPrice +
-            selectedOptions.reduce((sum, { price = 0 }) => sum + price, 0)
-          : totalPrice + (selectedOptions.price || 0),
-      0
-    )
+  useEffect(() => {
+    const calcPrice = () => {
+      const totalPrice = Object.entries(state).reduce(
+        (totalPrice, [optional, selectedOptions]) =>
+          Array.isArray(selectedOptions)
+            ? totalPrice +
+              selectedOptions.reduce((sum, { price = 0 }) => sum + price, 0)
+            : totalPrice + (selectedOptions.price || 0),
+        0
+      )
 
-    return (totalPrice + item.price) * amount
-  }
+      return (totalPrice + item.price) * amount
+    }
 
-  useEffect(() => () => console.log('dismounted'), [])
+    setTotalPrice(calcPrice())
+  }, [state, amount])
 
   useEffect(() => {
     console.log(opacityThreshold)
@@ -118,7 +126,8 @@ function ItemProfile({ item, addItems }) {
       <BottomBar className={classes.bottomBar}>
         <div className={classes.amount}>
           <IconButton
-            onClick={() => setAmount(prev => (prev > 1 ? prev - 1 : 1))}
+            onClick={() => setAmount(prev => prev - 1)}
+            disabled={amount <= 1}
           >
             <RemoveIcon />
           </IconButton>
@@ -132,8 +141,9 @@ function ItemProfile({ item, addItems }) {
           variant="contained"
           fullWidth
           onClick={handleConfirm}
+          className={classes.confirmButton}
         >
-          Confirmar
+          Adicionar <span>R$ {formatMoney(totalPrice)}</span>
         </Button>
       </BottomBar>
     </div>
