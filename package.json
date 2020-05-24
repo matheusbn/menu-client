@@ -31,7 +31,7 @@
     "webpack": "^4.42.0",
     "webpack-bundle-analyzer": "^3.6.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3",
+    "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2",
     "workbox-webpack-plugin": "^4.x"
   },
@@ -44,7 +44,7 @@
     "jsqr": "^1.2.0",
     "jsqr-es6": "^1.2.0-3",
     "lodash": "^4.17.15",
-    "preact": "^10.3.3",
+    "preact": "^10.4.4",
     "qr-scanner": "^1.1.1",
     "react-hot-loader": "^4.12.19"
   }
