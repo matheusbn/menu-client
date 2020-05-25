@@ -49,6 +49,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-around',
   },
+  observation: {
+    maxWidth: 600,
+    padding: theme.spacing(2),
+    margin: `0 auto`,
+  },
 }))
 
 function ItemProfile({ item, addItems }) {
@@ -57,6 +62,7 @@ function ItemProfile({ item, addItems }) {
   const [state, setState] = useSetState({})
   const [amount, setAmount] = useState(1)
   const [totalPrice, setTotalPrice] = useState(item.price)
+  const [observations, setObservations] = useState('')
 
   useEffect(() => {
     const calcPrice = () => {
@@ -80,12 +86,17 @@ function ItemProfile({ item, addItems }) {
     if (opacityThreshold) setAmount(amount)
   }, [opacityThreshold.current])
 
+  const handleObservations = e => {
+    if (observations.length < 140) setObservations(e.target.value)
+  }
+
   const handleConfirm = () => {
     addItems({
       item: item.name,
       amount,
       optionals: state,
-      price: calcPrice(),
+      observations,
+      price: totalPrice,
     })
 
     history.back()
@@ -120,6 +131,27 @@ function ItemProfile({ item, addItems }) {
               onChange={value => setState({ [optional.name]: value })}
             />
           ))}
+
+          <hr />
+
+          <div className={classes.observation}>
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel htmlFor="observations-input" variant="outlined">
+                Observações
+              </InputLabel>
+              <OutlinedInput
+                id="observations-input"
+                value={observations}
+                onChange={handleObservations}
+                label="Observações"
+                multiline
+                rows={3}
+              />
+              <FormHelperText>
+                Ex: sem cebola, sem tomate, ponto da carne, etc.
+              </FormHelperText>
+            </FormControl>
+          </div>
         </div>
       </section>
 

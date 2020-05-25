@@ -1,8 +1,6 @@
 # todo:
 
 - add notes on item profile
-- price on each option
-- price on confirm btn
 
 ## ui
 
