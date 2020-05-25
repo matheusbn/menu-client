@@ -13,7 +13,6 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import history from 'router/history'
 import { formatMoney } from 'helpers/utils'
-import CurrencySymbol from 'components/CurrencySymbol'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,7 +45,8 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: '10px',
   },
   title: {
-    fontSize: '1rem',
+    // fontSize: '1rem',
+    fontWeight: theme.typography.fontWeightMedium,
     marginBottom: 4,
   },
   description: {
@@ -85,7 +85,7 @@ export default ({ item, onClick }) => {
             item.description ? classes.itemInfo : classes.itemInfoCentered
           }
         >
-          <Typography className={classes.title} component="h2" variant="h6">
+          <Typography className={classes.title} component="h2" variant="body1">
             {item.name}
           </Typography>
           {item.description ? (

@@ -24,12 +24,20 @@ import capitalize from 'lodash/capitalize'
 import Item from './Item'
 import ItemProfile from './ItemProfile'
 import BottomBar from 'components/BottomBar'
-import CurrencySymbol from 'components/CurrencySymbol'
 import { formatMoney } from 'helpers/utils'
 
 const useStyles = makeStyles(theme => ({
   root: {},
-  itemsList: {},
+  itemsList: {
+    paddingTop: theme.spacing(1),
+    backgroundColor: theme.palette.background.default,
+    position: 'absolute',
+    left: 0,
+    top: '30vh',
+    borderTopLeftRadius: theme.shape.borderRadius,
+    borderTopRightRadius: theme.shape.borderRadius,
+    boxShadow: `0 -4px 18px #0008`,
+  },
   itemsAmount: {
     height: 28,
     padding: theme.spacing(1) / 2,
@@ -48,11 +56,17 @@ const useStyles = makeStyles(theme => ({
     height: 40,
     padding: theme.spacing(1),
   },
+  cover: {
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    width: '100vw',
+    height: '40vh',
+  },
 }))
 
 const MenuSection = withStyles(theme => ({
   root: {
-    borderBottom: '1px solid #0002',
     padding: theme.spacing(1),
     paddingRight: theme.spacing(2),
     paddingLeft: theme.spacing(2),
@@ -63,15 +77,16 @@ const MenuSection = withStyles(theme => ({
   },
   sectionName: {
     display: 'block',
+    borderBottom: '1px solid #0004',
+    paddingLeft: theme.spacing(1),
+    // marginLeft: theme.spacing(1),
+    // marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    color: theme.palette.grey[700],
   },
 }))(({ classes, section, onItemClick, addItems }) => (
   <div className={classes.root}>
-    <Typography
-      className={classes.sectionName}
-      gutterBottom
-      component="h1"
-      variant="h6"
-    >
+    <Typography className={classes.sectionName} component="h2" variant="body2">
       {capitalize(section.name)}
     </Typography>
     {section.items.map(item => (
@@ -104,6 +119,7 @@ function Menu() {
   const [currentItem, setCurrentItem] = useState([])
   const [items, setItems] = useState([])
   const [currentOrder, setStagingOrder] = useState([])
+  const { currentRestaurant } = global
 
   const addItems = items => setStagingOrder(prev => [...prev, items])
 
@@ -127,34 +143,37 @@ function Menu() {
     history.push('/menu/item')
   }
 
-  console.log(currentOrder)
-
   return (
     <>
       <Switch>
         <Route exact path="/menu">
           <AppBar hamburguer />
 
-          <section className={classes.itemsList}>
-            <div>
+          <section className={classes.root}>
+            <img
+              src={global.currentRestaurant.coverPicture}
+              className={classes.cover}
+            />
+
+            <div className={classes.itemsList}>
               {menu.map(section => (
                 <MenuSection onItemClick={handleItemClick} section={section} />
               ))}
             </div>
-
-            {currentOrder.length > 0 && (
-              <BottomBar className={classes.currentOrderBar}>
-                <div className={classes.itemsAmount}>{currentOrder.length}</div>
-                Pedido atual
-                <div>
-                  <span style={{ fontSize: '0.7rem' }}>R$ </span>
-                  {formatMoney(
-                    currentOrder.reduce((sum, { price }) => sum + price, 0)
-                  )}
-                </div>
-              </BottomBar>
-            )}
           </section>
+
+          {currentOrder.length > 0 && (
+            <BottomBar className={classes.currentOrderBar}>
+              <div className={classes.itemsAmount}>{currentOrder.length}</div>
+              Pedido atual
+              <div>
+                <span style={{ fontSize: '0.7rem' }}>R$ </span>
+                {formatMoney(
+                  currentOrder.reduce((sum, { price }) => sum + price, 0)
+                )}
+              </div>
+            </BottomBar>
+          )}
         </Route>
         <SlideRoute path="/menu/item">
           <ItemProfile item={currentItem} addItems={addItems} />
