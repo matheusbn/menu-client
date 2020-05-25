@@ -58,7 +58,7 @@ const theme = createMuiTheme({
 const useStyles = makeStyles({
   loading: {
     margin: '0 auto',
-    marginTop: '40%',
+    marginTop: '40vh',
     display: 'block',
   },
 })

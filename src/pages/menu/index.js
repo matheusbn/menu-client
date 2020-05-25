@@ -23,11 +23,32 @@ import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
 import capitalize from 'lodash/capitalize'
 import Item from './Item'
 import ItemProfile from './ItemProfile'
+import BottomBar from 'components/BottomBar'
+import CurrencySymbol from 'components/CurrencySymbol'
+import { formatMoney } from 'helpers/utils'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {},
   itemsList: {},
-})
+  itemsAmount: {
+    height: 28,
+    padding: theme.spacing(1) / 2,
+    border: `1px solid ${theme.palette.grey[200]}`,
+    borderRadius: theme.shape.borderRadius,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: theme.spacing(1),
+  },
+  currentOrderBar: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    color: theme.palette.grey[200],
+    backgroundColor: theme.palette.primary.main,
+    height: 40,
+    padding: theme.spacing(1),
+  },
+}))
 
 const MenuSection = withStyles(theme => ({
   root: {
@@ -82,7 +103,7 @@ function Menu() {
   const [global, setGlobal] = useGlobalState()
   const [currentItem, setCurrentItem] = useState([])
   const [items, setItems] = useState([])
-  const [stagingOrder, setStagingOrder] = useState([])
+  const [currentOrder, setStagingOrder] = useState([])
 
   const addItems = items => setStagingOrder(prev => [...prev, items])
 
@@ -93,10 +114,10 @@ function Menu() {
   }, [global.currentRestaurant])
 
   useEffect(() => {
-    if (items.length) {
-      setCurrentItem(items.find(i => i.name === 'Classic Bacon'))
-      history.push('/menu/item')
-    }
+    // if (items.length) {
+    //   setCurrentItem(items.find(i => i.name === 'Classic Bacon'))
+    //   history.push('/menu/item')
+    // }
   }, [items])
 
   const menu = getOrganizedSections(items)
@@ -106,7 +127,7 @@ function Menu() {
     history.push('/menu/item')
   }
 
-  console.log(stagingOrder)
+  console.log(currentOrder)
 
   return (
     <>
@@ -120,6 +141,19 @@ function Menu() {
                 <MenuSection onItemClick={handleItemClick} section={section} />
               ))}
             </div>
+
+            {currentOrder.length > 0 && (
+              <BottomBar className={classes.currentOrderBar}>
+                <div className={classes.itemsAmount}>{currentOrder.length}</div>
+                Pedido atual
+                <div>
+                  <span style={{ fontSize: '0.7rem' }}>R$ </span>
+                  {formatMoney(
+                    currentOrder.reduce((sum, { price }) => sum + price, 0)
+                  )}
+                </div>
+              </BottomBar>
+            )}
           </section>
         </Route>
         <SlideRoute path="/menu/item">

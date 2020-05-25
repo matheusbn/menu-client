@@ -13,6 +13,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import history from 'router/history'
 import { formatMoney } from 'helpers/utils'
+import CurrencySymbol from 'components/CurrencySymbol'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -63,7 +64,7 @@ const useStyles = makeStyles(theme => ({
     bottom: 4,
     right: 8,
     '& span': {
-      fontSize: '0.7em',
+      fontSize: '0.7rem',
     },
   },
 }))
@@ -94,7 +95,8 @@ export default ({ item, onClick }) => {
           ) : null}
 
           <div className={classes.price}>
-            <span>R$</span> {formatMoney(item.price)}
+            <span>R$ </span>
+            {formatMoney(item.price)}
           </div>
         </div>
       </ListItem>

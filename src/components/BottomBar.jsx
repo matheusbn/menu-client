@@ -8,8 +8,6 @@ import InstallIcon from 'assets/install.svg'
 import { Link, history } from 'router'
 import importFirebase from 'services/firebase'
 
-const BAR_HEIGHT = 50
-
 const useStyles = makeStyles(theme => ({
   root: {
     zIndex: 90,
@@ -17,14 +15,14 @@ const useStyles = makeStyles(theme => ({
     bottom: 0,
     display: 'flex',
     width: '100vw',
-    height: BAR_HEIGHT,
+    height: props => props.height,
     boxShadow: `0 -2px 8px 1px ${theme.palette.grey[400]}`,
     backgroundColor: theme.palette.background.default,
   },
 }))
 
-export default function BottomBar({ style, className, children }) {
-  const classes = useStyles()
+export default function BottomBar({ style, className, children, height = 50 }) {
+  const classes = useStyles({ height })
 
   return (
     <>
@@ -32,7 +30,7 @@ export default function BottomBar({ style, className, children }) {
         {children}
       </div>
       {/* prevents elements from disappearing behind the bar */}
-      <div style={{ height: BAR_HEIGHT }} />
+      <div style={{ height }} />
     </>
   )
 }
