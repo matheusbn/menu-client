@@ -81,11 +81,6 @@ function ItemProfile({ item, addItems }) {
     setTotalPrice(calcPrice())
   }, [state, amount])
 
-  useEffect(() => {
-    console.log(opacityThreshold)
-    if (opacityThreshold) setAmount(amount)
-  }, [opacityThreshold.current])
-
   const handleObservations = e => {
     if (observations.length < 140) setObservations(e.target.value)
   }

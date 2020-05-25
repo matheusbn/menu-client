@@ -79,8 +79,6 @@ const MenuSection = withStyles(theme => ({
     display: 'block',
     borderBottom: '1px solid #0004',
     paddingLeft: theme.spacing(1),
-    // marginLeft: theme.spacing(1),
-    // marginRight: theme.spacing(1),
     marginBottom: theme.spacing(2),
     color: theme.palette.grey[700],
   },
@@ -116,6 +114,7 @@ const getOrganizedSections = items => {
 function Menu() {
   const classes = useStyles()
   const [global, setGlobal] = useGlobalState()
+  const opacityThreshold = useRef(null)
   const [currentItem, setCurrentItem] = useState([])
   const [items, setItems] = useState([])
   const [currentOrder, setStagingOrder] = useState([])
@@ -147,7 +146,7 @@ function Menu() {
     <>
       <Switch>
         <Route exact path="/menu">
-          <AppBar hamburguer />
+          <AppBar hamburguer opacityThreshold={opacityThreshold} />
 
           <section className={classes.root}>
             <img
@@ -155,7 +154,7 @@ function Menu() {
               className={classes.cover}
             />
 
-            <div className={classes.itemsList}>
+            <div className={classes.itemsList} ref={opacityThreshold}>
               {menu.map(section => (
                 <MenuSection onItemClick={handleItemClick} section={section} />
               ))}
