@@ -1,20 +1,12 @@
 import React, { useRef, useState, useContext, useEffect } from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
-import {
-  Typography,
-  Button,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  FormHelperText,
-  InputAdornment,
-  IconButton,
-} from '@material-ui/core'
+import { Typography, IconButton } from '@material-ui/core'
 import AppBar from 'components/AppBar'
 import {
   Send as SendIcon,
   CameraAlt as CameraAltIcon,
+  Receipt as ReceiptIcon,
+  PermIdentity as PermIdentityIcon,
 } from '@material-ui/icons'
 import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
@@ -29,6 +21,7 @@ import { formatMoney } from 'helpers/utils'
 const useStyles = makeStyles(theme => ({
   root: {},
   itemsList: {
+    width: '100%',
     paddingTop: theme.spacing(1),
     backgroundColor: theme.palette.background.default,
     position: 'absolute',
@@ -53,8 +46,16 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     color: theme.palette.grey[200],
     backgroundColor: theme.palette.primary.main,
+    bottom: 40,
     height: 40,
-    padding: theme.spacing(1),
+    zIndex: 91,
+    padding: theme.spacing(2),
+  },
+  navBottomBar: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    color: theme.palette.primary.main,
+    height: 40,
   },
   cover: {
     position: 'fixed',
@@ -161,8 +162,8 @@ function Menu() {
             </div>
           </section>
 
-          {currentOrder.length > 0 && (
-            <BottomBar className={classes.currentOrderBar}>
+          {currentOrder.length >= 0 && (
+            <BottomBar className={classes.currentOrderBar} stackNumber={2}>
               <div className={classes.itemsAmount}>{currentOrder.length}</div>
               Pedido atual
               <div>
@@ -173,6 +174,14 @@ function Menu() {
               </div>
             </BottomBar>
           )}
+          <BottomBar className={classes.navBottomBar}>
+            <IconButton>
+              <ReceiptIcon />
+            </IconButton>
+            <IconButton>
+              <PermIdentityIcon />
+            </IconButton>
+          </BottomBar>
         </Route>
         <SlideRoute path="/menu/item">
           <ItemProfile item={currentItem} addItems={addItems} />

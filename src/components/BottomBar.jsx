@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     width: '100vw',
     height: props => props.height,
-    boxShadow: `0 -2px 8px 1px ${theme.palette.grey[400]}`,
+    boxShadow: `0px -1px 6px 1px #0005`,
     backgroundColor: theme.palette.background.default,
   },
 }))
