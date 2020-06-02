@@ -18,15 +18,18 @@ const useStyles = makeStyles(theme => ({
     zIndex: 90,
     position: 'fixed',
     top: 0,
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: 'grid',
+    gridTemplateColumns: '50px 1fr 50px',
     width: '100vw',
     height: BAR_HEIGHT,
     boxShadow: props =>
       props.transparent ? 'none' : `0 -3px 6px 1px ${theme.palette.grey[700]}`,
   },
   title: {
-    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: props => (props.transparent ? 'white' : theme.palette.primary.main),
   },
   icon: {
     color: props => (props.transparent ? 'white' : theme.palette.primary.main),
@@ -34,7 +37,12 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function NavBar({ backButton, hamburguer, opacityThreshold }) {
+export default function NavBar({
+  title,
+  backButton,
+  hamburguer,
+  opacityThreshold,
+}) {
   const installButton = useRef(null)
   const appBar = useRef(null)
   const [transparent, setTransparent] = useState(!!opacityThreshold)
@@ -75,6 +83,9 @@ export default function NavBar({ backButton, hamburguer, opacityThreshold }) {
             SAIR
           </Button>
         )}
+
+        <div className={classes.title}>{title}</div>
+
         {hamburguer ? (
           <IconButton aria-label="menu">
             <MenuIcon className={classes.icon} />
