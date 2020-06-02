@@ -57,7 +57,7 @@ const useStyles = makeStyles({
   },
 })
 
-const isPhoneValid = phone => /\+\d{14}/i.test(phone)
+const isPhoneValid = phone => /^\+\d{14}$/i.test(phone)
 
 function Auth() {
   const classes = useStyles()
@@ -70,28 +70,26 @@ function Auth() {
   const phoneE164 = useRef(null) // it's a ref to avoid a stale closures in the mount only setEffect
   const recaptchaVerifier = useRef(null)
 
-  const setPhone = phone => {
-    phoneE164.current = phone
-  }
+  const setPhone = phone => (phoneE164.current = phone)
 
-  const sendVerificationCode = firebase => {
+  const sendVerificationCode = () => {
     if (!isPhoneValid(phoneE164.current)) {
+      recaptchaVerifier.current.reset()
       setLoading(false)
       setPhoneError(true)
       return
     }
 
-    firebase
-      .auth()
-      .signInWithPhoneNumber(phoneE164.current, recaptchaVerifier.current)
-      .then(result => {
-        setLoading(false)
-
-        confirmationResult.current = result
-      })
-      .catch(error => console.error('Error on code send', error))
-    // display error
-    history.push('/auth/code')
+    setLoading(false)
+    importFirebase().then(firebase => {
+      firebase
+        .auth()
+        .signInWithPhoneNumber(phoneE164.current, recaptchaVerifier.current)
+        .then(result => (confirmationResult.current = result))
+        .catch(error => console.error('Error on code send', error))
+      // display error
+      history.push('/auth/code')
+    })
   }
 
   const handleCodeSubmit = e => {
@@ -118,7 +116,7 @@ function Auth() {
           size: 'invisible',
           callback: recaptchaToken => {
             console.log('captcha verified')
-            sendVerificationCode(firebase)
+            sendVerificationCode()
           },
         }
       )
@@ -127,11 +125,6 @@ function Auth() {
         .render()
         .catch(error => console.error('error rendering recaptcha', error))
     })
-  }
-
-  const resetRecaptcha = () => {
-    initRecaptcha()
-    setLoading(false)
   }
 
   useEffect(() => {
@@ -147,6 +140,7 @@ function Auth() {
             loading={loading}
             setLoading={setLoading}
             error={phoneError}
+            onSubmit={sendVerificationCode}
           />
         </Route>
         <Route path="/auth/code">
@@ -154,7 +148,7 @@ function Auth() {
             verificationCode={verificationCode}
             setVerificationCode={setVerificationCode}
             phone={phoneE164.current}
-            onUnmount={resetRecaptcha}
+            onUnmount={initRecaptcha}
             onSubmit={handleCodeSubmit}
             error={codeError}
             loading={verificationStepLoading}

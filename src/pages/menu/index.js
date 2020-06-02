@@ -1,6 +1,6 @@
 import React, { useRef, useState, useContext, useEffect } from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
-import { Typography, IconButton } from '@material-ui/core'
+import { Typography, IconButton, CircularProgress } from '@material-ui/core'
 import AppBar from 'components/AppBar'
 import {
   Send as SendIcon,
@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
   itemsList: {
     width: '100%',
     paddingTop: theme.spacing(1),
+    paddingBottom: props => (props.emptyOrder ? 40 : 80),
     backgroundColor: theme.palette.background.default,
     position: 'absolute',
     left: 0,
@@ -64,6 +65,9 @@ const useStyles = makeStyles(theme => ({
     width: '100vw',
     height: '40vh',
   },
+  margin: '0 auto',
+  marginTop: '35vh',
+  display: 'block',
 }))
 
 const MenuSection = withStyles(theme => ({
@@ -113,19 +117,19 @@ const getOrganizedSections = items => {
 }
 
 function Menu() {
-  const classes = useStyles()
   const [global, setGlobal] = useGlobalState()
   const opacityThreshold = useRef(null)
   const [currentItem, setCurrentItem] = useState([])
   const [items, setItems] = useState([])
-  const [currentOrder, setStagingOrder] = useState([])
+  const [currentOrder, setCurrentOrder] = useState([])
   const { currentRestaurant } = global
+  const classes = useStyles({ emptyOrder: !currentOrder.length })
 
-  const addItems = items => setStagingOrder(prev => [...prev, items])
+  const addItems = items => setCurrentOrder(prev => [...prev, items])
 
   useEffect(() => {
-    if (global.currentRestaurant) {
-      return Restaurant.subscribeMenu(global.currentRestaurant.id, setItems)
+    if (currentRestaurant) {
+      return Restaurant.subscribeMenu(currentRestaurant.id, setItems)
     }
   }, [global.currentRestaurant])
 
@@ -147,41 +151,60 @@ function Menu() {
     <>
       <Switch>
         <Route exact path="/menu">
-          <AppBar hamburguer opacityThreshold={opacityThreshold} />
+          <AppBar
+            hamburguer
+            title={
+              <Typography variant="body1" component="h1">
+                {(currentRestaurant || {}).name}
+              </Typography>
+            }
+            opacityThreshold={opacityThreshold}
+          />
 
-          <section className={classes.root}>
-            <img
-              src={global.currentRestaurant.coverPicture}
-              className={classes.cover}
-            />
+          {!currentRestaurant ? (
+            <CircularProgress size={50} className={classes.loading} />
+          ) : (
+            <>
+              <section className={classes.root}>
+                <img
+                  src={currentRestaurant.coverPicture}
+                  className={classes.cover}
+                />
 
-            <div className={classes.itemsList} ref={opacityThreshold}>
-              {menu.map(section => (
-                <MenuSection onItemClick={handleItemClick} section={section} />
-              ))}
-            </div>
-          </section>
+                <div className={classes.itemsList} ref={opacityThreshold}>
+                  {menu.map(section => (
+                    <MenuSection
+                      onItemClick={handleItemClick}
+                      section={section}
+                    />
+                  ))}
+                </div>
+              </section>
 
-          {currentOrder.length >= 0 && (
-            <BottomBar className={classes.currentOrderBar} stackNumber={2}>
-              <div className={classes.itemsAmount}>{currentOrder.length}</div>
-              Pedido atual
-              <div>
-                <span style={{ fontSize: '0.7rem' }}>R$ </span>
-                {formatMoney(
-                  currentOrder.reduce((sum, { price }) => sum + price, 0)
-                )}
-              </div>
-            </BottomBar>
+              {currentOrder.length > 0 && (
+                <BottomBar className={classes.currentOrderBar}>
+                  <div className={classes.itemsAmount}>
+                    {currentOrder.length}
+                  </div>
+                  Pedido atual
+                  <div>
+                    <span style={{ fontSize: '0.7rem' }}>R$ </span>
+                    {formatMoney(
+                      currentOrder.reduce((sum, { price }) => sum + price, 0)
+                    )}
+                  </div>
+                </BottomBar>
+              )}
+              <BottomBar className={classes.navBottomBar}>
+                <IconButton>
+                  <ReceiptIcon />
+                </IconButton>
+                <IconButton>
+                  <PermIdentityIcon />
+                </IconButton>
+              </BottomBar>
+            </>
           )}
-          <BottomBar className={classes.navBottomBar}>
-            <IconButton>
-              <ReceiptIcon />
-            </IconButton>
-            <IconButton>
-              <PermIdentityIcon />
-            </IconButton>
-          </BottomBar>
         </Route>
         <SlideRoute path="/menu/item">
           <ItemProfile item={currentItem} addItems={addItems} />

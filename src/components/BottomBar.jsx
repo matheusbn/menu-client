@@ -29,8 +29,6 @@ export default function BottomBar({ style, className, children, height = 50 }) {
       <div className={`${classes.root} ${className}`} style={style}>
         {children}
       </div>
-      {/* prevents elements from disappearing behind the bar */}
-      <div style={{ height }} />
     </>
   )
 }

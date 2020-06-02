@@ -76,6 +76,8 @@ const getCurrentSessionSnapshot = async () => {
 export const getCurrentSession = async () => {
   const session = await getCurrentSessionSnapshot()
 
+  if (!session) return null
+
   return {
     ...session.data(),
     id: session.id,
@@ -84,6 +86,7 @@ export const getCurrentSession = async () => {
 
 export const getCurrentRestaurant = async () => {
   const session = await getCurrentSessionSnapshot()
+  if (!session) return null
   const restaurant = await session.ref.parent.parent.get()
 
   return {

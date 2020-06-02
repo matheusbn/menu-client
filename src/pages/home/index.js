@@ -95,6 +95,8 @@ function Home() {
     history.push('/menu')
   }
 
+  console.log(2)
+
   return (
     <section className={classes.root}>
       <div className="home-title">
@@ -129,7 +131,7 @@ function Home() {
             endAdornment={
               <InputAdornment position="end">
                 <IconButton type="submit" edge="end" onClick={openSession}>
-                  <SendIcon />
+                  <SendIcon color="action" />
                 </IconButton>
               </InputAdornment>
             }

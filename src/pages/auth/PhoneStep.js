@@ -17,13 +17,25 @@ const useStyles = makeStyles({
 
 const PhoneStep = props => {
   const classes = useStyles()
-  const [countryCode, setCountryCode] = useState('+55')
-  const [ddd, setDdd] = useState('048')
+  const [countryCode, setCountryCode] = useState(null) //'+55')
+  const [ddd, setDdd] = useState(null) //'048')
   const [phone, setPhone] = useState(991321617)
 
   const handleCountryCode = e => setCountryCode(e.target.value)
-  const handleDdd = e => setDdd(e.target.value)
+  const handleDdd = e => {
+    const value = e.target.value
+    const hasZero = value[0] === '0'
+    if (hasZero && value.length > 3) return
+
+    setDdd(hasZero ? value : 0 + value)
+  }
   const handlePhone = e => setPhone(e.target.value)
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    console.log('submitted')
+    props.onSubmit()
+  }
 
   useEffect(() => {
     props.setPhone(countryCode + ddd + phone)
