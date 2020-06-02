@@ -1,10 +1,10 @@
-name: CI-S3
+name: deploy-s3
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build-and-deploy:
@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
         with:
-          node_version: '10.x'
+          node_version: "10.x"
       - run: npm install
       - run: npm run build
 
@@ -25,7 +25,6 @@ jobs:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: 'us-east-1'
-          SOURCE_DIR: 'build'
-          DEST_DIR: 'build'
-
+          AWS_REGION: "us-east-1"
+          SOURCE_DIR: "build"
+          DEST_DIR: "build"
