@@ -1,27 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from 'react'
 import history from 'router/history'
 
 export default function Switch(props) {
-  const routes = React.Children.toArray(props.children)
+  const children = React.Children.toArray(props.children)
+  const subscribed = useRef(false)
   const [currentRelativeUrl, setCurrentRelativeUrl] = useState(history.location)
 
-  useEffect(() => {
-    const handler = (e) => setCurrentRelativeUrl(history.location)
-    window.addEventListener("locationchange", handler);
+  // Copied from react-router:
+  // This is a bit of a hack. We have to start listening for location
+  // changes here in the constructor in case there are any <Redirect>s
+  // on the initial render. If there are, they will replace/push when
+  // they mount and since componentDidMount fires in children before parents,
+  //  we may get a new location before the <Router> is mounted.
+  const handler = e => {
+    console.log('location change EVENT FIRED')
+    setCurrentRelativeUrl(history.location)
+  }
+  if (!subscribed.current) {
+    console.log('listenning to event')
+    window.addEventListener('locationchange', handler)
 
-    return () => {
-      window.removeEventListener("locationchange", handler);
-    };
-  }, []);
+    subscribed.current = true
+  }
 
+  useEffect(
+    () => () => window.removeEventListener('locationchange', handler),
+    []
+  )
 
-  const route = routes.find(route => {
-    const { path, exact } = route.props
+  console.log(children)
+  const route = children.find(route => {
+    const { to, path, exact } = route.props
+    // if (!path) return
+
+    const print =
+      currentRelativeUrl === path || currentRelativeUrl.match(new RegExp(path))
+
+    if (print) {
+      console.log('rota atual', currentRelativeUrl)
+      console.log('rota destino', path)
+    }
 
     if (exact) return currentRelativeUrl === path
 
-    if(currentRelativeUrl.match(new RegExp(path))) {
-      window.history.replaceState({}, "", path)
+    if (currentRelativeUrl.match(new RegExp(path))) {
+      window.history.replaceState({}, '', path)
       return true
     }
 

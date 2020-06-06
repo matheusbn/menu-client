@@ -10,6 +10,7 @@ import { CssBaseline, CircularProgress } from '@material-ui/core'
 import Home from 'pages/home'
 import Menu from 'pages/menu'
 import Auth from 'pages/auth'
+import NotFound from 'pages/NotFound'
 import importFirebase, {
   getCurrentSession,
   getCurrentRestaurant,
@@ -80,29 +81,45 @@ function App() {
   useEffect(() => {
     importFirebase().then(firebase => {
       firebase.auth().onAuthStateChanged(async currentUser => {
+        setGlobal({ currentUser })
         if (!currentUser) {
           history.replace('/auth')
           setLoading(false)
         } else {
           const currentSession = await getCurrentSession()
           if (currentSession) {
-            history.push('/menu')
             const currentRestaurant = await getCurrentRestaurant()
 
             setGlobal({
-              currentUser,
               currentSession,
               currentRestaurant,
             })
           } else {
             history.push('/')
-            setGlobal({ currentUser })
           }
           setLoading(false)
         }
       })
     })
   }, [])
+
+  let routes = null
+  if (!global.currentUser) routes = [<Route path="/auth" component={Auth} />]
+  else if (global.currentSession) {
+    routes = [
+      <SlideRoute path="/menu" component={Menu} />,
+      <SlideRoute
+        direction="up"
+        path="/menu/pedido-atual"
+        component={() => <h1>pedido atual</h1>}
+      />,
+      <SlideRoute
+        direction="up"
+        path="/menu/fechar-conta"
+        component={() => <h1>fechar conta</h1>}
+      />,
+    ]
+  } else routes = [<Route path="/" component={Home} />]
 
   return (
     <ThemeProvider theme={theme}>
@@ -115,9 +132,8 @@ function App() {
               <CircularProgress size={50} className={classes.loading} />
             ) : (
               <Switch>
-                <Route path="/auth" component={Auth} />
-                <SlideRoute path="/menu" component={Menu} />
-                <Route path="/" component={Home} />
+                {routes}
+                <Route path="/notfound" component={NotFound} />,
               </Switch>
             )}
           </ToastContext.Provider>
