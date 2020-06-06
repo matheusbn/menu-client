@@ -28,10 +28,9 @@ export default function Switch(props) {
     []
   )
 
-  console.log(children)
   const route = children.find(route => {
-    const { to, path, exact } = route.props
-    // if (!path) return
+    const { path, exact } = route.props
+    if (!path) return true
 
     const print =
       currentRelativeUrl === path || currentRelativeUrl.match(new RegExp(path))

@@ -133,7 +133,7 @@ function App() {
             ) : (
               <Switch>
                 {routes}
-                <Route path="/notfound" component={NotFound} />,
+                <Route component={NotFound} />,
               </Switch>
             )}
           </ToastContext.Provider>
