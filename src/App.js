@@ -15,7 +15,7 @@ import importFirebase, {
   getCurrentSession,
   getCurrentRestaurant,
 } from 'services/firebase'
-import { Switch, history, Route, SlideRoute } from 'router'
+import { Switch, history, Route, SlideRoute, Redirect } from 'router'
 import ToastContext from 'contexts/toast'
 import useSetState from 'hooks/useSetState'
 import GlobalStateContext from 'contexts/global-state'
@@ -118,6 +118,7 @@ function App() {
         path="/menu/fechar-conta"
         component={() => <h1>fechar conta</h1>}
       />,
+      <Route path="/" exact component={() => <Redirect to="/menu" />} />,
     ]
   } else routes = [<Route path="/" component={Home} />]
 

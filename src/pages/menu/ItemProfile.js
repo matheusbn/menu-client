@@ -22,7 +22,9 @@ import BottomBar from 'components/BottomBar'
 import { formatMoney } from 'helpers/utils'
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    marginBottom: 50,
+  },
   picture: {
     width: '100vw',
     height: '40vh',
@@ -101,7 +103,7 @@ function ItemProfile({ item, addItems }) {
     <div>
       <AppBar backButton opacityThreshold={opacityThreshold} />
 
-      <section>
+      <section className={classes.root}>
         <img src={item.pictures[0]} className={classes.picture} />
 
         <div className={classes.root}>

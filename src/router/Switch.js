@@ -12,12 +12,8 @@ export default function Switch(props) {
   // on the initial render. If there are, they will replace/push when
   // they mount and since componentDidMount fires in children before parents,
   //  we may get a new location before the <Router> is mounted.
-  const handler = e => {
-    console.log('location change EVENT FIRED')
-    setCurrentRelativeUrl(history.location)
-  }
+  const handler = e => setCurrentRelativeUrl(history.location)
   if (!subscribed.current) {
-    console.log('listenning to event')
     window.addEventListener('locationchange', handler)
 
     subscribed.current = true
@@ -34,11 +30,6 @@ export default function Switch(props) {
 
     const print =
       currentRelativeUrl === path || currentRelativeUrl.match(new RegExp(path))
-
-    if (print) {
-      console.log('rota atual', currentRelativeUrl)
-      console.log('rota destino', path)
-    }
 
     if (exact) return currentRelativeUrl === path
 
