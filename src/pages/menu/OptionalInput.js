@@ -16,7 +16,6 @@ import {
 } from '@material-ui/core'
 import AppBar from 'components/AppBar'
 import { Add as AddIcon } from '@material-ui/icons'
-import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
 import { formatMoney } from 'helpers/utils'
 

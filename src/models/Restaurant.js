@@ -53,8 +53,6 @@ const openSession = async tableCode => {
 
   if (!user) throw new Error('User must be signed in')
 
-  // TODO: set current session
-  // TODO: set current restaurant
   return restaurant.ref.collection('sessions').add({
     checkinAt: new Date(),
     checkoutAt: null,

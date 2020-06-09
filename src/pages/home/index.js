@@ -16,7 +16,6 @@ import {
   CameraAlt as CameraAltIcon,
 } from '@material-ui/icons'
 import { history } from 'router'
-import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
 import QRScannerDialog from './QRScannerDialog'
 
@@ -67,7 +66,6 @@ const Divider = withStyles({
 
 function Home() {
   const classes = useStyles()
-  const [global, setGlobal] = useGlobalState()
   const [code, setCode] = useState(null)
   const qrScanner = useRef(null)
 
@@ -91,7 +89,7 @@ function Home() {
     }
     const currentSession = { ...sessionSnapshot.data(), id: sessionSnapshot.id }
 
-    setGlobal({ currentRestaurant, currentSession })
+    // todo: set sessions stuff
     history.push('/menu')
   }
 

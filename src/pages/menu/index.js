@@ -8,7 +8,6 @@ import {
   Receipt as ReceiptIcon,
   PermIdentity as PermIdentityIcon,
 } from '@material-ui/icons'
-import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
 import { Switch, history, Route, SlideRoute } from 'router'
 import { useSelector } from 'react-redux'

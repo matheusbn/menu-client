@@ -16,8 +16,6 @@ import ToastContext from 'contexts/toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchInitialData } from 'actions'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import GlobalStateContext from 'contexts/global-state'
-import SetGlobalStateContext from 'contexts/set-global-state'
 import Toast from 'components/Toast'
 
 const colors = {
@@ -109,23 +107,19 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStateContext.Provider value={global}>
-        <SetGlobalStateContext.Provider value={setGlobal}>
-          <ToastContext.Provider value={toast}>
-            <CssBaseline />
+      <ToastContext.Provider value={toast}>
+        <CssBaseline />
 
-            {isFetchingInitialData ? (
-              <CircularProgress size={50} className={classes.loading} />
-            ) : (
-              <Switch>
-                {routes}
-                <Route component={NotFound} />,
-              </Switch>
-            )}
-          </ToastContext.Provider>
-          <Toast ref={toast} />
-        </SetGlobalStateContext.Provider>
-      </GlobalStateContext.Provider>
+        {isFetchingInitialData ? (
+          <CircularProgress size={50} className={classes.loading} />
+        ) : (
+          <Switch>
+            {routes}
+            <Route component={NotFound} />,
+          </Switch>
+        )}
+      </ToastContext.Provider>
+      <Toast ref={toast} />
     </ThemeProvider>
   )
 }
