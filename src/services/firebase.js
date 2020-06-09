@@ -52,7 +52,6 @@ export default async function importFirebase() {
 
 export const getCurrentUser = () =>
   importFirebase().then(firebase => {
-    console.log(firebase.auth().currentUser)
     return firebase.auth().currentUser
   })
 

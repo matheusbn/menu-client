@@ -80,7 +80,7 @@ function App() {
       if (session) history.replace('/menu')
       else history.replace('/')
     }
-  }, [user])
+  }, [user, session])
 
   let routes = null
   if (!user) {

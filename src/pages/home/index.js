@@ -16,7 +16,8 @@ import {
   CameraAlt as CameraAltIcon,
 } from '@material-ui/icons'
 import { history } from 'router'
-import Restaurant from 'models/Restaurant'
+import { useDispatch } from 'react-redux'
+import { openSession } from 'actions'
 import QRScannerDialog from './QRScannerDialog'
 
 const useStyles = makeStyles({
@@ -65,6 +66,7 @@ const Divider = withStyles({
 })(({ classes }) => <div className={classes.root} />)
 
 function Home() {
+  const dispatch = useDispatch()
   const classes = useStyles()
   const [code, setCode] = useState(null)
   const qrScanner = useRef(null)
@@ -73,25 +75,7 @@ function Home() {
 
   const handleQrScaner = () => qrScanner.current.open()
 
-  const openSession = async () => {
-    const sessionRef = await Restaurant.openSession(code).catch(error => {
-      console.error('tem que ta logado vagabundo', error.name)
-    })
-
-    const [restaurantSnapshot, sessionSnapshot] = await Promise.all([
-      sessionRef.parent.parent.get(),
-      sessionRef.get(),
-    ])
-
-    const currentRestaurant = {
-      ...restaurantSnapshot.data(),
-      id: restaurantSnapshot.id,
-    }
-    const currentSession = { ...sessionSnapshot.data(), id: sessionSnapshot.id }
-
-    // todo: set sessions stuff
-    history.push('/menu')
-  }
+  const handleOpenSession = async () => dispatch(openSession(code))
 
   return (
     <section className={classes.root}>
@@ -126,7 +110,11 @@ function Home() {
             onChange={handleCode}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton type="submit" edge="end" onClick={openSession}>
+                <IconButton
+                  type="submit"
+                  edge="end"
+                  onClick={handleOpenSession}
+                >
                   <SendIcon color="action" />
                 </IconButton>
               </InputAdornment>

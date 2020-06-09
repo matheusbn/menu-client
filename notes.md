@@ -1,6 +1,6 @@
 # todo:
 
-- add notes on item profile
+- add open session loader
 
 ## ui
 

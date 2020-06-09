@@ -2,73 +2,54 @@ import importFirebase, {
   getCurrentSession,
   getCurrentRestaurant,
 } from 'services/firebase'
+import Restaurant from 'models/Restaurant'
 
 export const fetchInitialData = user => dispatch => {
+  const dispatchFetchInitialData = (data = {}) =>
+    dispatch({
+      type: 'FETCH_INITIAL_DATA_SUCCESS',
+      ...data,
+    })
   importFirebase().then(firebase => {
     firebase.auth().onAuthStateChanged(async user => {
-      if (!user) {
-        return dispatch({ type: 'FETCH_INITIAL_DATA_SUCCESS', data: {} })
-      } else {
+      if (!user) return dispatchFetchInitialData()
+      else {
         const session = await getCurrentSession()
         if (session) {
           const restaurant = await getCurrentRestaurant()
 
-          return dispatch({
-            type: 'FETCH_INITIAL_DATA_SUCCESS',
-            data: { user, session, restaurant },
-          })
+          return dispatchFetchInitialData({ user, session, restaurant })
         } else {
-          return dispatch({
-            type: 'FETCH_INITIAL_DATA_SUCCESS',
-            data: { user },
-          })
+          return dispatchFetchInitialData({ user })
         }
       }
     })
   })
 }
 
-export const fetchUser = user => dispatch => {
+export const openSession = code => dispatch => {
   dispatch({
-    type: 'FETCH_USER_REQUEST',
-    user,
-  })
-
-  importFirebase().then(firebase => {
-    firebase.auth().onAuthStateChanged(async user => {
-      dispatch({
-        type: 'FETCH_USER_SUCCESS',
-        user,
-      })
-    })
-  })
-}
-
-export const fetchSession = session => dispatch => {
-  dispatch({
-    type: 'FETCH_SESSION_REQUEST',
-    session,
+    type: 'OPEN_SESSION_REQUEST',
+    code,
   })
 
   importFirebase().then(async firebase => {
-    const session = await getCurrentSession()
+    const sessionRef = await Restaurant.openSession(code).catch(console.error)
+
+    const [restaurantSnapshot, sessionSnapshot] = await Promise.all([
+      sessionRef.parent.parent.get(),
+      sessionRef.get(),
+    ])
+
+    const restaurant = {
+      ...restaurantSnapshot.data(),
+      id: restaurantSnapshot.id,
+    }
+    const session = { ...sessionSnapshot.data(), id: sessionSnapshot.id }
+
     dispatch({
-      type: 'FETCH_SESSION_SUCCESS',
+      type: 'OPEN_SESSION_SUCCESS',
       session,
-    })
-  })
-}
-
-export const fetchRestaurant = restaurant => dispatch => {
-  dispatch({
-    type: 'FETCH_RESTAURANT_REQUEST',
-    restaurant,
-  })
-
-  importFirebase().then(async firebase => {
-    const restaurant = await getCurrentRestaurant()
-    dispatch({
-      type: 'FETCH_RESTAURANT_SUCCESS',
       restaurant,
     })
   })
