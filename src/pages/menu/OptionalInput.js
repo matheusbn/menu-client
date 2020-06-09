@@ -19,7 +19,6 @@ import { Add as AddIcon } from '@material-ui/icons'
 import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
 import { formatMoney } from 'helpers/utils'
-import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
 
 const useStyles = makeStyles(theme => ({
   title: {

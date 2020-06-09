@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Switch, history, Route, SlideRoute } from 'router'
 import { makeStyles } from '@material-ui/core/styles'
-import importFirebase, {
-  getCurrentUser,
-  getCurrentSession,
-  getCurrentRestaurant,
-} from 'services/firebase'
+import importFirebase from 'services/firebase'
 import PhoneStep from './PhoneStep'
 import VerificationCodeStep from './VerificationCodeStep'
 
@@ -99,7 +95,7 @@ function Auth() {
     confirmationResult.current
       .confirm(verificationCode)
       .then(async result => {
-        // essa logica ta no App.js
+        // a logica de roteamento ta no App.js
       })
       .catch(error => {
         console.error('Error on confirm', error)

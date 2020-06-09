@@ -95,8 +95,6 @@ function Home() {
     history.push('/menu')
   }
 
-  console.log(2)
-
   return (
     <section className={classes.root}>
       <div className="home-title">

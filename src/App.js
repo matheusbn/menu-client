@@ -11,13 +11,11 @@ import Home from 'pages/home'
 import Menu from 'pages/menu'
 import Auth from 'pages/auth'
 import NotFound from 'pages/NotFound'
-import importFirebase, {
-  getCurrentSession,
-  getCurrentRestaurant,
-} from 'services/firebase'
 import { Switch, history, Route, SlideRoute, Redirect } from 'router'
 import ToastContext from 'contexts/toast'
-import useSetState from 'hooks/useSetState'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchInitialData } from 'actions'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import GlobalStateContext from 'contexts/global-state'
 import SetGlobalStateContext from 'contexts/set-global-state'
 import Toast from 'components/Toast'
@@ -64,48 +62,35 @@ const useStyles = makeStyles({
   },
 })
 
-const defaultGlobalState = {
-  currentUser: null,
-  currentRestaurant: null,
-  currentSession: null,
-}
-
 function App() {
-  const [loading, setLoading] = useState(true)
-  const [global, setGlobal] = useSetState(defaultGlobalState)
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
+  const session = useSelector(state => state.session)
+  const isFetchingInitialData = useSelector(
+    state => state.isFetchingInitialData
+  )
   const toast = useRef(null)
   const classes = useStyles()
 
-  console.log(theme)
-
   useEffect(() => {
-    importFirebase().then(firebase => {
-      firebase.auth().onAuthStateChanged(async currentUser => {
-        setGlobal({ currentUser })
-        if (!currentUser) {
-          history.replace('/auth')
-          setLoading(false)
-        } else {
-          const currentSession = await getCurrentSession()
-          if (currentSession) {
-            const currentRestaurant = await getCurrentRestaurant()
-
-            setGlobal({
-              currentSession,
-              currentRestaurant,
-            })
-          } else {
-            history.push('/')
-          }
-          setLoading(false)
-        }
-      })
-    })
+    dispatch(fetchInitialData())
   }, [])
 
+  useUpdateEffect(() => {
+    if (!user) history.replace('/auth')
+    else {
+      if (session) history.replace('/menu')
+      else history.replace('/')
+    }
+  }, [user])
+
   let routes = null
-  if (!global.currentUser) routes = [<Route path="/auth" component={Auth} />]
-  else if (global.currentSession) {
+  if (!user) {
+    routes = [
+      <Route path="/auth" component={Auth} />,
+      <Route path="/" exact component={() => <Redirect to="/menu" />} />,
+    ]
+  } else if (session) {
     routes = [
       <SlideRoute path="/menu" component={Menu} />,
       <SlideRoute
@@ -129,7 +114,7 @@ function App() {
           <ToastContext.Provider value={toast}>
             <CssBaseline />
 
-            {loading ? (
+            {isFetchingInitialData ? (
               <CircularProgress size={50} className={classes.loading} />
             ) : (
               <Switch>

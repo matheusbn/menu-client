@@ -1,5 +1,5 @@
 {
-  "name": "ztodo",
+  "name": "tcc",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -46,6 +46,9 @@
     "lodash": "^4.17.15",
     "preact": "^10.4.4",
     "qr-scanner": "^1.1.1",
-    "react-hot-loader": "^4.12.19"
+    "react-hot-loader": "^4.12.19",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   }
 }

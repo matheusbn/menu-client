@@ -11,7 +11,7 @@ import {
 import useGlobalState from 'hooks/useGlobalState'
 import Restaurant from 'models/Restaurant'
 import { Switch, history, Route, SlideRoute } from 'router'
-import { getCurrentSession, getCurrentRestaurant } from 'services/firebase'
+import { useSelector } from 'react-redux'
 import capitalize from 'lodash/capitalize'
 import Item from './Item'
 import ItemProfile from './ItemProfile'
@@ -117,21 +117,21 @@ const getOrganizedSections = items => {
 }
 
 function Menu() {
-  const [global, setGlobal] = useGlobalState()
+  const user = useSelector(state => state.user)
+  const restaurant = useSelector(state => state.restaurant)
   const opacityThreshold = useRef(null)
   const [currentItem, setCurrentItem] = useState([])
   const [items, setItems] = useState([])
   const [currentOrder, setCurrentOrder] = useState([])
-  const { currentRestaurant } = global
   const classes = useStyles({ emptyOrder: !currentOrder.length })
 
   const addItems = items => setCurrentOrder(prev => [...prev, items])
 
   useEffect(() => {
-    if (currentRestaurant) {
-      return Restaurant.subscribeMenu(currentRestaurant.id, setItems)
+    if (restaurant) {
+      return Restaurant.subscribeMenu(restaurant.id, setItems)
     }
-  }, [global.currentRestaurant])
+  }, [restaurant])
 
   useEffect(() => {
     // if (items.length) {
@@ -155,21 +155,18 @@ function Menu() {
             hamburguer
             title={
               <Typography variant="body1" component="h1">
-                {(currentRestaurant || {}).name}
+                {(restaurant || {}).name}
               </Typography>
             }
             opacityThreshold={opacityThreshold}
           />
 
-          {!currentRestaurant ? (
+          {!restaurant ? (
             <CircularProgress size={50} className={classes.loading} />
           ) : (
             <>
               <section className={classes.root}>
-                <img
-                  src={currentRestaurant.coverPicture}
-                  className={classes.cover}
-                />
+                <img src={restaurant.coverPicture} className={classes.cover} />
 
                 <div className={classes.itemsList} ref={opacityThreshold}>
                   {menu.map(section => (

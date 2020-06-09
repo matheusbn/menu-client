@@ -49,6 +49,8 @@ module.exports = env => {
         router: path.resolve(__dirname, './src/router'),
         services: path.resolve(__dirname, './src/services'),
         contexts: path.resolve(__dirname, './src/contexts'),
+        reducers: path.resolve(__dirname, './src/reducers'),
+        actions: path.resolve(__dirname, './src/actions'),
       },
     },
     output: {
