@@ -6,7 +6,7 @@ import * as swRegisterer from './swRegisterer'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
-import reducer from 'reducers'
+import reducer from 'reducer'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = createStore(

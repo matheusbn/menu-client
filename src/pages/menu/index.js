@@ -86,7 +86,7 @@ const MenuSection = withStyles(theme => ({
     marginBottom: theme.spacing(2),
     color: theme.palette.grey[700],
   },
-}))(({ classes, section, onItemClick, addItems }) => (
+}))(({ classes, section, onItemClick }) => (
   <div className={classes.root}>
     <Typography className={classes.sectionName} component="h2" variant="body2">
       {capitalize(section.name)}
@@ -118,13 +118,13 @@ const getOrganizedSections = items => {
 function Menu() {
   const user = useSelector(state => state.user)
   const restaurant = useSelector(state => state.restaurant)
+  const order = useSelector(state => state.order)
   const opacityThreshold = useRef(null)
   const [currentItem, setCurrentItem] = useState([])
   const [items, setItems] = useState([])
-  const [currentOrder, setCurrentOrder] = useState([])
-  const classes = useStyles({ emptyOrder: !currentOrder.length })
+  const classes = useStyles({ emptyOrder: !order.length })
 
-  const addItems = items => setCurrentOrder(prev => [...prev, items])
+  // const addItems = items => setCurrentOrder(prev => [...prev, items])
 
   useEffect(() => {
     if (restaurant) {
@@ -177,16 +177,14 @@ function Menu() {
                 </div>
               </section>
 
-              {currentOrder.length > 0 && (
+              {order.length > 0 && (
                 <BottomBar className={classes.currentOrderBar}>
-                  <div className={classes.itemsAmount}>
-                    {currentOrder.length}
-                  </div>
+                  <div className={classes.itemsAmount}>{order.length}</div>
                   Pedido atual
                   <div>
                     <span style={{ fontSize: '0.7rem' }}>R$ </span>
                     {formatMoney(
-                      currentOrder.reduce((sum, { price }) => sum + price, 0)
+                      order.reduce((sum, { price }) => sum + price, 0)
                     )}
                   </div>
                 </BottomBar>
@@ -203,7 +201,7 @@ function Menu() {
           )}
         </Route>
         <SlideRoute path="/menu/item">
-          <ItemProfile item={currentItem} addItems={addItems} />
+          <ItemProfile item={currentItem} />
         </SlideRoute>
       </Switch>
     </>

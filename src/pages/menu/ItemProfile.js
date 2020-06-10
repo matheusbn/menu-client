@@ -15,7 +15,8 @@ import AppBar from 'components/AppBar'
 import { history } from 'router'
 import { Add as AddIcon, Remove as RemoveIcon } from '@material-ui/icons'
 import useSetState from 'hooks/useSetState'
-import capitalize from 'lodash/capitalize'
+import { addOrderItems } from 'actions'
+import { useDispatch } from 'react-redux'
 import OptionalInput from './OptionalInput'
 import BottomBar from 'components/BottomBar'
 import { formatMoney } from 'helpers/utils'
@@ -57,8 +58,9 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-function ItemProfile({ item, addItems }) {
+function ItemProfile({ item }) {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const opacityThreshold = useRef(null)
   const [state, setState] = useSetState({})
   const [amount, setAmount] = useState(1)
@@ -87,13 +89,15 @@ function ItemProfile({ item, addItems }) {
   }
 
   const handleConfirm = () => {
-    addItems({
-      item: item.name,
-      amount,
-      optionals: state,
-      observations,
-      price: totalPrice,
-    })
+    dispatch(
+      addOrderItems({
+        item: item.name,
+        amount,
+        optionals: state,
+        observations,
+        price: totalPrice,
+      })
+    )
 
     history.back()
   }

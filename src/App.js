@@ -10,11 +10,12 @@ import { CssBaseline, CircularProgress } from '@material-ui/core'
 import Home from 'pages/home'
 import Menu from 'pages/menu'
 import Auth from 'pages/auth'
+import CurrentOrder from 'pages/currentOrder'
 import NotFound from 'pages/NotFound'
 import { Switch, history, Route, SlideRoute, Redirect } from 'router'
 import ToastContext from 'contexts/toast'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchInitialData } from 'actions'
+import { subscribeUserData } from 'actions'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import Toast from 'components/Toast'
 
@@ -62,6 +63,7 @@ const useStyles = makeStyles({
 
 function App() {
   const dispatch = useDispatch()
+  const loaded = useRef(false)
   const user = useSelector(state => state.user)
   const session = useSelector(state => state.session)
   const isFetchingInitialData = useSelector(
@@ -71,36 +73,42 @@ function App() {
   const classes = useStyles()
 
   useEffect(() => {
-    dispatch(fetchInitialData())
+    dispatch(subscribeUserData())
   }, [])
 
   useUpdateEffect(() => {
-    if (!user) history.replace('/auth')
-    else {
-      if (session) history.replace('/menu')
-      else history.replace('/')
+    // the initial route will be done declaratively by the redirect
+    // components, so the first change on user state must be skipped
+    if (loaded.current) {
+      if (!user) history.replace('/auth')
+      else {
+        if (session) history.replace('/menu')
+        else history.replace('/')
+      }
     }
-  }, [user, session])
+    console.log(user, session)
+    loaded.current = true
+  }, [user, session, isFetchingInitialData])
 
   let routes = null
   if (!user) {
     routes = [
       <Route path="/auth" component={Auth} />,
-      <Route path="/" exact component={() => <Redirect to="/menu" />} />,
+      <Route path="/" exact component={() => <Redirect to="/auth" />} />,
     ]
   } else if (session) {
     routes = [
-      <SlideRoute path="/menu" component={Menu} />,
       <SlideRoute
         direction="up"
         path="/menu/pedido-atual"
-        component={() => <h1>pedido atual</h1>}
+        component={CurrentOrder}
       />,
       <SlideRoute
         direction="up"
         path="/menu/fechar-conta"
         component={() => <h1>fechar conta</h1>}
       />,
+      <SlideRoute path="/menu" component={Menu} />,
       <Route path="/" exact component={() => <Redirect to="/menu" />} />,
     ]
   } else routes = [<Route path="/" component={Home} />]
