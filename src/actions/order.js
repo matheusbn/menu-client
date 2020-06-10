@@ -1,4 +1,4 @@
-export const addOrderItems = items => ({
-  type: 'ADD_ORDER_ITEMS',
-  items,
+export const addOrderItem = item => ({
+  type: 'ADD_ORDER_ITEM',
+  item,
 })

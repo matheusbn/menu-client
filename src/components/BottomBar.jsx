@@ -21,12 +21,22 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function BottomBar({ style, className, children, height = 50 }) {
+export default function BottomBar({
+  style,
+  className,
+  children,
+  height = 50,
+  onClick,
+}) {
   const classes = useStyles({ height })
 
   return (
     <>
-      <div className={`${classes.root} ${className}`} style={style}>
+      <div
+        className={`${classes.root} ${className}`}
+        style={style}
+        onClick={onClick}
+      >
         {children}
       </div>
     </>

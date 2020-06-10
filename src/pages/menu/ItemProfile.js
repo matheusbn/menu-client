@@ -15,7 +15,7 @@ import AppBar from 'components/AppBar'
 import { history } from 'router'
 import { Add as AddIcon, Remove as RemoveIcon } from '@material-ui/icons'
 import useSetState from 'hooks/useSetState'
-import { addOrderItems } from 'actions'
+import { addOrderItem } from 'actions'
 import { useDispatch } from 'react-redux'
 import OptionalInput from './OptionalInput'
 import BottomBar from 'components/BottomBar'
@@ -90,8 +90,8 @@ function ItemProfile({ item }) {
 
   const handleConfirm = () => {
     dispatch(
-      addOrderItems({
-        item: item.name,
+      addOrderItem({
+        name: item.name,
         amount,
         optionals: state,
         observations,

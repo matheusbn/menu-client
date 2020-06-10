@@ -139,6 +139,8 @@ function Menu() {
     // }
   }, [items])
 
+  const navToCurrentOrder = () => history.push('/menu/pedido-atual')
+
   const menu = getOrganizedSections(items)
 
   const handleItemClick = item => {
@@ -177,8 +179,11 @@ function Menu() {
                 </div>
               </section>
 
-              {order.length > 0 && (
-                <BottomBar className={classes.currentOrderBar}>
+              {order.length >= 0 && (
+                <BottomBar
+                  className={classes.currentOrderBar}
+                  onClick={navToCurrentOrder}
+                >
                   <div className={classes.itemsAmount}>{order.length}</div>
                   Pedido atual
                   <div>

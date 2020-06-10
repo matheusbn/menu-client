@@ -1,13 +1,43 @@
-import React, { useRef, useState, useContext, useEffect } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
-import { Typography } from '@material-ui/core'
+import React, { useEffect } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { Button, Typography } from '@material-ui/core'
+import OrderItem from './OrderItem'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
 import { useSelector, useDispatch } from 'react-redux'
+import { formatMoney } from 'helpers/utils'
 import { history } from 'router'
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    paddingBottom: 60,
+  },
+  section: {
+    minHeight: '82vh',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  itemList: {
+    padding: theme.spacing(2),
+    paddingBottom: 0,
+  },
+  bottomBar: {
+    alignItems: 'center',
+    padding: theme.spacing(1),
+  },
+  totalPriceContainer: {},
+  totalPrice: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    padding: theme.spacing(2),
+
+    '& span': {
+      ...theme.typography.button,
+      height: 'fit-content',
+    },
+  },
 }))
 
 function CurrentOrder(props) {
@@ -21,8 +51,10 @@ function CurrentOrder(props) {
     // history.back()
   }
 
+  const totalPrice = order.reduce((sum, { price }) => sum + price, 0)
+
   return (
-    <div>
+    <div className={classes.root}>
       <AppBar
         backButton
         title={
@@ -32,9 +64,30 @@ function CurrentOrder(props) {
         }
       />
 
-      <section></section>
-      <BottomBar className={classes.bottombar}>
-        <Button onClick={handleConfirm}>Fazer Pedido</Button>
+      <section className={classes.section}>
+        <ul className={classes.itemList}>
+          {order.map(item => (
+            <OrderItem item={item} />
+          ))}
+        </ul>
+
+        <hr />
+
+        <Typography variant="h5" component="p" className={classes.totalPrice}>
+          <span>Total:</span>
+          <div className="currency">{formatMoney(totalPrice)}</div>
+        </Typography>
+      </section>
+
+      <BottomBar className={classes.bottomBar}>
+        <Button
+          size="small"
+          variant="contained"
+          fullWidth
+          onClick={handleConfirm}
+        >
+          Fazer Pedido
+        </Button>
       </BottomBar>
     </div>
   )

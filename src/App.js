@@ -73,6 +73,7 @@ function App() {
   const classes = useStyles()
 
   useEffect(() => {
+    console.log(theme)
     dispatch(subscribeUserData())
   }, [])
 
@@ -86,7 +87,7 @@ function App() {
         else history.replace('/')
       }
     }
-    console.log(user, session)
+
     loaded.current = true
   }, [user, session, isFetchingInitialData])
 
