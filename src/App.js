@@ -37,7 +37,7 @@ const theme = createMuiTheme({
     tonalOffset: 0.15,
   },
   props: {
-    MuiIconButton: {
+    MuiSvgIcon: {
       color: 'primary',
     },
     MuiButton: {

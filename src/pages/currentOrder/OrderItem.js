@@ -10,7 +10,11 @@ import {
 import { removeOrderItem } from 'actions'
 import { useDispatch } from 'react-redux'
 import { formatMoney } from 'helpers/utils'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
+import {
+  MoreVert as MoreVertIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+} from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,6 +62,11 @@ const useStyles = makeStyles(theme => ({
       fontWeight: theme.typography.fontWeightMedium,
     },
   },
+  menuItem: {
+    width: 140,
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
 }))
 
 const Text = props => <Typography variant="body2" {...props} />
@@ -84,7 +93,13 @@ function OrderItem({ item }) {
   }
 
   return (
-    <Slide direction="left" appear={false} in={present} unmountOnExit>
+    <Slide
+      timeout={300}
+      direction="left"
+      appear={false}
+      in={present}
+      unmountOnExit
+    >
       <li className={classes.root}>
         <Text variant="body1" className={classes.itemName}>
           {amount}x {name}
@@ -104,8 +119,14 @@ function OrderItem({ item }) {
               open={Boolean(menuAnchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleEdit}>Editar</MenuItem>
-              <MenuItem onClick={handleRemove}>Remover</MenuItem>
+              <MenuItem onClick={handleEdit} className={classes.menuItem}>
+                Editar
+                <EditIcon />
+              </MenuItem>
+              <MenuItem onClick={handleRemove} className={classes.menuItem}>
+                Remover
+                <DeleteIcon />
+              </MenuItem>
             </Menu>
           </div>
         </Text>
