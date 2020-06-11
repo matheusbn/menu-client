@@ -13,5 +13,7 @@ export default function Redirect({ to }) {
     history.replace(to)
   }, [])
 
-  return null
+  // return empty div instead of null so id doesnt
+  // conflict with Slide transition from material ui
+  return <div></div>
 }

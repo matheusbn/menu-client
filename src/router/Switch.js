@@ -28,9 +28,6 @@ export default function Switch(props) {
     const { path, exact } = route.props
     if (!path) return true
 
-    const print =
-      currentRelativeUrl === path || currentRelativeUrl.match(new RegExp(path))
-
     if (exact) return currentRelativeUrl === path
 
     if (currentRelativeUrl.match(new RegExp(path))) {
