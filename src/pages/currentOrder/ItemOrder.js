@@ -7,7 +7,9 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core'
-import { removeOrderItem } from 'actions'
+import { removeItemOrder } from 'actions'
+import { history } from 'router'
+import { setSelectedItemOrder } from 'actions'
 import { useDispatch } from 'react-redux'
 import { formatMoney } from 'helpers/utils'
 import {
@@ -71,24 +73,27 @@ const useStyles = makeStyles(theme => ({
 
 const Text = props => <Typography variant="body2" {...props} />
 
-function OrderItem({ item }) {
+function ItemOrder({ itemOrder }) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [present, setPresent] = useState(true)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
-  const { amount, name, price, optionals, observations } = item
+  const { item, amount, price, optionals, observations } = itemOrder
   const [anchorEl, setAnchorEl] = React.useState(null)
 
-  const handleMenu = event => setMenuAnchorEl(event.currentTarget)
+  const openMenu = event => setMenuAnchorEl(event.currentTarget)
+  const closeMenu = () => setMenuAnchorEl(null)
 
-  const handleClose = () => setMenuAnchorEl(null)
-
-  const handleEdit = () => setMenuAnchorEl(null)
+  const handleEdit = () => {
+    dispatch(setSelectedItemOrder(itemOrder))
+    history.push('/menu/item')
+    setMenuAnchorEl(null)
+  }
   const handleRemove = () => {
-    handleClose()
+    closeMenu()
     setPresent(false)
     setTimeout(() => {
-      dispatch(removeOrderItem(item))
+      dispatch(removeItemOrder(itemOrder))
     }, 300)
   }
 
@@ -102,13 +107,13 @@ function OrderItem({ item }) {
     >
       <li className={classes.root}>
         <Text variant="body1" className={classes.itemName}>
-          {amount}x {name}
+          {amount}x {item.name}
           <div className="right">
             <div className="currency">{formatMoney(price)}</div>
             <IconButton
               aria-controls="simple-menu"
               aria-haspopup="true"
-              onClick={handleMenu}
+              onClick={openMenu}
             >
               <MoreVertIcon />
             </IconButton>
@@ -117,7 +122,7 @@ function OrderItem({ item }) {
               anchorEl={menuAnchorEl}
               keepMounted
               open={Boolean(menuAnchorEl)}
-              onClose={handleClose}
+              onClose={closeMenu}
             >
               <MenuItem onClick={handleEdit} className={classes.menuItem}>
                 Editar
@@ -135,7 +140,7 @@ function OrderItem({ item }) {
           {Object.entries(optionals).map(([name, options]) => (
             <>
               <Text className={classes.optional}>{name}</Text>
-              {options.map(option => (
+              {(Array.isArray(options) ? options : [options]).map(option => (
                 <Text className={classes.option}>
                   - {option.name}
                   <div className="currency">{formatMoney(option.price)}</div>
@@ -153,4 +158,4 @@ function OrderItem({ item }) {
   )
 }
 
-export default OrderItem
+export default ItemOrder

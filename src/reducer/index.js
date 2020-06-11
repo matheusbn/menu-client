@@ -39,14 +39,36 @@ const isFetchingInitialData = (state = true, action) => {
 }
 
 const mockOrder = {
-  name: 'Classic Bacon',
+  item: {
+    description:
+      'Hambúrguer angus (120g), queijo prato, bacon crocante, alface, tomate e joe’s sauce.',
+    id: 'dGNsnMbnbn8mX0uOtmvS',
+    name: 'Classic Bacon',
+    optionals: [
+      { name: 'Extras', options: [], required: false },
+      {
+        name: 'Tipo do Pão',
+        options: [
+          { name: 'Brioche', price: 1 },
+          { name: 'Rosetta' },
+          { name: 'Australiano', price: 1 },
+        ],
+        required: { max: 1, min: 1 },
+      },
+    ],
+    pictures: [
+      'https://media-cdn.tripadvisor.com/media/photo-p/0e/aa/df/83/double-classic-bacon.jpg',
+    ],
+    price: 21,
+    section: 'Burgers',
+  },
   amount: 3,
   optionals: {
     Extras: [
       { name: 'Bacon', price: 2 },
       { name: 'Hamburguer', price: 5 },
     ],
-    'Tipo do Pão': [{ name: 'Australiano', price: 1 }],
+    'Tipo do Pão': { name: 'Australiano', price: 1 },
   },
   observations: 'sem pao',
   price: 42.5,
@@ -56,12 +78,20 @@ const order = (
   state = [{ ...mockOrder }, { ...mockOrder }, { ...mockOrder }],
   action
 ) => {
-  window.orders = state
   switch (action.type) {
-    case `ADD_ORDER_ITEM`:
+    case `ADD_ITEM_ORDER`:
       return [...state, action.item]
-    case `REMOVE_ORDER_ITEM`:
+    case `REMOVE_ITEM_ORDER`:
       return state.filter(item => item !== action.item)
+    default:
+      return state
+  }
+}
+
+const selectedItemOrder = (state = {}, action) => {
+  switch (action.type) {
+    case `SET_SELECTED_ITEM_ORDER`:
+      return action.item
     default:
       return state
   }
@@ -73,4 +103,5 @@ export default combineReducers({
   restaurant,
   isFetchingInitialData,
   order,
+  selectedItemOrder,
 })

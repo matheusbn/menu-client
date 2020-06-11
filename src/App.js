@@ -11,6 +11,7 @@ import Home from 'pages/home'
 import Menu from 'pages/menu'
 import Auth from 'pages/auth'
 import CurrentOrder from 'pages/currentOrder'
+import ItemProfile from 'pages/itemProfile'
 import NotFound from 'pages/NotFound'
 import { Switch, history, Route, SlideRoute, Redirect } from 'router'
 import ToastContext from 'contexts/toast'
@@ -109,6 +110,7 @@ function App() {
         path="/menu/fechar-conta"
         component={() => <h1>fechar conta</h1>}
       />,
+      <SlideRoute path="/menu/item" component={ItemProfile} />,
       <SlideRoute path="/menu" component={Menu} />,
       <Route path="/" exact component={() => <Redirect to="/menu" />} />,
     ]

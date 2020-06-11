@@ -10,10 +10,10 @@ import {
 } from '@material-ui/icons'
 import Restaurant from 'models/Restaurant'
 import { Switch, history, Route, SlideRoute } from 'router'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { setSelectedItemOrder } from 'actions'
 import capitalize from 'lodash/capitalize'
 import Item from './Item'
-import ItemProfile from './ItemProfile'
 import BottomBar from 'components/BottomBar'
 import { formatMoney } from 'helpers/utils'
 
@@ -116,15 +116,12 @@ const getOrganizedSections = items => {
 }
 
 function Menu() {
-  const user = useSelector(state => state.user)
   const restaurant = useSelector(state => state.restaurant)
+  const dispatch = useDispatch()
   const order = useSelector(state => state.order)
   const opacityThreshold = useRef(null)
-  const [currentItem, setCurrentItem] = useState([])
   const [items, setItems] = useState([])
   const classes = useStyles({ emptyOrder: !order.length })
-
-  // const addItems = items => setCurrentOrder(prev => [...prev, items])
 
   useEffect(() => {
     if (restaurant) {
@@ -132,84 +129,65 @@ function Menu() {
     }
   }, [restaurant])
 
-  useEffect(() => {
-    // if (items.length) {
-    //   setCurrentItem(items.find(i => i.name === 'Classic Bacon'))
-    //   history.push('/menu/item')
-    // }
-  }, [items])
-
   const navToCurrentOrder = () => history.push('/menu/pedido-atual')
 
   const menu = getOrganizedSections(items)
 
   const handleItemClick = item => {
-    setCurrentItem(item)
+    dispatch(setSelectedItemOrder({ item }))
     history.push('/menu/item')
   }
 
   return (
-    <>
-      <Switch>
-        <Route exact path="/menu">
-          <AppBar
-            hamburguer
-            title={
-              <Typography variant="body1" component="h1">
-                {(restaurant || {}).name}
-              </Typography>
-            }
-            opacityThreshold={opacityThreshold}
-          />
+    <div>
+      <AppBar
+        hamburguer
+        title={
+          <Typography variant="body1" component="h1">
+            {(restaurant || {}).name}
+          </Typography>
+        }
+        opacityThreshold={opacityThreshold}
+      />
 
-          {!restaurant ? (
-            <CircularProgress size={50} className={classes.loading} />
-          ) : (
-            <>
-              <section className={classes.root}>
-                <img src={restaurant.coverPicture} className={classes.cover} />
+      {!restaurant ? (
+        <CircularProgress size={50} className={classes.loading} />
+      ) : (
+        <>
+          <section className={classes.root}>
+            <img src={restaurant.coverPicture} className={classes.cover} />
 
-                <div className={classes.itemsList} ref={opacityThreshold}>
-                  {menu.map(section => (
-                    <MenuSection
-                      onItemClick={handleItemClick}
-                      section={section}
-                    />
-                  ))}
-                </div>
-              </section>
+            <div className={classes.itemsList} ref={opacityThreshold}>
+              {menu.map(section => (
+                <MenuSection onItemClick={handleItemClick} section={section} />
+              ))}
+            </div>
+          </section>
 
-              {order.length >= 0 && (
-                <BottomBar
-                  className={classes.currentOrderBar}
-                  onClick={navToCurrentOrder}
-                >
-                  <div className={classes.itemsAmount}>{order.length}</div>
-                  Pedido atual
-                  <div>
-                    <span style={{ fontSize: '0.7rem' }}>R$ </span>
-                    {formatMoney(
-                      order.reduce((sum, { price }) => sum + price, 0)
-                    )}
-                  </div>
-                </BottomBar>
-              )}
-              <BottomBar className={classes.navBottomBar}>
-                <IconButton>
-                  <ReceiptIcon />
-                </IconButton>
-                <IconButton>
-                  <PermIdentityIcon />
-                </IconButton>
-              </BottomBar>
-            </>
+          {order.length >= 0 && (
+            <BottomBar
+              className={classes.currentOrderBar}
+              onClick={navToCurrentOrder}
+            >
+              <div className={classes.itemsAmount}>{order.length}</div>
+              Pedido atual
+              <div>
+                <span style={{ fontSize: '0.7rem' }}>R$ </span>
+                {formatMoney(order.reduce((sum, { price }) => sum + price, 0))}
+              </div>
+            </BottomBar>
           )}
-        </Route>
-        <SlideRoute path="/menu/item">
-          <ItemProfile item={currentItem} />
-        </SlideRoute>
-      </Switch>
-    </>
+          <BottomBar className={classes.navBottomBar}>
+            <IconButton>
+              <ReceiptIcon />
+            </IconButton>
+            <IconButton>
+              <PermIdentityIcon />
+            </IconButton>
+          </BottomBar>
+        </>
+      )}
+    </div>
   )
 }
 

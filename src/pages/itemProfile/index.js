@@ -6,20 +6,19 @@ import {
   FormControl,
   InputLabel,
   OutlinedInput,
-  TextField,
   FormHelperText,
-  InputAdornment,
   IconButton,
 } from '@material-ui/core'
 import AppBar from 'components/AppBar'
-import { history } from 'router'
+import { Redirect, history } from 'router'
 import { Add as AddIcon, Remove as RemoveIcon } from '@material-ui/icons'
 import useSetState from 'hooks/useSetState'
-import { addOrderItem } from 'actions'
-import { useDispatch } from 'react-redux'
+import { addItemOrder } from 'actions'
+import { useSelector, useDispatch } from 'react-redux'
 import OptionalInput from './OptionalInput'
 import BottomBar from 'components/BottomBar'
 import { formatMoney } from 'helpers/utils'
+import isEmpty from 'lodash/isEmpty'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -58,18 +57,23 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-function ItemProfile({ item }) {
+function ItemProfile(props) {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const selectedItemOrder = useSelector(state => state.selectedItemOrder)
+  const item = selectedItemOrder.item || {}
   const opacityThreshold = useRef(null)
-  const [state, setState] = useSetState({})
-  const [amount, setAmount] = useState(1)
+  const [optionals, setOptionals] = useSetState(
+    selectedItemOrder.optionals || {}
+  )
+  console.log(item)
+  const [amount, setAmount] = useState(selectedItemOrder.amount || 1)
   const [totalPrice, setTotalPrice] = useState(item.price)
-  const [observations, setObservations] = useState('')
+  const [observation, setObservation] = useState(selectedItemOrder.observation)
 
   useEffect(() => {
     const calcPrice = () => {
-      const totalPrice = Object.entries(state).reduce(
+      const totalPrice = Object.entries(optionals).reduce(
         (totalPrice, [optional, selectedOptions]) =>
           Array.isArray(selectedOptions)
             ? totalPrice +
@@ -82,19 +86,19 @@ function ItemProfile({ item }) {
     }
 
     setTotalPrice(calcPrice())
-  }, [state, amount])
+  }, [optionals, amount])
 
   const handleObservations = e => {
-    if (observations.length < 140) setObservations(e.target.value)
+    if (observation.length < 140) setObservation(e.target.value)
   }
 
   const handleConfirm = () => {
     dispatch(
-      addOrderItem({
-        name: item.name,
+      addItemOrder({
+        item,
         amount,
-        optionals: state,
-        observations,
+        optionals,
+        observation,
         price: totalPrice,
       })
     )
@@ -102,6 +106,7 @@ function ItemProfile({ item }) {
     history.back()
   }
 
+  if (isEmpty(item)) return <Redirect to="/menu" />
   return (
     <div>
       <AppBar backButton opacityThreshold={opacityThreshold} />
@@ -127,8 +132,8 @@ function ItemProfile({ item }) {
           {(item.optionals || []).map(optional => (
             <OptionalInput
               optional={optional}
-              value={state[optional.name]}
-              onChange={value => setState({ [optional.name]: value })}
+              value={optionals[optional.name]}
+              onChange={value => setOptionals({ [optional.name]: value })}
             />
           ))}
 
@@ -136,12 +141,12 @@ function ItemProfile({ item }) {
 
           <div className={classes.observation}>
             <FormControl variant="outlined" fullWidth>
-              <InputLabel htmlFor="observations-input" variant="outlined">
+              <InputLabel htmlFor="observation-input" variant="outlined">
                 Observações
               </InputLabel>
               <OutlinedInput
-                id="observations-input"
-                value={observations}
+                id="observation-input"
+                value={observation}
                 onChange={handleObservations}
                 label="Observações"
                 multiline

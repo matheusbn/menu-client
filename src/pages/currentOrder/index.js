@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography } from '@material-ui/core'
-import OrderItem from './OrderItem'
+import ItemOrder from './ItemOrder'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatMoney, createKeyGenerator } from 'helpers/utils'
-import { history } from 'router'
 
 const genKey = createKeyGenerator()
 
@@ -19,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  itemList: {
+  orderList: {
     padding: theme.spacing(2),
     paddingBottom: 0,
   },
@@ -68,9 +67,9 @@ function CurrentOrder(props) {
       />
 
       <section className={classes.section}>
-        <ul className={classes.itemList}>
-          {order.map(item => (
-            <OrderItem key={genKey()} item={item} />
+        <ul className={classes.orderList}>
+          {order.map(itemOrder => (
+            <ItemOrder key={genKey()} itemOrder={itemOrder} />
           ))}
         </ul>
 
