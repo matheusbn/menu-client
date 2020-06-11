@@ -12,3 +12,8 @@ export const formatMoney = value =>
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   }).format(value)
+
+export const createKeyGenerator = () => {
+  let key = 0
+  return () => key++
+}

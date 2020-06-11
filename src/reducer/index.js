@@ -38,27 +38,30 @@ const isFetchingInitialData = (state = true, action) => {
   }
 }
 
-const orders = [
-  {
-    name: 'Classic Bacon',
-    amount: 3,
-    optionals: {
-      Extras: [
-        { name: 'Bacon', price: 2 },
-        { name: 'Hamburguer', price: 5 },
-      ],
-      'Tipo do Pão': [{ name: 'Australiano', price: 1 }],
-    },
-    observations: 'sem pao',
-    price: 42.5,
+const mockOrder = {
+  name: 'Classic Bacon',
+  amount: 3,
+  optionals: {
+    Extras: [
+      { name: 'Bacon', price: 2 },
+      { name: 'Hamburguer', price: 5 },
+    ],
+    'Tipo do Pão': [{ name: 'Australiano', price: 1 }],
   },
-]
+  observations: 'sem pao',
+  price: 42.5,
+}
 
-const order = (state = [...orders, ...orders, ...orders], action) => {
+const order = (
+  state = [{ ...mockOrder }, { ...mockOrder }, { ...mockOrder }],
+  action
+) => {
+  window.orders = state
   switch (action.type) {
     case `ADD_ORDER_ITEM`:
-      console.log(action.item)
       return [...state, action.item]
+    case `REMOVE_ORDER_ITEM`:
+      return state.filter(item => item !== action.item)
     default:
       return state
   }

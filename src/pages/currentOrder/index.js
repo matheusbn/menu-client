@@ -5,8 +5,10 @@ import OrderItem from './OrderItem'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
 import { useSelector, useDispatch } from 'react-redux'
-import { formatMoney } from 'helpers/utils'
+import { formatMoney, createKeyGenerator } from 'helpers/utils'
 import { history } from 'router'
+
+const genKey = createKeyGenerator()
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,6 +34,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     alignItems: 'flex-end',
     padding: theme.spacing(2),
+    paddingBottom: 0,
 
     '& span': {
       ...theme.typography.button,
@@ -67,7 +70,7 @@ function CurrentOrder(props) {
       <section className={classes.section}>
         <ul className={classes.itemList}>
           {order.map(item => (
-            <OrderItem item={item} />
+            <OrderItem key={genKey()} item={item} />
           ))}
         </ul>
 
