@@ -3,6 +3,12 @@ export const addItemOrder = item => ({
   item,
 })
 
+export const updateItemOrder = (oldItem, newItem) => ({
+  type: 'UPDATE_ITEM_ORDER',
+  oldItem,
+  newItem,
+})
+
 export const removeItemOrder = item => ({
   type: 'REMOVE_ITEM_ORDER',
   item,

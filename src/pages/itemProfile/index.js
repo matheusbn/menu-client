@@ -13,7 +13,7 @@ import AppBar from 'components/AppBar'
 import { Redirect, history } from 'router'
 import { Add as AddIcon, Remove as RemoveIcon } from '@material-ui/icons'
 import useSetState from 'hooks/useSetState'
-import { addItemOrder } from 'actions'
+import { updateItemOrder, addItemOrder } from 'actions'
 import { useSelector, useDispatch } from 'react-redux'
 import OptionalInput from './OptionalInput'
 import BottomBar from 'components/BottomBar'
@@ -60,16 +60,16 @@ const useStyles = makeStyles(theme => ({
 function ItemProfile(props) {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const selectedItemOrder = useSelector(state => state.selectedItemOrder)
-  const item = selectedItemOrder.item || {}
-  const opacityThreshold = useRef(null)
-  const [optionals, setOptionals] = useSetState(
-    selectedItemOrder.optionals || {}
+  const itemOrder = useSelector(state => state.selectedItemOrder)
+  const isUpdate = useSelector(state =>
+    state.order.some(item => item === state.selectedItemOrder)
   )
-  console.log(item)
-  const [amount, setAmount] = useState(selectedItemOrder.amount || 1)
+  const item = itemOrder.item || {}
+  const opacityThreshold = useRef(null)
+  const [optionals, setOptionals] = useSetState(itemOrder.optionals || {})
+  const [amount, setAmount] = useState(itemOrder.amount || 1)
   const [totalPrice, setTotalPrice] = useState(item.price)
-  const [observation, setObservation] = useState(selectedItemOrder.observation)
+  const [observation, setObservation] = useState(itemOrder.observation || '')
 
   useEffect(() => {
     const calcPrice = () => {
@@ -88,19 +88,20 @@ function ItemProfile(props) {
     setTotalPrice(calcPrice())
   }, [optionals, amount])
 
-  const handleObservations = e => {
+  const handleobservation = e => {
     if (observation.length < 140) setObservation(e.target.value)
   }
 
   const handleConfirm = () => {
+    const newItem = {
+      item,
+      amount,
+      optionals,
+      observation,
+      price: totalPrice,
+    }
     dispatch(
-      addItemOrder({
-        item,
-        amount,
-        optionals,
-        observation,
-        price: totalPrice,
-      })
+      isUpdate ? updateItemOrder(itemOrder, newItem) : addItemOrder(newItem)
     )
 
     history.back()
@@ -147,7 +148,7 @@ function ItemProfile(props) {
               <OutlinedInput
                 id="observation-input"
                 value={observation}
-                onChange={handleObservations}
+                onChange={handleobservation}
                 label="Observações"
                 multiline
                 rows={3}
@@ -180,7 +181,8 @@ function ItemProfile(props) {
           onClick={handleConfirm}
           className={classes.confirmButton}
         >
-          Adicionar <span>R$ {formatMoney(totalPrice)}</span>
+          {isUpdate ? 'Atualizar' : 'Adicionar'}{' '}
+          <span>R$ {formatMoney(totalPrice)}</span>
         </Button>
       </BottomBar>
     </div>

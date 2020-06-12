@@ -85,24 +85,34 @@ const OptionalInput = ({ optional, value, onChange }) => {
     onChange(value.filter(opt => opt !== option))
   }
 
-  const getControlLabelProps = option => ({
-    value: option.name,
-    label: (
-      <div>
-        <Typography variant="body2">{option.name}</Typography>
-        {option.price && (
-          <Typography variant="caption">
-            + R$ {formatMoney(option.price)}
-          </Typography>
-        )}
-      </div>
-    ),
-    labelPlacement: 'start',
-    className: classes.option,
-    classes: {
-      label: classes.optionName,
-    },
-  })
+  const getControlLabelProps = option => {
+    let checked = false
+    if (value) {
+      if (isRadio) checked = value.name === option.name
+      else checked = (value || []).some(item => item.name === option.name)
+    }
+
+    return {
+      value: option.name,
+      checked,
+      label: (
+        <div>
+          <Typography variant="body2">{option.name}</Typography>
+          {option.price && (
+            <Typography variant="caption">
+              + R$ {formatMoney(option.price)}
+            </Typography>
+          )}
+        </div>
+      ),
+      labelPlacement: 'start',
+      className: classes.option,
+      classes: {
+        label: classes.optionName,
+      },
+    }
+  }
+
   return (
     <div>
       <FormControl component="fieldset">

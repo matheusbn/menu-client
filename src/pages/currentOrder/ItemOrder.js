@@ -17,10 +17,11 @@ import {
   Delete as DeleteIcon,
   Edit as EditIcon,
 } from '@material-ui/icons'
+import isEmpty from 'lodash/isEmpty'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    paddingBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(2),
     '&:not(:last-child)': {
       marginBottom: theme.spacing(2),
       borderBottom: '1px solid lightgray',
@@ -57,7 +58,7 @@ const useStyles = makeStyles(theme => ({
   optionals: {
     marginLeft: theme.spacing(1),
   },
-  observations: {
+  observation: {
     marginTop: theme.spacing(1),
     marginLeft: theme.spacing(1),
     '& span': {
@@ -78,7 +79,7 @@ function ItemOrder({ itemOrder }) {
   const dispatch = useDispatch()
   const [present, setPresent] = useState(true)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
-  const { item, amount, price, optionals, observations } = itemOrder
+  const { item, amount, price, optionals, observation } = itemOrder
   const [anchorEl, setAnchorEl] = React.useState(null)
 
   const openMenu = event => setMenuAnchorEl(event.currentTarget)
@@ -137,22 +138,32 @@ function ItemOrder({ itemOrder }) {
         </Text>
 
         <div className={classes.optionals}>
-          {Object.entries(optionals).map(([name, options]) => (
-            <>
-              <Text className={classes.optional}>{name}</Text>
-              {(Array.isArray(options) ? options : [options]).map(option => (
-                <Text className={classes.option}>
-                  - {option.name}
-                  <div className="currency">{formatMoney(option.price)}</div>
-                </Text>
-              ))}
-            </>
-          ))}
+          {Object.entries(optionals).map(([name, options]) => {
+            if (isEmpty(options)) return null
+
+            return (
+              <>
+                <Text className={classes.optional}>{name}</Text>
+                {(Array.isArray(options) ? options : [options]).map(option => (
+                  <Text className={classes.option}>
+                    - {option.name}
+                    {option.price && (
+                      <div className="currency">
+                        {formatMoney(option.price)}
+                      </div>
+                    )}
+                  </Text>
+                ))}
+              </>
+            )
+          })}
         </div>
 
-        <Text className={classes.observations}>
-          <span>Observação:</span> {observations}
-        </Text>
+        {observation && (
+          <Text className={classes.observation}>
+            <span>Observação:</span> {observation}
+          </Text>
+        )}
       </li>
     </Slide>
   )

@@ -1,7 +1,13 @@
 # todo:
 
 - disable slide tra nsition to first load
+- refatorar menu pra estado global e item profile pegar item por query-param
+- disabled add item button if any required field is empty
 - add open session loader
+
+## extras:
+
+- diferenciar melhor checkbox e radios
 
 ## ui
 

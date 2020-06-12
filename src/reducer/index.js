@@ -45,7 +45,15 @@ const mockOrder = {
     id: 'dGNsnMbnbn8mX0uOtmvS',
     name: 'Classic Bacon',
     optionals: [
-      { name: 'Extras', options: [], required: false },
+      {
+        name: 'Extras',
+        options: [
+          { name: 'Queijo', price: 1 },
+          { name: 'Bacon', price: 2.5 },
+          { name: 'Hamburguer', price: 5 },
+        ],
+        required: false,
+      },
       {
         name: 'Tipo do Pão',
         options: [
@@ -62,7 +70,7 @@ const mockOrder = {
     price: 21,
     section: 'Burgers',
   },
-  amount: 3,
+  amount: 2,
   optionals: {
     Extras: [
       { name: 'Bacon', price: 2 },
@@ -70,17 +78,22 @@ const mockOrder = {
     ],
     'Tipo do Pão': { name: 'Australiano', price: 1 },
   },
-  observations: 'sem pao',
+  observation: 'sem pao',
   price: 42.5,
 }
 
 const order = (
-  state = [{ ...mockOrder }, { ...mockOrder }, { ...mockOrder }],
+  // state = [],
+  state = [{ ...mockOrder }],
   action
 ) => {
   switch (action.type) {
     case `ADD_ITEM_ORDER`:
       return [...state, action.item]
+    case `UPDATE_ITEM_ORDER`:
+      return state.map(item =>
+        item === action.oldItem ? { ...item, ...action.newItem } : item
+      )
     case `REMOVE_ITEM_ORDER`:
       return state.filter(item => item !== action.item)
     default:

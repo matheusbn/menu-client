@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: 60,
   },
   section: {
-    minHeight: '82vh',
+    minHeight: '80vh',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -50,7 +50,7 @@ function CurrentOrder(props) {
   useEffect(() => {}, [])
 
   const handleConfirm = () => {
-    // history.back()
+    history.back()
   }
 
   const totalPrice = order.reduce((sum, { price }) => sum + price, 0)
@@ -73,7 +73,7 @@ function CurrentOrder(props) {
           ))}
         </ul>
 
-        <hr />
+        {!!order.length && <hr style={{ margin: 0 }} />}
 
         <Typography variant="h5" component="p" className={classes.totalPrice}>
           <span>Total:</span>
