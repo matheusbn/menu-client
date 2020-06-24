@@ -9,17 +9,22 @@ module.exports = env => {
   console.log(process.env.NODE_ENV)
   return {
     entry: {
-      app: './src/index.js',
+      app: './src/index.tsx',
     },
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.(js|jsx|ts|tsx)$/,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
           },
         },
+        // {
+        //   enforce: 'pre',
+        //   test: /\.js?$/,
+        //   use: 'source-map-loader',
+        // },
         {
           test: /\.css$/i,
           use: ['style-loader', 'css-loader'],
@@ -34,7 +39,7 @@ module.exports = env => {
     },
     resolve: {
       modules: [path.resolve(__dirname, './src'), 'node_modules'],
-      extensions: ['*', '.js', '.jsx'],
+      extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
       alias: {
         // Use Preact instead of React.
         react: 'preact/compat',

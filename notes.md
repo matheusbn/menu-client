@@ -1,7 +1,7 @@
 # todo:
 
-- disable slide tra nsition to first load
 - refatorar menu pra estado global e item profile pegar item por query-param
+- disable slide tra nsition to first load
 - disabled add item button if any required field is empty
 - add open session loader
 
