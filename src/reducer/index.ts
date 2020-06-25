@@ -17,6 +17,7 @@ const session = (state = null, action) => {
       return state
   }
 }
+
 const restaurant = (state = null, action) => {
   switch (action.type) {
     case `OPEN_SESSION_SUCCESS`:
@@ -38,7 +39,7 @@ const isFetchingInitialData = (state = true, action) => {
   }
 }
 
-const mockOrder = {
+const mockItemOrder: ItemOrder = {
   item: {
     description:
       'Hambúrguer angus (120g), queijo prato, bacon crocante, alface, tomate e joe’s sauce.',
@@ -52,7 +53,6 @@ const mockOrder = {
           { name: 'Bacon', price: 2.5 },
           { name: 'Hamburguer', price: 5 },
         ],
-        required: false,
       },
       {
         name: 'Tipo do Pão',
@@ -82,9 +82,11 @@ const mockOrder = {
   price: 42.5,
 }
 
+const mockOrder: Order = [{ ...mockItemOrder }, { ...mockItemOrder }]
+
 const order = (
-  state = [],
-  // state = [{ ...mockOrder }],
+  // state: Order = [],
+  state = mockOrder,
   action
 ) => {
   switch (action.type) {
@@ -112,7 +114,13 @@ const selectedItemOrder = (state = {}, action) => {
   }
 }
 
-const bill = (state = [], action) => {
+const mockBill = new Array(2).fill(0).map(e => {
+  let arr: Order = [...mockOrder]
+  arr.orderedAt = new Date()
+  return arr
+})
+
+const bill = (state: Order[] = mockBill, action) => {
   switch (action.type) {
     case `ADD_ORDER`:
       console.log(action.order)

@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography } from '@material-ui/core'
-import OrderList from './OrderList'
+import OrderList from 'components/OrderList'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
 import { addOrder } from 'actions'
@@ -10,6 +10,10 @@ import { useSelector, useDispatch } from 'react-redux'
 const useStyles = makeStyles(theme => ({
   root: {
     paddingBottom: 60,
+  },
+  orderList: {
+    padding: theme.spacing(2),
+    paddingBottom: 0,
   },
   bottomBar: {
     alignItems: 'center',
@@ -42,7 +46,7 @@ function CurrentOrder(props) {
         }
       />
 
-      <OrderList order={order} />
+      <OrderList className={classes.orderList} order={order} />
 
       <BottomBar className={classes.bottomBar}>
         <Button

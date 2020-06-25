@@ -6,6 +6,9 @@
 - add open session loader
 - scroll restoration
 
+- pagamento
+- pagina usuário
+
 ## extras:
 
 - diferenciar melhor checkbox e radios

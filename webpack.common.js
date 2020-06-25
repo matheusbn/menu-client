@@ -30,9 +30,9 @@ module.exports = env => {
           use: ['style-loader', 'css-loader'],
         },
         {
-          test: /\.svg$/,
+          test: /\.(svg|png|jpg|gif)$/,
           use: {
-            loader: '@svgr/webpack',
+            loader: 'file-loader',
           },
         },
       ],

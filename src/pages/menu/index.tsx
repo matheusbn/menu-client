@@ -178,7 +178,7 @@ function Menu() {
             </BottomBar>
           )}
           <BottomBar className={classes.navBottomBar}>
-            <IconButton>
+            <IconButton onClick={() => history.push('/menu/fechar-conta')}>
               <ReceiptIcon />
             </IconButton>
             <IconButton>

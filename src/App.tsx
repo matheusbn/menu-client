@@ -1,11 +1,7 @@
 // import 'preact/devtools'
 import React, { useEffect, useRef, useState } from 'react'
 // import { hot } from 'react-hot-loader/root';
-import {
-  createMuiTheme,
-  makeStyles,
-  ThemeProvider,
-} from '@material-ui/core/styles'
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 import { CssBaseline, CircularProgress } from '@material-ui/core'
 import Home from 'pages/home'
 import Menu from 'pages/menu'
@@ -21,43 +17,9 @@ import { subscribeUserData } from 'actions'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import Toast from 'components/Toast'
 import { createKeyGenerator } from 'helpers/utils'
+import theme from './theme'
 
 const keyGen = createKeyGenerator()
-
-const colors = {
-  // #c81732 vermelho
-  primary: '#D55A00',
-  secondary: '#071E22',
-}
-
-const theme = createMuiTheme({
-  palette: {
-    type: 'light',
-    primary: {
-      main: colors.primary,
-    },
-    secondary: {
-      main: colors.secondary,
-    },
-    contrastThreshold: 3,
-    tonalOffset: 0.15,
-  },
-  props: {
-    MuiSvgIcon: {
-      color: 'primary',
-    },
-    MuiButton: {
-      color: 'primary',
-    },
-  },
-  overrides: {
-    MuiInputBase: {
-      input: {
-        caretColor: colors.primary,
-      },
-    },
-  },
-})
 
 const useStyles = makeStyles({
   loading: {

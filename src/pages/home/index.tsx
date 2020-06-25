@@ -57,13 +57,13 @@ const useStyles = makeStyles({
   },
 })
 
-const Divider = withStyles({
+const Divider = withStyles(theme => ({
   root: {
     width: '60%',
     margin: '0 auto',
-    borderBottom: '1px solid lightgray',
+    borderBottom: theme.border.light,
   },
-})(({ classes }) => <div className={classes.root} />)
+}))(({ classes }) => <div className={classes.root} />)
 
 function Home() {
   const dispatch = useDispatch()

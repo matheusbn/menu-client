@@ -25,7 +25,13 @@ interface Item {
 interface ItemOrder {
   item: Item
   amount: number
-  optionals: Optional[]
+  optionals: {
+    [index: string]: Option[] | Option
+  }
   observation: string
   price: number
+}
+
+interface Order extends Array<ItemOrder> {
+  orderedAt?: Date
 }

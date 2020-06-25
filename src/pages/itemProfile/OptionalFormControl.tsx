@@ -64,7 +64,7 @@ const Observation = ({ requiredObj }) => {
 
   if ((!min && !max) || max === 1) return null
 
-  let text = null
+  let text
   if (max > 1) text = `Escolha até ${max} opções`
   else text = `Escolha no mínimo ${min} ${min > 1 ? 'opções' : 'opção'}`
 

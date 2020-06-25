@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 function ItemProfile(props) {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const itemOrder = useSelector(state => state.selectedItemOrder)
+  const itemOrder: ItemOrder = useSelector(state => state.selectedItemOrder)
   const isUpdate = useSelector(state =>
     state.order.some(item => item === state.selectedItemOrder)
   )
@@ -93,19 +93,19 @@ function ItemProfile(props) {
     setTotalPrice(calcPrice())
   }, [optionals, amount])
 
-  const handleobservation = e => {
+  const handleObservation = e => {
     if (observation.length < 140) setObservation(e.target.value)
   }
 
   const handleConfirm = () => {
-    const newItem = {
+    const newItem: ItemOrder = {
       item,
       amount,
       optionals,
       observation,
       price: totalPrice,
     }
-    console.log(newItem)
+
     dispatch(
       isUpdate ? updateItemOrder(itemOrder, newItem) : addItemOrder(newItem)
     )
@@ -169,7 +169,7 @@ function ItemProfile(props) {
               <OutlinedInput
                 id="observation-input"
                 value={observation}
-                onChange={handleobservation}
+                onChange={handleObservation}
                 label="Observações"
                 multiline
                 rows={3}

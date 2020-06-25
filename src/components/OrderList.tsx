@@ -1,8 +1,9 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
-import ItemOrderListItem from '../../components/ItemOrderListItem'
+import ItemOrderListItem from './ItemOrderListItem'
 import { formatMoney, createKeyGenerator } from 'helpers/utils'
+import clsx from 'clsx'
 
 const genKey = createKeyGenerator()
 
@@ -11,17 +12,17 @@ const useStyles = makeStyles(theme => ({
     // minHeight: '80vh',
     display: 'flex',
     flexDirection: 'column',
-  },
-  orderList: {
-    padding: theme.spacing(2),
-    paddingBottom: 0,
+
+    '& ul': {
+      borderBottom: theme.border.light,
+    },
   },
   totalPrice: {
     flex: 1,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
-    padding: theme.spacing(2),
+    marginTop: theme.spacing(2),
     paddingBottom: 0,
 
     '& span': {
@@ -31,15 +32,15 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-function OrderList({ order }: { order: Order }) {
+function OrderList({ order, className }: { order: Order; className?: string }) {
   const classes = useStyles()
 
   const alreadyOrdered = !!order.orderedAt
   const totalPrice = order.reduce((sum, { price }) => sum + price, 0)
 
   return (
-    <div className={classes.root}>
-      <ul className={classes.orderList}>
+    <div className={clsx(classes.root, className)}>
+      <ul>
         {order.map(itemOrder => (
           <ItemOrderListItem
             key={genKey()}
@@ -49,9 +50,7 @@ function OrderList({ order }: { order: Order }) {
         ))}
       </ul>
 
-      {!!order.length && <hr style={{ margin: 0 }} />}
-
-      <Typography variant="h5" component="p" className={classes.totalPrice}>
+      <Typography variant="h6" component="p" className={classes.totalPrice}>
         <span>Total:</span>
         <div className="currency">{formatMoney(totalPrice)}</div>
       </Typography>
