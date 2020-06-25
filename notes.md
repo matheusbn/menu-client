@@ -4,6 +4,7 @@
 - disable slide tra nsition to first load
 - disabled add item button if any required field is empty
 - add open session loader
+- scroll restoration
 
 ## extras:
 

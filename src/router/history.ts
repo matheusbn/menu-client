@@ -1,9 +1,12 @@
 class History {
+  locationChangeEvent: CustomEvent
+
   constructor() {
     this.locationChangeEvent = new CustomEvent('locationchange')
     window.addEventListener('popstate', () =>
       window.dispatchEvent(this.locationChangeEvent)
     )
+    // window.history.scrollRestoration = 'auto'
   }
 
   push(url) {

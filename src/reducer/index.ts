@@ -96,6 +96,8 @@ const order = (
       )
     case `REMOVE_ITEM_ORDER`:
       return state.filter(item => item !== action.item)
+    case `ADD_ORDER`:
+      return []
     default:
       return state
   }
@@ -113,6 +115,7 @@ const selectedItemOrder = (state = {}, action) => {
 const bill = (state = [], action) => {
   switch (action.type) {
     case `ADD_ORDER`:
+      console.log(action.order)
       return [...state, action.order]
     default:
       return state

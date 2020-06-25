@@ -4,6 +4,7 @@ import { Button, Typography } from '@material-ui/core'
 import ItemOrder from './ItemOrder'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
+import { addOrder } from 'actions'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatMoney, createKeyGenerator } from 'helpers/utils'
 
@@ -50,6 +51,7 @@ function CurrentOrder(props) {
   useEffect(() => {}, [])
 
   const handleConfirm = () => {
+    dispatch(addOrder(order))
     history.back()
   }
 
