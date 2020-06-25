@@ -73,6 +73,10 @@ function ItemProfile(props) {
   const [observation, setObservation] = useState(itemOrder.observation || '')
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     const calcPrice = () => {
       const totalPrice = Object.entries(optionals).reduce(
         (totalPrice, [optional, selectedOptions]) =>
