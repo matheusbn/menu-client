@@ -25,7 +25,7 @@ const OptionalRadio = ({ optional, value, onChange }: OptionalRadioProps) => {
   }
 
   return (
-    <OptionalFormControl requiredObj={optional.required}>
+    <OptionalFormControl requiredObj={optional.required} label={optional.name}>
       <RadioGroup aria-label={optional.name} onChange={handleChange}>
         {options.map(option => (
           <FormControlLabel

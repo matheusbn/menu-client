@@ -35,7 +35,7 @@ const OptionalCheckbox = ({
   }
 
   return (
-    <OptionalFormControl requiredObj={optional.required}>
+    <OptionalFormControl requiredObj={optional.required} label={optional.name}>
       <FormGroup>
         {options.map(option => (
           <FormControlLabel

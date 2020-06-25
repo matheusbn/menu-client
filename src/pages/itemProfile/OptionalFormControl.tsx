@@ -71,7 +71,7 @@ const Observation = ({ requiredObj }) => {
   return <Typography variant="caption">{text}</Typography>
 }
 
-const OptionalFormControl = ({ children, requiredObj }) => {
+const OptionalFormControl = ({ children, label, requiredObj }) => {
   const classes = useStyles()
 
   return (
@@ -80,7 +80,7 @@ const OptionalFormControl = ({ children, requiredObj }) => {
         <div style={{ flexGrow: 1 }}>
           <FormLabel component="legend">
             <Typography variant="body2" className={classes.title}>
-              {name}
+              {label}
             </Typography>
           </FormLabel>
 
