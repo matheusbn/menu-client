@@ -74,7 +74,13 @@ const useStyles = makeStyles(theme => ({
 
 const Text = props => <Typography variant="body2" {...props} />
 
-function ItemOrder({ itemOrder }) {
+function ItemOrderListItem({
+  alreadyOrdered,
+  itemOrder,
+}: {
+  alreadyOrdered: boolean
+  itemOrder: ItemOrder
+}) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [present, setPresent] = useState(true)
@@ -110,13 +116,15 @@ function ItemOrder({ itemOrder }) {
           {amount}x {item.name}
           <div className="right">
             <div className="currency">{formatMoney(price)}</div>
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={openMenu}
-            >
-              <MoreVertIcon />
-            </IconButton>
+            {alreadyOrdered ? null : (
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={openMenu}
+              >
+                <MoreVertIcon />
+              </IconButton>
+            )}
             <Menu
               id="simple-menu"
               anchorEl={menuAnchorEl}
@@ -146,7 +154,7 @@ function ItemOrder({ itemOrder }) {
                 {(Array.isArray(options) ? options : [options]).map(option => (
                   <Text className={classes.option}>
                     - {option.name}
-                    {option.price && (
+                    {option.price && !alreadyOrdered && (
                       <div className="currency">
                         {formatMoney(option.price)}
                       </div>
@@ -168,4 +176,4 @@ function ItemOrder({ itemOrder }) {
   )
 }
 
-export default ItemOrder
+export default ItemOrderListItem

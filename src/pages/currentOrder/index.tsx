@@ -1,56 +1,30 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography } from '@material-ui/core'
-import ItemOrder from './ItemOrder'
+import OrderList from './OrderList'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
 import { addOrder } from 'actions'
 import { useSelector, useDispatch } from 'react-redux'
-import { formatMoney, createKeyGenerator } from 'helpers/utils'
-
-const genKey = createKeyGenerator()
 
 const useStyles = makeStyles(theme => ({
   root: {
     paddingBottom: 60,
   },
-  section: {
-    minHeight: '80vh',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  orderList: {
-    padding: theme.spacing(2),
-    paddingBottom: 0,
-  },
   bottomBar: {
     alignItems: 'center',
     padding: theme.spacing(1),
-  },
-  totalPriceContainer: {},
-  totalPrice: {
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    padding: theme.spacing(2),
-    paddingBottom: 0,
-
-    '& span': {
-      ...theme.typography.button,
-      height: 'fit-content',
-    },
   },
 }))
 
 function CurrentOrder(props) {
   const classes = useStyles()
-  const order = useSelector(state => state.order)
-  const dispatch = useDispatch(null)
-
-  useEffect(() => {}, [])
+  const order: Order = useSelector(state => state.order)
+  const dispatch = useDispatch()
 
   const handleConfirm = () => {
+    order.orderedAt = new Date()
+
     dispatch(addOrder(order))
     history.back()
   }
@@ -68,20 +42,7 @@ function CurrentOrder(props) {
         }
       />
 
-      <section className={classes.section}>
-        <ul className={classes.orderList}>
-          {order.map(itemOrder => (
-            <ItemOrder key={genKey()} itemOrder={itemOrder} />
-          ))}
-        </ul>
-
-        {!!order.length && <hr style={{ margin: 0 }} />}
-
-        <Typography variant="h5" component="p" className={classes.totalPrice}>
-          <span>Total:</span>
-          <div className="currency">{formatMoney(totalPrice)}</div>
-        </Typography>
-      </section>
+      <OrderList order={order} />
 
       <BottomBar className={classes.bottomBar}>
         <Button
