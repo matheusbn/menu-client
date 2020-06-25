@@ -11,6 +11,7 @@ import Home from 'pages/home'
 import Menu from 'pages/menu'
 import Auth from 'pages/auth'
 import CurrentOrder from 'pages/currentOrder'
+import Bill from 'pages/bill'
 import ItemProfile from 'pages/itemProfile'
 import NotFound from 'pages/NotFound'
 import { Switch, history, Route, SlideRoute, Redirect } from 'router'
@@ -24,6 +25,7 @@ import { createKeyGenerator } from 'helpers/utils'
 const keyGen = createKeyGenerator()
 
 const colors = {
+  // #c81732 vermelho
   primary: '#D55A00',
   secondary: '#071E22',
 }
@@ -119,7 +121,7 @@ function App() {
         direction="up"
         key={keyGen()}
         path="/menu/fechar-conta"
-        component={() => <h1>fechar conta</h1>}
+        component={Bill}
       />,
       <SlideRoute key={keyGen()} path="/menu/item" component={ItemProfile} />,
       <SlideRoute key={keyGen()} path="/menu" component={Menu} />,

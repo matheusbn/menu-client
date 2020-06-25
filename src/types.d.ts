@@ -5,7 +5,7 @@ interface Option {
 
 interface Optional {
   name: string
-  options: [Option]
+  options: Option[]
   required?: {
     min: number
     max: number
@@ -17,15 +17,15 @@ interface Item {
   name: string
   description: string
   price: number
-  pictures: [string]
+  pictures: string[]
   section: string
-  optionals: [Optional]
+  optionals: Optional[]
 }
 
 interface ItemOrder {
   item: Item
   amount: number
-  optionals: [Optional]
+  optionals: Optional[]
   observation: string
   price: number
 }

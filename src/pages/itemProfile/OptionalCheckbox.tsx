@@ -14,7 +14,7 @@ import { formatMoney } from 'helpers/utils'
 
 interface OptionalCheckboxProps {
   optional: Optional
-  value: [Option] | []
+  value: Option[]
   onChange: (option) => void
 }
 
