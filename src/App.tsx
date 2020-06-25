@@ -19,6 +19,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { subscribeUserData } from 'actions'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import Toast from 'components/Toast'
+import { createKeyGenerator } from 'helpers/utils'
+
+const keyGen = createKeyGenerator()
 
 const colors = {
   primary: '#D55A00',
@@ -92,29 +95,42 @@ function App() {
     loaded.current = true
   }, [user, session, isFetchingInitialData])
 
-  let routes = null
+  let routes
+
   if (!user) {
     routes = [
-      <Route path="/auth" component={Auth} />,
-      <Route path="/" exact component={() => <Redirect to="/auth" />} />,
+      <Route key={keyGen()} path="/auth" component={Auth} />,
+      <Route
+        key={keyGen()}
+        path="/"
+        exact
+        component={() => <Redirect to="/auth" />}
+      />,
     ]
   } else if (session) {
     routes = [
       <SlideRoute
         direction="up"
+        key={keyGen()}
         path="/menu/pedido-atual"
         component={CurrentOrder}
       />,
       <SlideRoute
         direction="up"
+        key={keyGen()}
         path="/menu/fechar-conta"
         component={() => <h1>fechar conta</h1>}
       />,
-      <SlideRoute path="/menu/item" component={ItemProfile} />,
-      <SlideRoute path="/menu" component={Menu} />,
-      <Route path="/" exact component={() => <Redirect to="/menu" />} />,
+      <SlideRoute key={keyGen()} path="/menu/item" component={ItemProfile} />,
+      <SlideRoute key={keyGen()} path="/menu" component={Menu} />,
+      <Route
+        key={keyGen()}
+        path="/"
+        exact
+        component={() => <Redirect to="/menu" />}
+      />,
     ]
-  } else routes = [<Route path="/" component={Home} />]
+  } else routes = [<Route key={keyGen()} path="/" component={Home} />]
 
   return (
     <ThemeProvider theme={theme}>
