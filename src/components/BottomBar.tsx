@@ -1,12 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Button, Typography, IconButton } from '@material-ui/core'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import MenuIcon from '@material-ui/icons/Menu'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import InstallIcon from 'assets/install.svg'
 // import promptInstall from 'services/install'
 import { Link, history } from 'router'
-import importFirebase from 'services/firebase'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,6 +22,12 @@ export default function BottomBar({
   children,
   height = 50,
   onClick,
+}: {
+  style?: object
+  className?: string
+  children?: React.ReactNode
+  height?: number
+  onClick?: () => void
 }) {
   const classes = useStyles({ height })
 

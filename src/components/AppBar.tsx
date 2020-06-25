@@ -42,6 +42,14 @@ export default function NavBar({
   backButton,
   hamburguer,
   opacityThreshold,
+}: {
+  style?: object
+  className?: string
+
+  title: string
+  backButton: boolean
+  hamburguer: boolean
+  opacityThreshold: React.Ref<HTMLElement>
 }) {
   const installButton = useRef(null)
   const appBar = useRef(null)
