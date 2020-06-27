@@ -1,6 +1,7 @@
 {
-  "short_name": "Math's App",
-  "name": "Math's App",
+  "short_name": "Menu",
+  "name": "Menu",
+  "description": "A melhor e mais simples experiência de atendimento em restaurantes",
   "icons": [
     {
       "src": "favicon.ico",
