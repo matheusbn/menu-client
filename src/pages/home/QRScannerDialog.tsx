@@ -119,7 +119,7 @@ const QRScannerDialog = (props, ref) => {
       <AppBar>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Scannear QR Code
+            Escanear QR Code
           </Typography>
           <IconButton
             edge="end"

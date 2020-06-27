@@ -65,10 +65,6 @@ function Bill(props) {
   const bill: Order[] = useSelector(state => state.bill)
   const dispatch = useDispatch(null)
 
-  useEffect(() => {
-    console.log(bill)
-  }, [])
-
   const handleConfirm = () => {
     // dispatch(addOrder(order))
     history.back()

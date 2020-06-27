@@ -6,8 +6,11 @@
 - add open session loader
 - scroll restoration
 
-- pagamento
-- pagina usuário
+* adicionar orders e bills firestore
+* pagamento
+* pagina usuário
+* completar signup
+* fechar qrcode dialog
 
 ## extras:
 
