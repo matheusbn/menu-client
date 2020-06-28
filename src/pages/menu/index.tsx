@@ -46,8 +46,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     color: theme.palette.grey[200],
     backgroundColor: theme.palette.primary.main,
-    bottom: 40,
-    height: 40,
+    bottom: 50,
     zIndex: 91,
     padding: theme.spacing(2),
   },
@@ -55,7 +54,6 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     color: theme.palette.primary.main,
-    height: 40,
   },
   cover: {
     position: 'fixed',
