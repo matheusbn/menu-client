@@ -7,6 +7,7 @@ import BottomBar from 'components/BottomBar'
 import CheckoutPaymentSection from './CheckoutPaymentSection'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatMoney, createKeyGenerator } from 'helpers/utils'
+import { checkout } from 'actions'
 import { history } from 'router'
 import useToast from 'hooks/useToast'
 
@@ -74,7 +75,7 @@ function SessionCheckout(props) {
   )
 
   const handleConfirm = async () => {
-    await session.checkout(totalPrice)
+    await dispatch(checkout(totalPrice))
     showToast('Obrigado pela visita!')
 
     history.push('/')

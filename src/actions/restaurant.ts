@@ -10,7 +10,7 @@
 
 export const checkout = (totalPrice: number) => async (dispatch, getState) => {
   const { restaurant } = getState()
-  restaurant.currentSession.checkout(totalPrice)
+  await restaurant.currentSession.checkout(totalPrice)
 
   dispatch({
     type: 'CHECKOUT',
