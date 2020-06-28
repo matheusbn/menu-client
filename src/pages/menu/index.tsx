@@ -130,8 +130,8 @@ function Menu() {
   const classes = useStyles({ emptyOrder: !stagingItems.length })
 
   useEffect(() => {
-    if (restaurant) dispatch(fetchMenuItems())
-  }, [])
+    if (restaurant && !menuItems.length) dispatch(fetchMenuItems())
+  }, [restaurant])
 
   const navToStagingOrder = () => history.push('/menu/pedido-atual')
 

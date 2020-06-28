@@ -10,7 +10,7 @@ import {
   IconButton,
 } from '@material-ui/core'
 import AppBar from 'components/AppBar'
-import { Redirect, history } from 'router'
+import { Redirect, useParams, history } from 'router'
 import { Add as AddIcon, Remove as RemoveIcon } from '@material-ui/icons'
 import useSetState from 'hooks/useSetState'
 import { updateItemOrder, addItemOrder } from 'actions'
@@ -61,6 +61,8 @@ const useStyles = makeStyles(theme => ({
 function ItemProfile(props) {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const { itemId } = useParams()
+  console.log(itemId)
   const itemOrder: ItemOrder = useSelector(state => state.selectedItemOrder)
   const isUpdate = useSelector(state =>
     state.stagingOrder.items.some(item => item === state.selectedItemOrder)

@@ -31,7 +31,6 @@ class Restaurant {
   }
 
   async getMenuItems() {
-    console.log(1)
     const items = await this.snapshot.ref.collection('items').get()
     console.log(items.docs[0].data())
 

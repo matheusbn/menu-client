@@ -77,16 +77,20 @@ function App() {
       <SlideRoute
         direction="up"
         key={keyGen()}
-        path="/menu/pedido-atual"
+        path="/pedido-atual"
         component={StagingOrder}
       />,
       <SlideRoute
         direction="up"
         key={keyGen()}
-        path="/menu/fechar-conta"
+        path="/fechar-conta"
         component={Bill}
       />,
-      <SlideRoute key={keyGen()} path="/menu/item" component={ItemProfile} />,
+      <SlideRoute
+        key={keyGen()}
+        path="/menu/:itemId"
+        component={ItemProfile}
+      />,
       <SlideRoute key={keyGen()} path="/menu" component={Menu} />,
       <Route
         key={keyGen()}
