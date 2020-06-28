@@ -2,15 +2,14 @@ import importFirebase, {
   getCurrentUser,
   getCurrentSession,
 } from 'services/firebase'
-import { FirestoreModel } from '~/types'
+import Session from './Session'
 
 class Restaurant {
   private snapshot
-  sessionSnapshot
+  currentSession
 
-  constructor(snapshot, sessionSnapshot?) {
+  constructor(snapshot) {
     this.snapshot = snapshot
-    this.sessionSnapshot = sessionSnapshot
   }
 
   get name(): string {
@@ -43,7 +42,7 @@ class Restaurant {
     return new Restaurant(restaurantSnapshot)
   }
 
-  async openSession(tableCode: string): Promise<object> {
+  async openSession(tableCode: string): Promise<void> {
     const user = await getCurrentUser()
     if (!user) throw new Error('User must be signed in')
 
@@ -54,12 +53,8 @@ class Restaurant {
       userId: user.uid,
     })
 
-    this.sessionSnapshot = await sessionRef.get()
-    return sessionRef
-  }
-
-  async addOrder(order) {
-    this.snapshot.ref.collection('orders').add(order)
+    const sessionSnapshot = await sessionRef.get()
+    this.currentSession = new Session(sessionSnapshot)
   }
 }
 
@@ -68,44 +63,6 @@ const getCollection = async () => {
   const db = firebase.firestore()
 
   return db.collection('restaurants')
-}
-
-const openSession = async tableCode => {
-  const restaurants = await getCollection()
-
-  const result = await restaurants
-    .where('tableCodes', 'array-contains-any', [tableCode])
-    .get()
-  if (result.empty) throw new Error('code not found')
-
-  const restaurant = result.docs[0]
-  const user = await getCurrentUser()
-
-  if (!user) throw new Error('User must be signed in')
-
-  return restaurant.ref.collection('sessions').add({
-    checkinAt: new Date(),
-    checkoutAt: null,
-    tableCode,
-    userId: user.uid,
-  })
-}
-
-// menu items
-
-const subscribeMenu = async (restaurantID, callback) => {
-  const restaurants = await getCollection()
-
-  return restaurants
-    .doc(restaurantID)
-    .collection('items')
-    .onSnapshot(querySnapshot => {
-      const items = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-      callback(items)
-    })
 }
 
 export default Restaurant

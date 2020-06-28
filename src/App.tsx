@@ -34,7 +34,7 @@ function App() {
   const loaded = useRef(false)
   const user = useSelector(state => state.user)
   const hasOpenSession = useSelector(
-    state => !!state.restaurant?.sessionSnapshot
+    state => !!state.restaurant?.currentSession
   )
   const isFetchingInitialData = useSelector(
     state => state.isFetchingInitialData

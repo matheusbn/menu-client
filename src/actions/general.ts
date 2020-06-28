@@ -1,5 +1,6 @@
 import importFirebase, { getUserCurrentSession } from 'services/firebase'
 import Restaurant from 'models/Restaurant'
+import Session from 'models/Session'
 
 export const subscribeUserData = () => dispatch => {
   const dispatchUserDataReceive = (data = {}) =>
@@ -15,7 +16,8 @@ export const subscribeUserData = () => dispatch => {
         const sessionSnapshot = await getUserCurrentSession(user)
         if (sessionSnapshot) {
           const restaurantSnapshot = await sessionSnapshot.ref.parent.parent.get()
-          const restaurant = new Restaurant(restaurantSnapshot, sessionSnapshot)
+          const restaurant = new Restaurant(restaurantSnapshot)
+          restaurant.currentSession = new Session(sessionSnapshot)
 
           return dispatchUserDataReceive({ user, restaurant })
         } else {
@@ -31,10 +33,8 @@ export const openSession = code => async dispatch => {
     type: 'OPEN_SESSION_REQUEST',
   })
 
-  console.log(1)
   const restaurant = await Restaurant.fromTableCode(code)
   await restaurant.openSession(code)
-  console.log(restaurant)
 
   dispatch({
     type: 'OPEN_SESSION_SUCCESS',
