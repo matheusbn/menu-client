@@ -32,8 +32,7 @@ interface ItemOrder {
   price: number
 }
 
-interface Order extends Array<ItemOrder> {
+interface Order {
+  items: ItemOrder[]
   orderedAt?: Date
-  userId?: string
-  sessionId?: string
 }

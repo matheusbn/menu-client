@@ -32,16 +32,23 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-function OrderList({ order, className }: { order: Order; className?: string }) {
+function ItemOrderList({
+  itemOrders,
+  alreadyOrdered,
+  className,
+}: {
+  itemOrders: ItemOrder[]
+  alreadyOrdered: boolean
+  className?: string
+}) {
   const classes = useStyles()
 
-  const alreadyOrdered = !!order.orderedAt
-  const totalPrice = order.reduce((sum, { price }) => sum + price, 0)
+  const totalPrice = itemOrders.reduce((sum, { price }) => sum + price, 0)
 
   return (
     <div className={clsx(classes.root, className)}>
       <ul>
-        {order.map(itemOrder => (
+        {itemOrders.map(itemOrder => (
           <ItemOrderListItem
             key={genKey()}
             itemOrder={itemOrder}
@@ -58,4 +65,4 @@ function OrderList({ order, className }: { order: Order; className?: string }) {
   )
 }
 
-export default OrderList
+export default ItemOrderList

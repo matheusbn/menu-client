@@ -122,10 +122,12 @@ const getOrganizedSections = items => {
 function Menu() {
   const restaurant = useSelector(state => state.restaurant)
   const dispatch = useDispatch()
-  const stagingOrder = useSelector(state => state.stagingOrder)
+  const stagingItems: ItemOrder[] = useSelector(
+    state => state.stagingOrder.items
+  )
   const opacityThreshold = useRef(null)
   const [items, setItems] = useState([])
-  const classes = useStyles({ emptyOrder: !stagingOrder.length })
+  const classes = useStyles({ emptyOrder: !stagingItems.length })
 
   useEffect(() => {
     if (restaurant) {
@@ -167,17 +169,17 @@ function Menu() {
             </div>
           </section>
 
-          {stagingOrder.length >= 0 && (
+          {stagingItems.length >= 0 && (
             <BottomBar
               className={classes.stagingOrderBar}
               onClick={navToStagingOrder}
             >
-              <div className={classes.itemsAmount}>{stagingOrder.length}</div>
+              <div className={classes.itemsAmount}>{stagingItems.length}</div>
               <Typography variant="body1">Pedido atual</Typography>
               <div>
                 <span style={{ fontSize: '0.7rem' }}>R$ </span>
                 {formatMoney(
-                  stagingOrder.reduce((sum, { price }) => sum + price, 0)
+                  stagingItems.reduce((sum, { price }) => sum + price, 0)
                 )}
               </div>
             </BottomBar>

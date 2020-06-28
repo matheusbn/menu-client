@@ -13,7 +13,6 @@ const restaurant = (state = null, action) => {
   switch (action.type) {
     case `OPEN_SESSION_SUCCESS`:
     case `SUBSCRIBE_USER_DATA_RECEIVE`:
-      console.log(action)
       return action.restaurant || null
     default:
       return state
@@ -74,24 +73,37 @@ const mockItemOrder: ItemOrder = {
   price: 42.5,
 }
 
-const mockOrder: Order = [{ ...mockItemOrder }, { ...mockItemOrder }]
+const mockOrder: Order = {
+  items: [{ ...mockItemOrder }, { ...mockItemOrder }],
+}
 
 const stagingOrder = (
-  state: Order = [],
+  state: Order = { items: [] },
   // state = mockOrder,
   action
 ) => {
   switch (action.type) {
     case `ADD_ITEM_ORDER`:
-      return [...state, action.item]
+      return {
+        ...state,
+        items: [...state.items, action.item],
+      }
     case `UPDATE_ITEM_ORDER`:
-      return state.map(item =>
-        item === action.oldItem ? { ...item, ...action.newItem } : item
-      )
+      return {
+        ...state,
+        items: state.items.map(item =>
+          item === action.oldItem ? { ...item, ...action.newItem } : item
+        ),
+      }
     case `REMOVE_ITEM_ORDER`:
-      return state.filter(item => item !== action.item)
+      return {
+        ...state,
+        items: state.items.filter(item => item !== action.item),
+      }
     case `ADD_ORDER`:
-      return []
+      return {
+        items: [],
+      }
     default:
       return state
   }
@@ -107,12 +119,12 @@ const selectedItemOrder = (state = {}, action) => {
 }
 
 const mockBill = new Array(2).fill(0).map(e => {
-  let arr: Order = [...mockOrder]
+  let arr: Order = { ...mockOrder }
   arr.orderedAt = new Date()
   return arr
 })
 
-const bill = (state: Order[] = mockBill, action) => {
+const bill = (state: Order[] = [], action) => {
   switch (action.type) {
     case `ADD_ORDER`:
       return [...state, action.order]

@@ -29,7 +29,6 @@ items: [{
 sessions: [{
   dateCheckin: date,
   dateCheckout: date,
-  peopleAmout: 8, // probably not
   totalPrice: 100,
   tableCode: '',
   openedBy: id,

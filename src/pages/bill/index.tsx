@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography } from '@material-ui/core'
-import OrderList from 'components/OrderList'
+import ItemOrderList from 'components/ItemOrderList'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
 import BillPaymentSection from './BillPaymentSection'
@@ -71,7 +71,7 @@ function Bill(props) {
 
   const totalPrice = bill.reduce(
     (sum, order) =>
-      sum + order.reduce((orderSum, { price }) => orderSum + price, 0),
+      sum + order.items.reduce((orderSum, { price }) => orderSum + price, 0),
     0
   )
 
@@ -95,9 +95,10 @@ function Bill(props) {
               <Typography className={classes.orderTitle}>
                 Pedido {i < 10 && '0' + (i + 1)}
               </Typography>
-              <OrderList
+              <ItemOrderList
                 key={genKey()}
-                order={order}
+                itemOrders={order.items}
+                alreadyOrdered
                 className={classes.orderList}
               />
             </>

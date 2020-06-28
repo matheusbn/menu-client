@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Typography } from '@material-ui/core'
-import OrderList from 'components/OrderList'
+import ItemOrderList from 'components/ItemOrderList'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
 import { addOrder } from 'actions'
@@ -44,7 +44,10 @@ function StagingOrder(props) {
         }
       />
 
-      <OrderList className={classes.orderList} order={stagingOrder} />
+      <ItemOrderList
+        className={classes.orderList}
+        itemOrders={stagingOrder.items}
+      />
 
       <BottomBar className={classes.bottomBar}>
         <Button
