@@ -1,22 +1,25 @@
-# todo:
+# todos:
 
-- refatorar menu pra estado global e item profile pegar item por query-param
-- disable slide tra nsition to first load
-- disabled add item button if any required field is empty
-- add open session loader
-- scroll restoration
+1. refatorar menu pra estado global e item profile pegar item por query-param
+1. adicionar bills firestore
 
-* adicionar orders e bills firestore
-* pagina usuário
-* fechar qrcode dialog
-* completar signup
-* pagamento
-* arrumar pagina 404 aparecendo
-* cachear dados do usuario
+-
+
+1. arrumar bottombar sambando
+1. arrumar pagina 404 aparecendo
+1. fechar qrcode dialog
+1. completar signup
+1. pagina usuário
+1. abrir sessao por qrcode
+1. add open session loader
+1. cachear dados do usuario
+1. disabled add item button if any required field is empty
+1. pagamento
+1. disable slide tra nsition to first load
 
 ## extras:
 
-- diferenciar melhor checkbox e radios
+- scroll restoration on menu page
 
 ## ui
 

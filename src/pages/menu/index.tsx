@@ -11,7 +11,7 @@ import {
 import Restaurant from 'models/Restaurant'
 import { Switch, history, Route, SlideRoute } from 'router'
 import { useSelector, useDispatch } from 'react-redux'
-import { setSelectedItemOrder } from 'actions'
+import { setSelectedItemOrder, fetchMenuItems } from 'actions'
 import capitalize from 'lodash/capitalize'
 import Item from './Item'
 import BottomBar from 'components/BottomBar'
@@ -122,22 +122,20 @@ const getOrganizedSections = items => {
 function Menu() {
   const restaurant = useSelector(state => state.restaurant)
   const dispatch = useDispatch()
+  const menuItems = useSelector(state => state.menuItems)
   const stagingItems: ItemOrder[] = useSelector(
     state => state.stagingOrder.items
   )
   const opacityThreshold = useRef(null)
-  const [items, setItems] = useState([])
   const classes = useStyles({ emptyOrder: !stagingItems.length })
 
   useEffect(() => {
-    if (restaurant) {
-      return restaurant.subscribeMenu(setItems)
-    }
-  }, [restaurant])
+    if (restaurant) dispatch(fetchMenuItems())
+  }, [])
 
   const navToStagingOrder = () => history.push('/menu/pedido-atual')
 
-  const menu = getOrganizedSections(items)
+  const menuSections = getOrganizedSections(menuItems)
 
   const handleItemClick = item => {
     dispatch(setSelectedItemOrder({ item }))
@@ -163,7 +161,7 @@ function Menu() {
             <img src={restaurant.coverPicture} className={classes.cover} />
 
             <div className={classes.itemsList} ref={opacityThreshold}>
-              {menu.map(section => (
+              {menuSections.map(section => (
                 <MenuSection onItemClick={handleItemClick} section={section} />
               ))}
             </div>

@@ -19,6 +19,15 @@ const restaurant = (state = null, action) => {
   }
 }
 
+const menuItems = (state: Item[] = [], action) => {
+  switch (action.type) {
+    case `FETCH_MENU_ITEMS_RECEIVE`:
+      return action.menuItems
+    default:
+      return state
+  }
+}
+
 const isFetchingInitialData = (state = true, action) => {
   // this shoudnt be assigned true again
   switch (action.type) {
@@ -136,6 +145,7 @@ const bill = (state: Order[] = [], action) => {
 export default combineReducers({
   user,
   restaurant,
+  menuItems,
   isFetchingInitialData,
   stagingOrder,
   selectedItemOrder,

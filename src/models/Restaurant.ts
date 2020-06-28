@@ -30,6 +30,17 @@ class Restaurant {
     })
   }
 
+  async getMenuItems() {
+    console.log(1)
+    const items = await this.snapshot.ref.collection('items').get()
+    console.log(items.docs[0].data())
+
+    return items.docs.map(snapshot => ({
+      id: snapshot.id,
+      ...snapshot.data(),
+    }))
+  }
+
   static async fromTableCode(tableCode: string): Promise<Restaurant> {
     const restaurants = await getCollection()
 
