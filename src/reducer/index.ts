@@ -76,9 +76,9 @@ const mockItemOrder: ItemOrder = {
 
 const mockOrder: Order = [{ ...mockItemOrder }, { ...mockItemOrder }]
 
-const order = (
-  // state: Order = [],
-  state = mockOrder,
+const stagingOrder = (
+  state: Order = [],
+  // state = mockOrder,
   action
 ) => {
   switch (action.type) {
@@ -115,7 +115,6 @@ const mockBill = new Array(2).fill(0).map(e => {
 const bill = (state: Order[] = mockBill, action) => {
   switch (action.type) {
     case `ADD_ORDER`:
-      console.log(action.order)
       return [...state, action.order]
     default:
       return state
@@ -126,7 +125,7 @@ export default combineReducers({
   user,
   restaurant,
   isFetchingInitialData,
-  order,
+  stagingOrder,
   selectedItemOrder,
   bill,
 })

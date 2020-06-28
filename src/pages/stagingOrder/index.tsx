@@ -21,15 +21,15 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-function CurrentOrder(props) {
+function StagingOrder(props) {
   const classes = useStyles()
-  const order: Order = useSelector(state => state.order)
+  const stagingOrder: Order = useSelector(state => state.stagingOrder)
   const dispatch = useDispatch()
 
   const handleConfirm = () => {
-    order.orderedAt = new Date()
+    stagingOrder.orderedAt = new Date()
 
-    dispatch(addOrder(order))
+    dispatch(addOrder(stagingOrder))
     history.back()
   }
 
@@ -44,7 +44,7 @@ function CurrentOrder(props) {
         }
       />
 
-      <OrderList className={classes.orderList} order={order} />
+      <OrderList className={classes.orderList} order={stagingOrder} />
 
       <BottomBar className={classes.bottomBar}>
         <Button
@@ -60,4 +60,4 @@ function CurrentOrder(props) {
   )
 }
 
-export default CurrentOrder
+export default StagingOrder

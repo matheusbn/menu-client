@@ -6,7 +6,7 @@ import { CssBaseline, CircularProgress } from '@material-ui/core'
 import Home from 'pages/home'
 import Menu from 'pages/menu'
 import Auth from 'pages/auth'
-import CurrentOrder from 'pages/currentOrder'
+import StagingOrder from 'pages/stagingOrder'
 import Bill from 'pages/bill'
 import ItemProfile from 'pages/itemProfile'
 import NotFound from 'pages/NotFound'
@@ -78,7 +78,7 @@ function App() {
         direction="up"
         key={keyGen()}
         path="/menu/pedido-atual"
-        component={CurrentOrder}
+        component={StagingOrder}
       />,
       <SlideRoute
         direction="up"

@@ -63,7 +63,7 @@ function ItemProfile(props) {
   const dispatch = useDispatch()
   const itemOrder: ItemOrder = useSelector(state => state.selectedItemOrder)
   const isUpdate = useSelector(state =>
-    state.order.some(item => item === state.selectedItemOrder)
+    state.stagingOrder.some(item => item === state.selectedItemOrder)
   )
   const item = itemOrder.item || {}
   const opacityThreshold = useRef(null)

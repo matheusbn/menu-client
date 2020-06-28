@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     marginRight: theme.spacing(1),
   },
-  currentOrderBar: {
+  stagingOrderBar: {
     alignItems: 'center',
     justifyContent: 'space-between',
     color: theme.palette.grey[200],
@@ -122,10 +122,10 @@ const getOrganizedSections = items => {
 function Menu() {
   const restaurant = useSelector(state => state.restaurant)
   const dispatch = useDispatch()
-  const order = useSelector(state => state.order)
+  const stagingOrder = useSelector(state => state.stagingOrder)
   const opacityThreshold = useRef(null)
   const [items, setItems] = useState([])
-  const classes = useStyles({ emptyOrder: !order.length })
+  const classes = useStyles({ emptyOrder: !stagingOrder.length })
 
   useEffect(() => {
     if (restaurant) {
@@ -133,7 +133,7 @@ function Menu() {
     }
   }, [restaurant])
 
-  const navToCurrentOrder = () => history.push('/menu/pedido-atual')
+  const navToStagingOrder = () => history.push('/menu/pedido-atual')
 
   const menu = getOrganizedSections(items)
 
@@ -167,16 +167,18 @@ function Menu() {
             </div>
           </section>
 
-          {order.length >= 0 && (
+          {stagingOrder.length >= 0 && (
             <BottomBar
-              className={classes.currentOrderBar}
-              onClick={navToCurrentOrder}
+              className={classes.stagingOrderBar}
+              onClick={navToStagingOrder}
             >
-              <div className={classes.itemsAmount}>{order.length}</div>
+              <div className={classes.itemsAmount}>{stagingOrder.length}</div>
               <Typography variant="body1">Pedido atual</Typography>
               <div>
                 <span style={{ fontSize: '0.7rem' }}>R$ </span>
-                {formatMoney(order.reduce((sum, { price }) => sum + price, 0))}
+                {formatMoney(
+                  stagingOrder.reduce((sum, { price }) => sum + price, 0)
+                )}
               </div>
             </BottomBar>
           )}

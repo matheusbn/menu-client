@@ -1,11 +1,7 @@
-import Restaurant from 'models/Restaurant'
-
-export const addItemOrder = (item: ItemOrder) => async dispatch => {
-  dispatch({
-    type: 'ADD_ITEM_ORDER',
-    item,
-  })
-}
+export const addItemOrder = (item: ItemOrder) => ({
+  type: 'ADD_ITEM_ORDER',
+  item,
+})
 
 export const updateItemOrder = (oldItem: ItemOrder, newItem: ItemOrder) => ({
   type: 'UPDATE_ITEM_ORDER',

@@ -1,4 +1,4 @@
 export * from './general'
-export * from './order'
+export * from './stagingOrder'
 export * from './bill'
 export * from './selectedItemOrder'
