@@ -1,7 +1,8 @@
 import React from 'react'
+import { ButtonBase } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 // import promptInstall from 'services/install'
-import { Link, history } from 'router'
+import isFunction from 'lodash/isFunction'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,15 +32,18 @@ export default function BottomBar({
 }) {
   const classes = useStyles({ height })
 
+  const containerProps = {
+    className: `${classes.root} ${className}`,
+    style,
+    onClick,
+  }
+
+  if (isFunction(onClick))
+    return <ButtonBase {...containerProps}>{children}</ButtonBase>
+
   return (
     <>
-      <div
-        className={`${classes.root} ${className}`}
-        style={style}
-        onClick={onClick}
-      >
-        {children}
-      </div>
+      <div {...containerProps}>{children}</div>
     </>
   )
 }

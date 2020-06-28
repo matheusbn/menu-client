@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   itemsList: {
     width: '100%',
     paddingTop: theme.spacing(1),
-    paddingBottom: props => (props.emptyOrder ? 40 : 80),
+    paddingBottom: props => (props.emptyOrder ? 50 : 100),
     backgroundColor: theme.palette.background.default,
     position: 'absolute',
     left: 0,
@@ -49,6 +49,12 @@ const useStyles = makeStyles(theme => ({
     bottom: 50,
     zIndex: 91,
     padding: theme.spacing(2),
+
+    '& p': {
+      // the right element is wider than the left elemnet,
+      // and so the middle doesnt get properly aligned
+      marginLeft: theme.spacing(2),
+    },
   },
   navBottomBar: {
     alignItems: 'center',
@@ -139,7 +145,6 @@ function Menu() {
   return (
     <div>
       <AppBar
-        hamburguer
         title={
           <Typography variant="body1" component="h1">
             {(restaurant || {}).name}
@@ -168,7 +173,7 @@ function Menu() {
               onClick={navToCurrentOrder}
             >
               <div className={classes.itemsAmount}>{order.length}</div>
-              Pedido atual
+              <Typography variant="body1">Pedido atual</Typography>
               <div>
                 <span style={{ fontSize: '0.7rem' }}>R$ </span>
                 {formatMoney(order.reduce((sum, { price }) => sum + price, 0))}
