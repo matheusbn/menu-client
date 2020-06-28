@@ -92,7 +92,7 @@ function ItemOrderListItem({
 
   const handleEdit = () => {
     dispatch(setSelectedItemOrder(itemOrder))
-    history.push('/menu/item')
+    history.push(`/menu/${itemOrder.item.id}`)
     setMenuAnchorEl(null)
   }
   const handleRemove = () => {

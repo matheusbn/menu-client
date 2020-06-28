@@ -62,19 +62,18 @@ function ItemProfile(props) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const { itemId } = useParams()
-  console.log(itemId)
   const itemOrder: ItemOrder = useSelector(state => state.selectedItemOrder)
-  const isUpdate = useSelector(state =>
-    state.stagingOrder.items.some(item => item === state.selectedItemOrder)
+  const item = useSelector(state =>
+    state.menuItems.find(item => item.id === itemId)
   )
-  const item = itemOrder.item || {}
+  if (!item) return history.push('/menu')
   const opacityThreshold = useRef(null)
   const [selectedOptionals, setSelectedOptionals] = useSetState(
-    itemOrder.selectedOptionals || {}
+    itemOrder?.selectedOptionals ?? {}
   )
-  const [amount, setAmount] = useState(itemOrder.amount || 1)
+  const [amount, setAmount] = useState(itemOrder?.amount || 1)
   const [totalPrice, setTotalPrice] = useState(item.price)
-  const [observation, setObservation] = useState(itemOrder.observation || '')
+  const [observation, setObservation] = useState(itemOrder?.observation || '')
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -103,7 +102,10 @@ function ItemProfile(props) {
 
   const handleConfirm = () => {
     const newItem: ItemOrder = {
-      item,
+      item: {
+        id: item.id,
+        name: item.name,
+      },
       amount,
       selectedOptionals,
       observation,
@@ -111,7 +113,7 @@ function ItemProfile(props) {
     }
 
     dispatch(
-      isUpdate ? updateItemOrder(itemOrder, newItem) : addItemOrder(newItem)
+      itemOrder ? updateItemOrder(itemOrder, newItem) : addItemOrder(newItem)
     )
 
     history.back()
@@ -207,7 +209,7 @@ function ItemProfile(props) {
           onClick={handleConfirm}
           className={classes.confirmButton}
         >
-          {isUpdate ? 'Atualizar' : 'Adicionar'}{' '}
+          {itemOrder ? 'Atualizar' : 'Adicionar'}{' '}
           <span>R$ {formatMoney(totalPrice)}</span>
         </Button>
       </BottomBar>

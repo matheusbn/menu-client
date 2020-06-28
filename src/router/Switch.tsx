@@ -64,7 +64,7 @@ function extractRouteParam(
   // this regex captures a named group containing everything after
   // the ":" and until the end or a slash "/"
   // the syntax ?<name> declares its name
-  const paramNameRegex = /\/:(?<paramName>.*?)(?=\/|$)/
+  const paramNameRegex = /\/:(?<paramName>.+?)(?=\/|$)/
   let match = path.match(paramNameRegex)
   const paramName = match?.groups?.paramName
   if (!paramName) return null
@@ -80,9 +80,7 @@ function extractRouteParam(
 
   // this regex is mostly the same as the other, but it
   // expects the string to already begin with the param value
-  match = url.slice(paramIndex + 1).match(/(?<paramValue>.*)(?=\/|$)/)
-  console.log(url.substring(paramIndex + 1))
-  console.log(match)
+  match = url.slice(paramIndex + 1).match(/(?<paramValue>.+)(?=\/|$)/)
   if (!match) return null
 
   return {

@@ -11,7 +11,7 @@ import {
 import Restaurant from 'models/Restaurant'
 import { Switch, history, Route, SlideRoute } from 'router'
 import { useSelector, useDispatch } from 'react-redux'
-import { setSelectedItemOrder, fetchMenuItems } from 'actions'
+import { fetchMenuItems } from 'actions'
 import capitalize from 'lodash/capitalize'
 import Item from './Item'
 import BottomBar from 'components/BottomBar'
@@ -138,8 +138,7 @@ function Menu() {
   const menuSections = getOrganizedSections(menuItems)
 
   const handleItemClick = item => {
-    dispatch(setSelectedItemOrder({ item }))
-    history.push('/menu/item')
+    history.push(`/menu/${item.id}`)
   }
 
   return (

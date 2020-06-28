@@ -118,7 +118,7 @@ const stagingOrder = (
   }
 }
 
-const selectedItemOrder = (state = {}, action) => {
+const selectedItemOrder = (state: ItemOrder | null = null, action) => {
   switch (action.type) {
     case `SET_SELECTED_ITEM_ORDER`:
       return action.item

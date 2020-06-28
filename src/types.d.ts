@@ -23,7 +23,10 @@ interface Item {
 }
 
 interface ItemOrder {
-  item: Item
+  item: {
+    id: string
+    name: string
+  }
   amount: number
   selectedOptionals: {
     [index: string]: Option[] | Option
