@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { isFunction } from 'helpers/utils'
+import isFunction from 'lodash/isFunction'
 
 export default initialState => {
   const [state, setState] = useState(initialState)
