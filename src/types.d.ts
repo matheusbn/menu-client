@@ -34,4 +34,6 @@ interface ItemOrder {
 
 interface Order extends Array<ItemOrder> {
   orderedAt?: Date
+  userId?: string
+  sessionId?: string
 }
