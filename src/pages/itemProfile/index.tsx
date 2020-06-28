@@ -67,7 +67,9 @@ function ItemProfile(props) {
   )
   const item = itemOrder.item || {}
   const opacityThreshold = useRef(null)
-  const [optionals, setOptionals] = useSetState(itemOrder.optionals || {})
+  const [selectedOptionals, setSelectedOptionals] = useSetState(
+    itemOrder.selectedOptionals || {}
+  )
   const [amount, setAmount] = useState(itemOrder.amount || 1)
   const [totalPrice, setTotalPrice] = useState(item.price)
   const [observation, setObservation] = useState(itemOrder.observation || '')
@@ -78,7 +80,7 @@ function ItemProfile(props) {
 
   useEffect(() => {
     const calcPrice = () => {
-      const totalPrice = Object.entries(optionals).reduce(
+      const totalPrice = Object.entries(selectedOptionals).reduce(
         (totalPrice, [optional, selectedOptions]) =>
           Array.isArray(selectedOptions)
             ? totalPrice +
@@ -91,7 +93,7 @@ function ItemProfile(props) {
     }
 
     setTotalPrice(calcPrice())
-  }, [optionals, amount])
+  }, [selectedOptionals, amount])
 
   const handleObservation = e => {
     if (observation.length < 140) setObservation(e.target.value)
@@ -101,7 +103,7 @@ function ItemProfile(props) {
     const newItem: ItemOrder = {
       item,
       amount,
-      optionals,
+      selectedOptionals,
       observation,
       price: totalPrice,
     }
@@ -141,20 +143,21 @@ function ItemProfile(props) {
 
             const inputProps = {
               optional,
-              onChange: value => setOptionals({ [optional.name]: value }),
+              onChange: value =>
+                setSelectedOptionals({ [optional.name]: value }),
             }
             if (isRadio)
               return (
                 <OptionalRadio
                   {...inputProps}
-                  value={optionals[optional.name]}
+                  value={selectedOptionals[optional.name]}
                 />
               )
 
             return (
               <OptionalCheckbox
                 {...inputProps}
-                value={optionals[optional.name] || []}
+                value={selectedOptionals[optional.name] || []}
               />
             )
           })}

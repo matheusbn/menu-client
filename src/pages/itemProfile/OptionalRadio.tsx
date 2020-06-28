@@ -15,7 +15,7 @@ interface OptionalRadioProps {
 }
 
 const OptionalRadio = ({ optional, value, onChange }: OptionalRadioProps) => {
-  const { name, required, options } = optional
+  const { options } = optional
 
   const handleChange = e => {
     const { value: optionName, checked } = e.target

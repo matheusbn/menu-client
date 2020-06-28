@@ -5,7 +5,6 @@ import OrderList from 'components/OrderList'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
 import BillPaymentSection from './BillPaymentSection'
-import { addOrder } from 'actions'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatMoney, createKeyGenerator } from 'helpers/utils'
 
@@ -103,8 +102,6 @@ function Bill(props) {
               />
             </>
           ))}
-
-        {/* {!!order.length && <hr style={{ margin: 0 }} />} */}
 
         <Typography variant="h5" component="p" className={classes.totalPrice}>
           <span>Total conta:</span>

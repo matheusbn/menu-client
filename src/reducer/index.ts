@@ -71,7 +71,7 @@ const mockItemOrder: ItemOrder = {
     section: 'Burgers',
   },
   amount: 2,
-  optionals: {
+  selectedOptionals: {
     Extras: [
       { name: 'Bacon', price: 2 },
       { name: 'Hamburguer', price: 5 },

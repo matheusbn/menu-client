@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'space-between',
   },
-  optionals: {
+  selectedOptionals: {
     marginLeft: theme.spacing(1),
   },
   observation: {
@@ -85,7 +85,7 @@ function ItemOrderListItem({
   const dispatch = useDispatch()
   const [present, setPresent] = useState(true)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
-  const { item, amount, price, optionals, observation } = itemOrder
+  const { item, amount, price, selectedOptionals, observation } = itemOrder
 
   const openMenu = event => setMenuAnchorEl(event.currentTarget)
   const closeMenu = () => setMenuAnchorEl(null)
@@ -144,8 +144,8 @@ function ItemOrderListItem({
           </div>
         </Text>
 
-        <div className={classes.optionals}>
-          {Object.entries(optionals).map(([name, options]) => {
+        <div className={classes.selectedOptionals}>
+          {Object.entries(selectedOptionals).map(([name, options]) => {
             if (isEmpty(options)) return null
 
             return (

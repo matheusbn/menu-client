@@ -7,10 +7,12 @@
 - scroll restoration
 
 * adicionar orders e bills firestore
-* pagamento
 * pagina usuário
-* completar signup
 * fechar qrcode dialog
+* completar signup
+* pagamento
+* arrumar pagina 404 aparecendo
+* cachear dados do usuario
 
 ## extras:
 

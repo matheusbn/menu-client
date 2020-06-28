@@ -26,7 +26,7 @@ items: [{
   pictures: [url]
 }]
 
-restaurantSessions: [{
+sessions: [{
   dateCheckin: date,
   dateCheckout: date,
   peopleAmout: 8, // probably not
