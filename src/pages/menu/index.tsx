@@ -129,7 +129,7 @@ function Menu() {
 
   useEffect(() => {
     if (restaurant) {
-      return Restaurant.subscribeMenu(restaurant.id, setItems)
+      return restaurant.subscribeMenu(setItems)
     }
   }, [restaurant])
 
@@ -147,7 +147,7 @@ function Menu() {
       <AppBar
         title={
           <Typography variant="body1" component="h1">
-            {(restaurant || {}).name}
+            {restaurant?.name}
           </Typography>
         }
         opacityThreshold={opacityThreshold}

@@ -8,20 +8,12 @@ const user = (state = null, action) => {
       return state
   }
 }
-const session = (state = null, action) => {
-  switch (action.type) {
-    case `OPEN_SESSION_SUCCESS`:
-    case `SUBSCRIBE_USER_DATA_RECEIVE`:
-      return action.session || null
-    default:
-      return state
-  }
-}
 
 const restaurant = (state = null, action) => {
   switch (action.type) {
     case `OPEN_SESSION_SUCCESS`:
     case `SUBSCRIBE_USER_DATA_RECEIVE`:
+      console.log(action)
       return action.restaurant || null
     default:
       return state
@@ -132,7 +124,6 @@ const bill = (state: Order[] = mockBill, action) => {
 
 export default combineReducers({
   user,
-  session,
   restaurant,
   isFetchingInitialData,
   order,

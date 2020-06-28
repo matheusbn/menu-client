@@ -1,7 +1,4 @@
-import importFirebase, {
-  getCurrentSession,
-  getCurrentRestaurant,
-} from 'services/firebase'
+import importFirebase, { getUserCurrentSession } from 'services/firebase'
 import Restaurant from 'models/Restaurant'
 
 export const subscribeUserData = () => dispatch => {
@@ -15,11 +12,12 @@ export const subscribeUserData = () => dispatch => {
     firebase.auth().onAuthStateChanged(async user => {
       if (!user) return dispatchUserDataReceive()
       else {
-        const session = await getCurrentSession()
-        if (session) {
-          const restaurant = await getCurrentRestaurant()
+        const sessionSnapshot = await getUserCurrentSession(user)
+        if (sessionSnapshot) {
+          const restaurantSnapshot = await sessionSnapshot.ref.parent.parent.get()
+          const restaurant = new Restaurant(restaurantSnapshot, sessionSnapshot)
 
-          return dispatchUserDataReceive({ user, session, restaurant })
+          return dispatchUserDataReceive({ user, restaurant })
         } else {
           return dispatchUserDataReceive({ user })
         }
@@ -28,30 +26,18 @@ export const subscribeUserData = () => dispatch => {
   })
 }
 
-export const openSession = code => dispatch => {
+export const openSession = code => async dispatch => {
   dispatch({
     type: 'OPEN_SESSION_REQUEST',
-    code,
   })
 
-  Restaurant.openSession(code)
-    .then(async sessionRef => {
-      const [restaurantSnapshot, sessionSnapshot] = await Promise.all([
-        sessionRef.parent.parent.get(),
-        sessionRef.get(),
-      ])
+  console.log(1)
+  const restaurant = await Restaurant.fromTableCode(code)
+  await restaurant.openSession(code)
+  console.log(restaurant)
 
-      const restaurant = {
-        ...restaurantSnapshot.data(),
-        id: restaurantSnapshot.id,
-      }
-      const session = { ...sessionSnapshot.data(), id: sessionSnapshot.id }
-
-      dispatch({
-        type: 'OPEN_SESSION_SUCCESS',
-        session,
-        restaurant,
-      })
-    })
-    .catch(console.error)
+  dispatch({
+    type: 'OPEN_SESSION_SUCCESS',
+    restaurant,
+  })
 }

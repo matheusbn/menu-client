@@ -33,7 +33,9 @@ function App() {
   const dispatch = useDispatch()
   const loaded = useRef(false)
   const user = useSelector(state => state.user)
-  const session = useSelector(state => state.session)
+  const hasOpenSession = useSelector(
+    state => !!state.restaurant?.sessionSnapshot
+  )
   const isFetchingInitialData = useSelector(
     state => state.isFetchingInitialData
   )
@@ -49,15 +51,14 @@ function App() {
     // the initial route will be done declaratively by the redirect
     // components, so the first change on user state must be skipped
     if (loaded.current) {
-      if (!user) history.replace('/auth')
-      else {
-        if (session) history.replace('/menu')
+      if (user) {
+        if (hasOpenSession) history.replace('/menu')
         else history.replace('/')
-      }
+      } else history.replace('/auth')
     }
 
     loaded.current = true
-  }, [user, session, isFetchingInitialData])
+  }, [user, hasOpenSession, isFetchingInitialData])
 
   let routes
 
@@ -71,7 +72,7 @@ function App() {
         component={() => <Redirect to="/auth" />}
       />,
     ]
-  } else if (session) {
+  } else if (hasOpenSession) {
     routes = [
       <SlideRoute
         direction="up"

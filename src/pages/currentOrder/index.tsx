@@ -33,8 +33,6 @@ function CurrentOrder(props) {
     history.back()
   }
 
-  const totalPrice = order.reduce((sum, { price }) => sum + price, 0)
-
   return (
     <div className={classes.root}>
       <AppBar
