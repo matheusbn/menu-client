@@ -1,7 +1,7 @@
 # todos:
 
-1. refatorar menu pra estado global e item profile pegar item por query-param
 1. adicionar bills firestore
+1. menuItems no restaurant
 
 -
 

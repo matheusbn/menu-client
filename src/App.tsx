@@ -7,7 +7,7 @@ import Home from 'pages/home'
 import Menu from 'pages/menu'
 import Auth from 'pages/auth'
 import StagingOrder from 'pages/stagingOrder'
-import Bill from 'pages/bill'
+import SessionCheckout from 'pages/sessionCheckout'
 import ItemProfile from 'pages/itemProfile'
 import NotFound from 'pages/NotFound'
 import { Switch, history, Route, SlideRoute, Redirect } from 'router'
@@ -84,7 +84,7 @@ function App() {
         direction="up"
         key={keyGen()}
         path="/fechar-conta"
-        component={Bill}
+        component={SessionCheckout}
       />,
       <SlideRoute
         key={keyGen()}

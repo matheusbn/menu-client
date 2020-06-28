@@ -166,7 +166,7 @@ function Menu() {
             </div>
           </section>
 
-          {stagingItems.length >= 0 && (
+          {stagingItems.length > 0 && (
             <BottomBar
               className={classes.stagingOrderBar}
               onClick={navToStagingOrder}

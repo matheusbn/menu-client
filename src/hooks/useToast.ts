@@ -7,10 +7,13 @@ export default () => {
 
   if (toast === null) return
 
-  return (message, options) => {
+  return (message, options = {}) => {
     toast.props.message = message
+
     // map options to props
-    Object.keys(options).forEach(key => (toast.props[key] = options[key]))
+    Object.entries(options).forEach(
+      ([key, value]) => (toast.props[key] = value)
+    )
 
     toast.show()
   }

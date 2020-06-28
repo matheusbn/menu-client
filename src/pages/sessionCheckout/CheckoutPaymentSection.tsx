@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import MastercardSrc from 'assets/mastercard.png'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,9 +51,10 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-function BillPaymentSection({ bill }: { bill: Order[] }) {
+function CheckoutPaymentSection() {
   const classes = useStyles()
   const [cardType, setCardType] = useState('debit')
+  // const session = useSelector(state => state.restaurant.currentSession)
   const dispatch = useDispatch()
 
   const handleCardType = e => setCardType(e.target.value)
@@ -109,4 +110,4 @@ function BillPaymentSection({ bill }: { bill: Order[] }) {
   )
 }
 
-export default BillPaymentSection
+export default CheckoutPaymentSection

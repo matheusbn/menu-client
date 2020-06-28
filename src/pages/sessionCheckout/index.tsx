@@ -4,9 +4,11 @@ import { Button, Typography } from '@material-ui/core'
 import ItemOrderList from 'components/ItemOrderList'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
-import BillPaymentSection from './BillPaymentSection'
+import CheckoutPaymentSection from './CheckoutPaymentSection'
 import { useSelector, useDispatch } from 'react-redux'
 import { formatMoney, createKeyGenerator } from 'helpers/utils'
+import { history } from 'router'
+import useToast from 'hooks/useToast'
 
 const genKey = createKeyGenerator()
 
@@ -59,21 +61,24 @@ function compareAsc(e1, e2) {
   return 0
 }
 
-function Bill(props) {
+function SessionCheckout(props) {
   const classes = useStyles()
-  const bill: Order[] = useSelector(state => state.bill)
+  const session = useSelector(state => state.restaurant.currentSession)
   const dispatch = useDispatch(null)
+  const showToast = useToast()
 
-  const handleConfirm = () => {
-    // dispatch(addOrder(order))
-    history.back()
-  }
-
-  const totalPrice = bill.reduce(
+  const totalPrice = session.orders.reduce(
     (sum, order) =>
       sum + order.items.reduce((orderSum, { price }) => orderSum + price, 0),
     0
   )
+
+  const handleConfirm = async () => {
+    await session.checkout(totalPrice)
+    showToast('Obrigado pela visita!')
+
+    history.push('/')
+  }
 
   return (
     <div className={classes.root}>
@@ -87,7 +92,7 @@ function Bill(props) {
       />
 
       <section className={classes.section}>
-        {bill
+        {session.orders
           .slice()
           .sort(compareAsc)
           .map((order, i) => (
@@ -111,7 +116,7 @@ function Bill(props) {
 
         <div className={classes.divider} />
 
-        <BillPaymentSection bill={bill} />
+        <CheckoutPaymentSection />
       </section>
 
       <BottomBar className={classes.bottomBar}>
@@ -128,4 +133,4 @@ function Bill(props) {
   )
 }
 
-export default Bill
+export default SessionCheckout

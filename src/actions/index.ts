@@ -1,5 +1,5 @@
 export * from './general'
 export * from './stagingOrder'
-export * from './bill'
+export * from './restaurant'
 export * from './menuItems'
 export * from './selectedItemOrder'

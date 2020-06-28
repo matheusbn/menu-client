@@ -4,7 +4,7 @@ import { Button, Typography } from '@material-ui/core'
 import ItemOrderList from 'components/ItemOrderList'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
-import { addOrder } from 'actions'
+// import { addOrder } from 'actions'
 import { useSelector, useDispatch } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
@@ -24,12 +24,13 @@ const useStyles = makeStyles(theme => ({
 function StagingOrder(props) {
   const classes = useStyles()
   const stagingOrder: Order = useSelector(state => state.stagingOrder)
+  const session = useSelector(state => state.restaurant.currentSession)
   const dispatch = useDispatch()
 
   const handleConfirm = () => {
     stagingOrder.orderedAt = new Date()
 
-    dispatch(addOrder(stagingOrder))
+    session.addOrder(stagingOrder)
     history.back()
   }
 
