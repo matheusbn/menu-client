@@ -62,7 +62,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-const QRScannerDialog = (props, ref) => {
+const QRScannerDialog = ({ onScan }: (string) => void, ref) => {
   const classes = useStyles()
   const dialogRef = useRef(null)
   const [open, setOpen] = useState(false)
@@ -102,7 +102,7 @@ const QRScannerDialog = (props, ref) => {
     }
   }, [open])
 
-  useQRCodeScanEffect(videoRef, code => console.log(code), [open])
+  useQRCodeScanEffect(videoRef, onScan, [open])
 
   const handleClose = () => setOpen(false)
 

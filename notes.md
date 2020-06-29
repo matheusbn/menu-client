@@ -2,7 +2,6 @@
 
 -
 
-1. abrir sessao por qrcode
 1. arrumar pagina 404 aparecendo
 1. completar signup
 1. pagina usuário

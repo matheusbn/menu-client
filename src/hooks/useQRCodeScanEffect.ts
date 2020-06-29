@@ -25,7 +25,7 @@ export default function useQRScannerEffect(videoRef, handler, deps = []) {
           const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
           const code = jsQR(imageData.data, imageData.width, imageData.height)
 
-          if (isFunction(handler)) handler(code)
+          if (isFunction(handler)) handler(code?.data)
         }
       }, 200)
     }

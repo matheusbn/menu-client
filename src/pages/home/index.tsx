@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     height: '80vh',
     maxWidth: '800px',
     margin: '0 auto',
-    display: 'flex',
+    // display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     paddingTop: 40,
@@ -66,24 +66,47 @@ const Divider = withStyles(theme => ({
   },
 }))(({ classes }) => <div className={classes.root} />)
 
+function validateCode(code) {
+  // 3 letters followed by 2 numbers
+  return /^[a-zA-Z]{3}\d{2}$/g.test(code)
+}
+
 function Home() {
   const dispatch = useDispatch()
   const classes = useStyles()
   const [code, setCode] = useState(null)
+  const [codeError, setCodeError] = useState(null)
   const [loading, setLoading] = useState(false)
   const qrScanner = useRef(null)
 
   const handleCode = e => setCode(e.target.value.toUpperCase())
 
-  const handleQrScaner = () => qrScanner.current.open()
+  const openQrScaner = () => qrScanner.current.open()
 
-  const openSession = async () => {
-    if (!code) return
+  const scanHandler = code => {
+    console.log(code)
+    if (validateCode(code)) {
+      qrScanner.current.close()
 
+      openSession(code)
+    }
+  }
+
+  const inputHandler = () => {
+    if (!validateCode(code)) return setCodeError('Código não reconhecido')
+    setCodeError(null)
+
+    openSession(code)
+  }
+
+  const openSession = async code => {
     setLoading(true)
-
-    await dispatch(openSessionAction(code))
-    setLoading(false)
+    dispatch(openSessionAction(code.toUpperCase()))
+      .catch(error => {
+        if (error.message === 'code not found')
+          setCodeError('Não encontramos este código no sistema :(')
+      })
+      .finally(() => setLoading(false))
   }
 
   return (
@@ -102,14 +125,20 @@ function Home() {
         <Button
           block
           variant="contained"
-          onClick={handleQrScaner}
+          onClick={openQrScaner}
           startIcon={<CameraAltIcon color="inherit" />}
           style={{ width: '100%' }}
         >
           Escanear QR Code
         </Button>
 
-        <Divider />
+        {codeError ? (
+          <Typography variant="caption" color="error" align="center">
+            {codeError}
+          </Typography>
+        ) : (
+          <Divider />
+        )}
 
         <FormControl variant="outlined">
           <InputLabel htmlFor="code-input" variant="outlined">
@@ -118,7 +147,7 @@ function Home() {
           <OutlinedInput
             id="code-input"
             value={code}
-            onChange={handleCode}
+            onChange={inputHandler}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton type="submit" edge="end" onClick={openSession}>
@@ -135,7 +164,7 @@ function Home() {
         </FormControl>
       </div>
 
-      <QRScannerDialog ref={qrScanner} />
+      <QRScannerDialog onScan={scanHandler} ref={qrScanner} />
     </section>
   )
 }
