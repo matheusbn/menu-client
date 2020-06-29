@@ -8,8 +8,7 @@ import {
   Receipt as ReceiptIcon,
   PermIdentity as PermIdentityIcon,
 } from '@material-ui/icons'
-import Restaurant from 'models/Restaurant'
-import { Switch, history, Route, SlideRoute } from 'router'
+import { history, Route, SlideRoute } from 'router'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchMenuItems } from 'actions'
 import capitalize from 'lodash/capitalize'
@@ -18,15 +17,19 @@ import BottomBar from 'components/BottomBar'
 import { formatMoney } from 'helpers/utils'
 
 const useStyles = makeStyles(theme => ({
-  root: {},
-  itemsList: {
+  root: {
+    position: 'fixed',
     width: '100%',
+    height: '100%',
+    overflowY: 'scroll',
+  },
+  itemsList: {
     paddingTop: theme.spacing(1),
     paddingBottom: props => (props.emptyOrder ? 50 : 100),
     backgroundColor: theme.palette.background.default,
-    position: 'absolute',
-    left: 0,
     top: '30vh',
+    position: 'absolute',
+    left: '0',
     borderTopLeftRadius: theme.shape.borderRadius,
     borderTopRightRadius: theme.shape.borderRadius,
     boxShadow: `0 -4px 18px #0008`,
@@ -142,7 +145,7 @@ function Menu() {
   }
 
   return (
-    <div>
+    <div className={classes.root}>
       <AppBar
         title={
           <Typography variant="body1" component="h1">
@@ -155,42 +158,39 @@ function Menu() {
       {!restaurant ? (
         <CircularProgress size={50} className={classes.loading} />
       ) : (
-        <>
-          <section className={classes.root}>
-            <img src={restaurant.coverPicture} className={classes.cover} />
+        <section>
+          <img src={restaurant.coverPicture} className={classes.cover} />
 
-            <div className={classes.itemsList} ref={opacityThreshold}>
-              {menuSections.map(section => (
-                <MenuSection onItemClick={handleItemClick} section={section} />
-              ))}
-            </div>
-          </section>
-
-          {stagingItems.length > 0 && (
-            <BottomBar
-              className={classes.stagingOrderBar}
-              onClick={navToStagingOrder}
-            >
-              <div className={classes.itemsAmount}>{stagingItems.length}</div>
-              <Typography variant="body1">Pedido atual</Typography>
-              <div>
-                <span style={{ fontSize: '0.7rem' }}>R$ </span>
-                {formatMoney(
-                  stagingItems.reduce((sum, { price }) => sum + price, 0)
-                )}
-              </div>
-            </BottomBar>
-          )}
-          <BottomBar className={classes.navBottomBar}>
-            <IconButton onClick={() => history.push('/menu/fechar-conta')}>
-              <ReceiptIcon />
-            </IconButton>
-            <IconButton>
-              <PermIdentityIcon />
-            </IconButton>
-          </BottomBar>
-        </>
+          <div className={classes.itemsList} ref={opacityThreshold}>
+            {menuSections.map(section => (
+              <MenuSection onItemClick={handleItemClick} section={section} />
+            ))}
+          </div>
+        </section>
       )}
+      {stagingItems.length > 0 && (
+        <BottomBar
+          className={classes.stagingOrderBar}
+          onClick={navToStagingOrder}
+        >
+          <div className={classes.itemsAmount}>{stagingItems.length}</div>
+          <Typography variant="body1">Pedido atual</Typography>
+          <div>
+            <span style={{ fontSize: '0.7rem' }}>R$ </span>
+            {formatMoney(
+              stagingItems.reduce((sum, { price }) => sum + price, 0)
+            )}
+          </div>
+        </BottomBar>
+      )}
+      <BottomBar className={classes.navBottomBar}>
+        <IconButton onClick={() => history.push('/menu/fechar-conta')}>
+          <ReceiptIcon />
+        </IconButton>
+        <IconButton>
+          <PermIdentityIcon />
+        </IconButton>
+      </BottomBar>
     </div>
   )
 }

@@ -12,7 +12,6 @@ const useStyles = makeStyles(theme => ({
     height: '90vh',
     position: 'fixed',
     top: '5vh',
-    filter: 'opacity(1)',
     left: 'calc(50% - 250px)',
     width: 500,
     borderRadius: 4,

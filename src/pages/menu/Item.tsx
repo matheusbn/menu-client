@@ -1,17 +1,6 @@
 import React from 'react'
-import {
-  Paper,
-  Typography,
-  AppBar,
-  Toolbar,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  IconButton,
-} from '@material-ui/core'
+import { Paper, Typography, ListItem } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import history from 'router/history'
 import { formatMoney } from 'helpers/utils'
 
 const useStyles = makeStyles(theme => ({
