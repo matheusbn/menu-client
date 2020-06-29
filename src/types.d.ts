@@ -22,15 +22,17 @@ interface Item {
   optionals: Optional[]
 }
 
+interface SelectedOptionals {
+  [index: string]: Option[] | Option
+}
+
 interface ItemOrder {
   item: {
     id: string
     name: string
   }
   amount: number
-  selectedOptionals: {
-    [index: string]: Option[] | Option
-  }
+  selectedOptionals: SelectedOptionals
   observation: string
   price: number
 }

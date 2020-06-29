@@ -75,12 +75,14 @@ function ItemProfile(props) {
   )
   if (!item) return history.push('/menu')
   const opacityThreshold = useRef(null)
-  const [selectedOptionals, setSelectedOptionals] = useSetState(
-    itemOrder?.selectedOptionals ?? {}
-  )
+  const [selectedOptionals, setSelectedOptionals]: [
+    SelectedOptionals,
+    (object) => void
+  ] = useSetState(itemOrder?.selectedOptionals ?? {})
   const [amount, setAmount] = useState(itemOrder?.amount || 1)
   const [totalPrice, setTotalPrice] = useState(item.price)
   const [observation, setObservation] = useState(itemOrder?.observation || '')
+  const [missingRequiredFields, setMissingRequiredFields] = useState(true)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -102,6 +104,21 @@ function ItemProfile(props) {
 
     setTotalPrice(calcPrice())
   }, [selectedOptionals, amount])
+
+  // validate required fields
+  useEffect(() => {
+    if (!item?.optionals) return
+
+    const isInvalid = item.optionals.some(optional => {
+      const { min } = optional.required
+      const value = selectedOptionals[optional.name]
+
+      if (!min) return false
+      if (!value || (Array.isArray(value) && value.length < min)) return true
+    })
+
+    setMissingRequiredFields(isInvalid)
+  }, [selectedOptionals])
 
   const handleObservation = e => {
     if (observation.length < 140) setObservation(e.target.value)
@@ -215,6 +232,7 @@ function ItemProfile(props) {
           fullWidth
           onClick={handleConfirm}
           className={classes.confirmButton}
+          disabled={missingRequiredFields}
         >
           {itemOrder ? 'Atualizar' : 'Adicionar'}{' '}
           <span>R$ {formatMoney(totalPrice)}</span>
