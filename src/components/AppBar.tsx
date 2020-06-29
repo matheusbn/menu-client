@@ -62,15 +62,15 @@ export default function NavBar({
 
   useEffect(() => {
     const thresholdEl = opacityThreshold && opacityThreshold.current
-
     if (thresholdEl) {
       const handler = () => {
+        console.log(thresholdEl.getBoundingClientRect().top)
         if (thresholdEl.getBoundingClientRect().top <= BAR_HEIGHT)
           setTransparent(false)
         else setTransparent(true)
       }
 
-      window.addEventListener('scroll', handler)
+      window.addEventListener('scroll', handler, true)
       return () => window.removeEventListener('scroll', handler)
     }
   }, [opacityThreshold])
