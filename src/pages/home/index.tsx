@@ -17,8 +17,9 @@ import {
 } from '@material-ui/icons'
 import { history } from 'router'
 import { useDispatch } from 'react-redux'
-import { openSession } from 'actions'
+import { openSession as openSessionAction } from 'actions'
 import QRScannerDialog from './QRScannerDialog'
+import LoadingOverlay from 'components/LoadingOverlay'
 
 const useStyles = makeStyles({
   root: {
@@ -69,16 +70,26 @@ function Home() {
   const dispatch = useDispatch()
   const classes = useStyles()
   const [code, setCode] = useState(null)
+  const [loading, setLoading] = useState(false)
   const qrScanner = useRef(null)
 
   const handleCode = e => setCode(e.target.value.toUpperCase())
 
   const handleQrScaner = () => qrScanner.current.open()
 
-  const handleOpenSession = async () => dispatch(openSession(code))
+  const openSession = async () => {
+    if (!code) return
+
+    setLoading(true)
+
+    await dispatch(openSessionAction(code))
+    setLoading(false)
+  }
 
   return (
     <section className={classes.root}>
+      <LoadingOverlay loading={loading} />
+
       <div className="home-title">
         <Typography variant="h4" component="h1" align="center">
           Bem-vindo!
@@ -110,11 +121,7 @@ function Home() {
             onChange={handleCode}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton
-                  type="submit"
-                  edge="end"
-                  onClick={handleOpenSession}
-                >
+                <IconButton type="submit" edge="end" onClick={openSession}>
                   <SendIcon color="action" />
                 </IconButton>
               </InputAdornment>

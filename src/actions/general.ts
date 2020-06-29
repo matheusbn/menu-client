@@ -27,17 +27,3 @@ export const subscribeUserData = () => dispatch => {
     })
   })
 }
-
-export const openSession = code => async dispatch => {
-  dispatch({
-    type: 'OPEN_SESSION_REQUEST',
-  })
-
-  const restaurant = await Restaurant.fromTableCode(code)
-  await restaurant.openSession(code)
-
-  dispatch({
-    type: 'OPEN_SESSION_SUCCESS',
-    restaurant,
-  })
-}

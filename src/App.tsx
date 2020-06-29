@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { subscribeUserData } from 'actions'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import Toast from 'components/Toast'
+import LoadingOverlay from 'components/LoadingOverlay'
 import DesktopContainer from 'components/DesktopContainer'
 import { createKeyGenerator } from 'helpers/utils'
 import theme from './theme'
@@ -107,9 +108,8 @@ function App() {
       <ToastContext.Provider value={toast}>
         <CssBaseline />
         <DesktopContainer>
-          {isFetchingInitialData ? (
-            <CircularProgress size={50} className={classes.loading} />
-          ) : (
+          <LoadingOverlay noBackdrop loading={isFetchingInitialData} />
+          {!isFetchingInitialData && (
             <Switch>
               {routes}
               <Route component={NotFound} />,
@@ -122,5 +122,4 @@ function App() {
   )
 }
 
-// export default hot(App);
 export default App

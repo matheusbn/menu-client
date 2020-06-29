@@ -1,3 +1,5 @@
+import Restaurant from 'models/Restaurant'
+
 export const addOrder = (order: Order) => async (dispatch, getState) => {
   if (!order) {
     throw Error(`expected an order as parameter. Received: ${order}`)
@@ -16,5 +18,19 @@ export const checkout = (totalPrice: number) => async (dispatch, getState) => {
 
   dispatch({
     type: 'CHECKOUT',
+  })
+}
+
+export const openSession = code => async dispatch => {
+  dispatch({
+    type: 'OPEN_SESSION_REQUEST',
+  })
+
+  const restaurant = await Restaurant.fromTableCode(code)
+  await restaurant.openSession(code)
+
+  return dispatch({
+    type: 'OPEN_SESSION_SUCCESS',
+    restaurant,
   })
 }
