@@ -35,6 +35,10 @@ const useStyles = makeStyles(theme => ({
     color: props => (props.transparent ? 'white' : theme.palette.primary.main),
     transition: 'color 0.3s',
   },
+  spacer: {
+    height: BAR_HEIGHT,
+    flex: 'none',
+  },
 }))
 
 export default function NavBar({
@@ -80,7 +84,7 @@ export default function NavBar({
 
   return (
     <>
-      <div ref={appBar} className={classes.root}>
+      <header ref={appBar} className={classes.root}>
         {backButton ? (
           <IconButton aria-label="go-back" onClick={() => history.back()}>
             <ArrowBackIcon className={classes.icon} />
@@ -98,9 +102,9 @@ export default function NavBar({
             <MenuIcon className={classes.icon} />
           </IconButton>
         ) : null}
-      </div>
+      </header>
       {/* prevents elements from disappearing behind the appbar */}
-      {opacityThreshold ? null : <div style={{ height: BAR_HEIGHT }} />}
+      {opacityThreshold ? null : <div className={classes.spacer} />}
     </>
   )
 }
