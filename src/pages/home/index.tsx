@@ -6,7 +6,6 @@ import {
   FormControl,
   InputLabel,
   OutlinedInput,
-  TextField,
   FormHelperText,
   InputAdornment,
   IconButton,
@@ -20,43 +19,39 @@ import { useDispatch } from 'react-redux'
 import { openSession as openSessionAction } from 'actions'
 import QRScannerDialog from './QRScannerDialog'
 import LoadingOverlay from 'components/LoadingOverlay'
+import AppBar from 'components/AppBar'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
-    height: '80vh',
-    maxWidth: '800px',
-    margin: '0 auto',
+    height: '100vh',
+  },
+  wrapper: {
+    height: '100%',
     // display: 'flex',
+  },
+  titleSection: {
+    width: '80%',
+    height: '35%',
+    ...theme.flex.center,
     flexDirection: 'column',
-    alignItems: 'center',
-    paddingTop: 40,
-    display: 'grid',
-    padding: '20px',
-
-    '& .home-title': {
-      width: '80%',
-      margin: '0 auto',
-      marginBottom: '50px',
-      '& h1': {
-        marginBottom: '40px',
-      },
-    },
-    '& .home-actions': {
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      '& .MuiButton-startIcon': {
-        marginLeft: '-20px',
-        marginRight: '20px',
-      },
+    margin: '0 auto',
+    '& h1': {
+      marginBottom: theme.spacing(4),
     },
   },
-  loading: {
-    marginTop: '20vh',
+  actions: {
+    width: '100%',
+    height: '50%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    padding: theme.spacing(2),
+    '& .MuiButton-startIcon': {
+      marginLeft: -theme.spacing(2),
+      marginRight: theme.spacing(2),
+    },
   },
-})
+}))
 
 const Divider = withStyles(theme => ({
   root: {
@@ -84,7 +79,6 @@ function Home() {
   const openQrScaner = () => qrScanner.current.open()
 
   const scanHandler = code => {
-    console.log(code)
     if (validateCode(code)) {
       qrScanner.current.close()
 
@@ -92,7 +86,7 @@ function Home() {
     }
   }
 
-  const inputHandler = () => {
+  const inputButtonHandler = () => {
     if (!validateCode(code)) return setCodeError('Código não reconhecido')
     setCodeError(null)
 
@@ -111,57 +105,64 @@ function Home() {
 
   return (
     <section className={classes.root}>
+      <AppBar />
       <LoadingOverlay loading={loading} />
 
-      <div className="home-title">
-        <Typography variant="h4" component="h1" align="center">
-          Bem-vindo!
-        </Typography>
-        <Typography variant="body2" align="center">
-          Para começar, escaneie o QR Code ou insira o código de sua mesa.
-        </Typography>
-      </div>
-      <div className="home-actions">
-        <Button
-          block
-          variant="contained"
-          onClick={openQrScaner}
-          startIcon={<CameraAltIcon color="inherit" />}
-          style={{ width: '100%' }}
-        >
-          Escanear QR Code
-        </Button>
-
-        {codeError ? (
-          <Typography variant="caption" color="error" align="center">
-            {codeError}
+      <div className={classes.wrapper}>
+        <div className={classes.titleSection}>
+          <Typography variant="h4" component="h1" align="center">
+            Bem-vindo!
           </Typography>
-        ) : (
-          <Divider />
-        )}
+          <Typography variant="body2" align="center">
+            Para começar, escaneie o QR Code ou insira o código de sua mesa.
+          </Typography>
+        </div>
+        <div className={classes.actions}>
+          <Button
+            block
+            variant="contained"
+            onClick={openQrScaner}
+            startIcon={<CameraAltIcon color="inherit" />}
+            style={{ width: '100%' }}
+          >
+            Escanear QR Code
+          </Button>
 
-        <FormControl variant="outlined">
-          <InputLabel htmlFor="code-input" variant="outlined">
-            Código
-          </InputLabel>
-          <OutlinedInput
-            id="code-input"
-            value={code}
-            onChange={inputHandler}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton type="submit" edge="end" onClick={openSession}>
-                  <SendIcon color="action" />
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Código"
-            inputProps={{
-              style: { textAlign: 'center' },
-            }}
-          />
-          <FormHelperText>Procure pelo código em sua mesa</FormHelperText>
-        </FormControl>
+          {codeError ? (
+            <Typography variant="caption" color="error" align="center">
+              {codeError}
+            </Typography>
+          ) : (
+            <Divider />
+          )}
+
+          <FormControl variant="outlined">
+            <InputLabel htmlFor="code-input" variant="outlined">
+              Código
+            </InputLabel>
+            <OutlinedInput
+              id="code-input"
+              value={code}
+              onChange={handleCode}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    type="submit"
+                    edge="end"
+                    onClick={inputButtonHandler}
+                  >
+                    <SendIcon color="action" />
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Código"
+              inputProps={{
+                style: { textAlign: 'center' },
+              }}
+            />
+            <FormHelperText>Procure pelo código em sua mesa</FormHelperText>
+          </FormControl>
+        </div>
       </div>
 
       <QRScannerDialog onScan={scanHandler} ref={qrScanner} />
