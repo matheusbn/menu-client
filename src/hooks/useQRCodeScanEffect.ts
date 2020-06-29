@@ -15,7 +15,6 @@ export default function useQRScannerEffect(videoRef, handler, deps = []) {
     const canPlayHandler = () => {
       intervalID = setInterval(() => {
         if (video.readyState === video.HAVE_ENOUGH_DATA) {
-          console.log('scanning')
           const width = video.videoWidth
           const height = video.videoHeight
 
@@ -27,7 +26,6 @@ export default function useQRScannerEffect(videoRef, handler, deps = []) {
           const code = jsQR(imageData.data, imageData.width, imageData.height)
 
           if (isFunction(handler)) handler(code)
-          if (code) console.log(code)
         }
       }, 200)
     }

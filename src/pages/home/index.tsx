@@ -92,7 +92,7 @@ function Home() {
           block
           variant="contained"
           onClick={handleQrScaner}
-          startIcon={<CameraAltIcon />}
+          startIcon={<CameraAltIcon color="inherit" />}
           style={{ width: '100%' }}
         >
           Escanear QR Code

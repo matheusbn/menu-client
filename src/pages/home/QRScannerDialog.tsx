@@ -20,7 +20,6 @@ const useStyles = makeStyles(theme => ({
       objectFit: 'fill',
     },
   },
-
   codeOverlay: {
     position: 'fixed',
     width: '100%',
@@ -121,13 +120,8 @@ const QRScannerDialog = (props, ref) => {
           <Typography variant="h6" className={classes.title}>
             Escanear QR Code
           </Typography>
-          <IconButton
-            edge="end"
-            color="inherit"
-            onClick={handleClose}
-            aria-label="close"
-          >
-            <CloseIcon />
+          <IconButton edge="end" onClick={handleClose} aria-label="close">
+            <CloseIcon style={{ color: 'white' }} />
           </IconButton>
         </Toolbar>
       </AppBar>
