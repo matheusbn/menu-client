@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
     position: 'fixed',
     left: 0,
     top: 0,
-    width: '100vw',
+    width: '100%',
     height: '40vh',
   },
   margin: '0 auto',

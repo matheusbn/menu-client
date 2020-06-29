@@ -21,6 +21,7 @@ import { formatMoney } from 'helpers/utils'
 
 const useStyles = makeStyles(theme => ({
   root: {
+    display: 'block',
     '& .optional-input__option': {
       display: 'flex',
       borderBottom: `1px solid ${theme.palette.grey[400]}`,
@@ -41,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.grey['700'],
   },
   titleContainer: {
-    width: '100vw',
+    width: '100%',
     height: 60,
     display: 'flex',
     alignItems: 'center',

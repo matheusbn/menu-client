@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { subscribeUserData } from 'actions'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import Toast from 'components/Toast'
+import DesktopContainer from 'components/DesktopContainer'
 import { createKeyGenerator } from 'helpers/utils'
 import theme from './theme'
 
@@ -105,15 +106,16 @@ function App() {
     <ThemeProvider theme={theme}>
       <ToastContext.Provider value={toast}>
         <CssBaseline />
-
-        {isFetchingInitialData ? (
-          <CircularProgress size={50} className={classes.loading} />
-        ) : (
-          <Switch>
-            {routes}
-            <Route component={NotFound} />,
-          </Switch>
-        )}
+        <DesktopContainer>
+          {isFetchingInitialData ? (
+            <CircularProgress size={50} className={classes.loading} />
+          ) : (
+            <Switch>
+              {routes}
+              <Route component={NotFound} />,
+            </Switch>
+          )}
+        </DesktopContainer>
       </ToastContext.Provider>
       <Toast ref={toast} />
     </ThemeProvider>

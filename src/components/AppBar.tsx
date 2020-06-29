@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     top: 0,
     display: 'grid',
     gridTemplateColumns: '50px 1fr 50px',
-    width: '100vw',
+    width: '100%',
     height: BAR_HEIGHT,
     boxShadow: props =>
       props.transparent ? 'none' : `0 -3px 6px 1px ${theme.palette.grey[700]}`,

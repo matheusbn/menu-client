@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 50,
   },
   picture: {
-    width: '100vw',
+    width: '100%',
     height: '40vh',
   },
   description: {
@@ -55,6 +55,7 @@ const useStyles = makeStyles(theme => ({
     maxWidth: 600,
     padding: theme.spacing(2),
     margin: `0 auto`,
+    display: 'block',
   },
 }))
 

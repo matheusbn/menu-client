@@ -1,8 +1,5 @@
 # todos:
 
-1. adicionar bills firestore
-1. menuItems no restaurant
-
 -
 
 1. arrumar bottombar sambando
@@ -13,7 +10,7 @@
 1. abrir sessao por qrcode
 1. add open session loader
 1. cachear dados do usuario
-1. disabled add item button if any required field is empty
+1. disable add item button if any required field is empty
 1. pagamento
 1. disable slide tra nsition to first load
 
