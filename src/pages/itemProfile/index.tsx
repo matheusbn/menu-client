@@ -23,6 +23,12 @@ import isEmpty from 'lodash/isEmpty'
 
 const useStyles = makeStyles(theme => ({
   root: {
+    position: 'fixed',
+    width: '100%',
+    height: '100%',
+    overflowY: 'scroll',
+  },
+  itemProfile: {
     marginBottom: 50,
   },
   picture: {
@@ -122,13 +128,13 @@ function ItemProfile(props) {
 
   if (isEmpty(item)) return <Redirect to="/menu" />
   return (
-    <div>
+    <div className={classes.root}>
       <AppBar backButton opacityThreshold={opacityThreshold} />
 
-      <section className={classes.root}>
+      <section>
         <img src={item.pictures[0]} className={classes.picture} />
 
-        <div className={classes.root}>
+        <div className={classes.itemProfile}>
           <div style={{ margin: '5px 15px' }}>
             <Typography
               variant="h6"

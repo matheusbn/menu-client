@@ -10,6 +10,10 @@ import { useSelector, useDispatch } from 'react-redux'
 const useStyles = makeStyles(theme => ({
   root: {
     paddingBottom: 60,
+    position: 'fixed',
+    width: '100%',
+    height: '100%',
+    overflowY: 'scroll',
   },
   orderList: {
     padding: theme.spacing(2),
