@@ -19,7 +19,7 @@ import { useDispatch } from 'react-redux'
 import { openSession as openSessionAction } from 'actions'
 import QRScannerDialog from './QRScannerDialog'
 import LoadingOverlay from 'components/LoadingOverlay'
-import AppBar from 'components/AppBar'
+import BottomBarWithOptions from 'components/BottomBarWithOptions'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -105,7 +105,6 @@ function Home() {
 
   return (
     <section className={classes.root}>
-      <AppBar />
       <LoadingOverlay loading={loading} />
 
       <div className={classes.wrapper}>
@@ -165,6 +164,7 @@ function Home() {
         </div>
       </div>
 
+      <BottomBarWithOptions />
       <QRScannerDialog onScan={scanHandler} ref={qrScanner} />
     </section>
   )

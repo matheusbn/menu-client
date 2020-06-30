@@ -1,26 +1,15 @@
 import React, { useRef, useState, useContext, useEffect } from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
-import {
-  Typography,
-  ButtonBase,
-  IconButton,
-  CircularProgress,
-} from '@material-ui/core'
+import { Typography, IconButton, CircularProgress } from '@material-ui/core'
 import AppBar from 'components/AppBar'
-import {
-  Send as SendIcon,
-  CameraAlt as CameraAltIcon,
-  Receipt as ReceiptIcon,
-  PermIdentity as PermIdentityIcon,
-  MoreVert as MoreVertIcon,
-} from '@material-ui/icons'
-import { history, Route, SlideRoute } from 'router'
+import { Receipt as ReceiptIcon } from '@material-ui/icons'
+import { history } from 'router'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchMenuItems } from 'actions'
 import capitalize from 'lodash/capitalize'
 import Item from './Item'
 import BottomBar from 'components/BottomBar'
-import OptionsDrawer from 'components/OptionsDrawer'
+import BottomBarWithOptions from 'components/BottomBarWithOptions'
 import { formatMoney } from 'helpers/utils'
 
 const useStyles = makeStyles(theme => ({
@@ -149,17 +138,7 @@ function Menu() {
     state => state.stagingOrder.items
   )
   const opacityThreshold = useRef(null)
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const classes = useStyles({ emptyOrder: !stagingItems.length })
-
-  const closeDrawer = () => {
-    console.log('close')
-    setIsDrawerOpen(false)
-  }
-  const openDrawer = () => {
-    console.log('open')
-    setIsDrawerOpen(true)
-  }
 
   useEffect(() => {
     if (restaurant && !menuItems.length) dispatch(fetchMenuItems())
@@ -212,30 +191,16 @@ function Menu() {
           </div>
         </BottomBar>
       )}
-      <BottomBar className={classes.navBottomBar}>
-        {/* <ButtonBase
-          className={classes.labelIconButton}
-          onClick={() => history.push('/fechar-conta')}
-        >
-          <ReceiptIcon />
-          <Typography variant="caption">Pedidos</Typography>
-        </ButtonBase>
-        <ButtonBase className={classes.labelIconButton}>
-          <MoreVertIcon />
-          <Typography variant="caption">Opções</Typography>
-        </ButtonBase> */}
-        <IconButton onClick={() => history.push('/pedidos')}>
-          <ReceiptIcon />
-          <Typography variant="caption" style={{ marginLeft: 4 }}>
-            Pedidos
-          </Typography>
-        </IconButton>
-        <IconButton onClick={openDrawer}>
-          <MoreVertIcon />
-        </IconButton>
-      </BottomBar>
-
-      <OptionsDrawer open={isDrawerOpen} onClose={closeDrawer} />
+      <BottomBarWithOptions
+        leftElement={
+          <IconButton onClick={() => history.push('/pedidos')}>
+            <ReceiptIcon />
+            <Typography variant="caption" style={{ marginLeft: 4 }}>
+              Pedidos
+            </Typography>
+          </IconButton>
+        }
+      />
     </div>
   )
 }
