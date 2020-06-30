@@ -27,7 +27,6 @@ const colors = {
   // primary: '#b4132c',
   // #ad2137 mais vermelho
   primary: '#b3000b',
-  // primary: '#b3000b',
   secondary: '#071E22',
 }
 

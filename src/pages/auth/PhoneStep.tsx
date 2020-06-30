@@ -22,13 +22,7 @@ const PhoneStep = props => {
   const [phone, setPhone] = useState('')
 
   const handleCountryCode = e => setCountryCode(e.target.value)
-  const handleDdd = e => {
-    const value = e.target.value
-    const hasZero = value[0] === '0'
-    if (hasZero && value.length > 3) return
-
-    setDdd(hasZero ? value : 0 + value)
-  }
+  const handleDdd = e => setDdd(e.target.value)
   const handlePhone = e => setPhone(e.target.value)
 
   const handleSubmit = e => {
@@ -38,7 +32,8 @@ const PhoneStep = props => {
   }
 
   useEffect(() => {
-    props.setPhone(countryCode + ddd + phone)
+    const dirty = countryCode + ddd + phone
+    props.setPhone(dirty.replace(/[\s-]/g, ''))
   }, [countryCode, ddd, phone])
 
   return (

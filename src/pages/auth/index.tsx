@@ -53,7 +53,7 @@ const useStyles = makeStyles({
   },
 })
 
-const isPhoneValid = phone => /^\+\d{14}$/i.test(phone)
+const isPhoneValid = phone => /^\+?[1-9]\d{1,14}$/.test(phone)
 
 function Auth() {
   const classes = useStyles()
@@ -81,10 +81,25 @@ function Auth() {
       firebase
         .auth()
         .signInWithPhoneNumber(phoneE164.current, recaptchaVerifier.current)
-        .then(result => (confirmationResult.current = result))
-        .catch(error => console.error('Error on code send', error))
-      // display error
-      history.push('/auth/code')
+        .then(result => {
+          history.push('/auth/code')
+          confirmationResult.current = result
+        })
+        .catch(error => {
+          // auth/captcha-check-failed
+          // auth/invalid-phone-number
+          // auth/missing-phone-number
+          // auth/quota-exceeded
+          // auth/user-disabled
+          // auth/operation-not-allowed
+          if (
+            error.code === 'auth/invalid-phone-number' ||
+            error.code === 'auth/missing-phone-number'
+          ) {
+            setPhoneError(true)
+          }
+          console.error('Error on code send', error)
+        })
     })
   }
 
