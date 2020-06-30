@@ -20,9 +20,14 @@ declare module '@material-ui/core/styles/createMuiTheme' {
   }
 }
 
+// old orange: D55A00
+
 const colors = {
   // #c81732 vermelho
-  primary: '#D55A00',
+  // primary: '#b4132c',
+  // #ad2137 mais vermelho
+  primary: '#b3000b',
+  // primary: '#b3000b',
   secondary: '#071E22',
 }
 
