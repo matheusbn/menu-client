@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 // import { hot } from 'react-hot-loader/root';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
-import { CssBaseline, CircularProgress } from '@material-ui/core'
+import { CssBaseline } from '@material-ui/core'
 import Home from 'pages/home'
 import Menu from 'pages/menu'
 import Auth from 'pages/auth'
