@@ -88,9 +88,9 @@ const QRScannerDialog = ({ onScan }: (string) => void, ref) => {
       },
     }
 
-    videoRef.current.setAttribute('autoplay', '')
-    videoRef.current.setAttribute('muted', '')
-    // videoRef.current.setAttribute('playsinline', '')
+    // videoRef.current.setAttribute('autoplay', '')
+    // videoRef.current.setAttribute('muted', '')
+    videoRef.current.setAttribute('playsinline', '')
 
     navigator.mediaDevices
       .getUserMedia(constraints)
