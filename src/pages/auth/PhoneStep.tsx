@@ -21,7 +21,13 @@ const PhoneStep = props => {
   const [ddd, setDdd] = useState('048')
   const [phone, setPhone] = useState('')
 
-  const handleCountryCode = e => setCountryCode(e.target.value)
+  const handleCountryCode = e => {
+    let value = e.target.value
+    const hasPlus = value[0] === '+'
+    if (!hasPlus) value = `+${value}`
+
+    setCountryCode(value)
+  }
   const handleDdd = e => setDdd(e.target.value)
   const handlePhone = e => setPhone(e.target.value)
 

@@ -53,7 +53,7 @@ const useStyles = makeStyles({
   },
 })
 
-const isPhoneValid = phone => /^\+?[1-9]\d{1,14}$/.test(phone)
+const isPhoneValid = phone => /^\+[1-9]\d{1,14}$/.test(phone)
 
 function Auth() {
   const classes = useStyles()
