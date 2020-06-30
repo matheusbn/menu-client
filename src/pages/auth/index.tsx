@@ -76,7 +76,6 @@ function Auth() {
       return
     }
 
-    setLoading(false)
     importFirebase().then(firebase => {
       firebase
         .auth()
@@ -100,6 +99,7 @@ function Auth() {
           }
           console.error('Error on code send', error)
         })
+        .finally(() => setLoading(false))
     })
   }
 
