@@ -3,12 +3,20 @@ import { Route } from 'router'
 import { Slide } from '@material-ui/core'
 
 /**
- * attention with absolute or fixed positioned elements
+ * pay attention to absolute or fixed positioned elements
  */
-export default function SlideRoute({ direction, ...props }) {
+export default function SlideRoute({ direction, appear = true, ...props }) {
   return (
-    <Slide direction={direction || 'left'} in={true} mountOnEnter unmountOnExit>
-      <Route {...props} />
+    <Slide
+      direction={direction || 'left'}
+      in={true}
+      appear={appear}
+      mountOnEnter
+      unmountOnExit
+    >
+      <div>
+        <Route {...props} />
+      </div>
     </Slide>
   )
 }

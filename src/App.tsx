@@ -104,20 +104,20 @@ function App() {
         component={() => <Redirect to="/menu" />}
       />,
     ]
-  } else routes = [<Route key={keyGen()} path="/" component={Home} />]
+  } else
+    routes = [
+      <SlideRoute appear={false} key={keyGen()} path="/" component={Home} />,
+    ]
 
+  routes.push(<Route key="redirect" component={NotFound} />)
   return (
     <ThemeProvider theme={theme}>
       <ToastContext.Provider value={toast}>
         <CssBaseline />
         <DesktopContainer>
           <LoadingOverlay noBackdrop loading={isFetchingInitialData} />
-          {!isFetchingInitialData && (
-            <Switch>
-              {routes}
-              <Route component={NotFound} />
-            </Switch>
-          )}
+
+          {!isFetchingInitialData && <Switch>{routes}</Switch>}
         </DesktopContainer>
       </ToastContext.Provider>
       <Toast ref={toast} />
