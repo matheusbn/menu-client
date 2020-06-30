@@ -10,20 +10,17 @@ import {
   Divider,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import MenuIcon from '@material-ui/icons/Menu'
 import {
   ExitToApp as ExitToAppIcon,
   GetApp as GetAppIcon,
   PermIdentity as PermIdentityIcon,
 } from '@material-ui/icons'
-// import promptInstall from 'services/install'
+import importFirebase from 'services/firebase'
+import pwaInstaller from 'services/pwaInstaller'
 
 const useStyles = makeStyles({
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: 'auto',
+  pwaInstall: {
+    display: 'none',
   },
 })
 
@@ -35,7 +32,15 @@ export default function OptionsDrawer({
   onClose: () => void
 }) {
   const classes = useStyles()
-  console.log(open)
+  const installButton = useRef(null)
+
+  useEffect(() => {
+    if (installButton.current) pwaInstaller.button = installButton.current
+  }, [open])
+
+  const signOut = () => {
+    importFirebase().then(firebase => firebase.auth().signOut())
+  }
 
   const options = (
     <div className={classes.options} role="presentation" onClick={onClose}>
@@ -46,18 +51,18 @@ export default function OptionsDrawer({
           </ListItemIcon>
           <ListItemText primary={'Perfil'} />
         </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary={'Sair'} />
-        </ListItem>
       </List>
 
       <Divider />
 
       <List>
-        <ListItem button>
+        <ListItem button onClick={signOut}>
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText primary={'Sair'} />
+        </ListItem>
+        <ListItem button ref={installButton} className={classes.pwaInstall}>
           <ListItemIcon>
             <GetAppIcon />
           </ListItemIcon>

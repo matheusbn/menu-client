@@ -33,7 +33,7 @@ const PhoneStep = props => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    console.log('submitted')
+
     props.onSubmit()
   }
 

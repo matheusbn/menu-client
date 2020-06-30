@@ -27,7 +27,7 @@ export default function Switch(props) {
 
   const contextInfo: { match? } = {}
 
-  console.group('nav')
+  console.groupCollapsed('nav')
   console.log(children)
   const route = children.find(route => {
     const { path, exact } = route.props

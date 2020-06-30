@@ -13,7 +13,6 @@ export const subscribeUserData = () => dispatch => {
     firebase.auth().onAuthStateChanged(async user => {
       if (!user) return dispatchUserDataReceive()
       else {
-        console.log(user)
         const sessionSnapshot = await getUserCurrentSession(user)
         if (sessionSnapshot) {
           const restaurantSnapshot = await sessionSnapshot.ref.parent.parent.get()

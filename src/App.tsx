@@ -21,6 +21,7 @@ import LoadingOverlay from 'components/LoadingOverlay'
 import DesktopContainer from 'components/DesktopContainer'
 import { createKeyGenerator } from 'helpers/utils'
 import theme from './theme'
+import pwaInstaller from 'services/pwaInstaller'
 
 const keyGen = createKeyGenerator()
 
@@ -47,6 +48,8 @@ function App() {
 
   useEffect(() => {
     console.log(theme)
+
+    pwaInstaller.captureInstallEvent()
     dispatch(subscribeUserData())
   }, [])
 

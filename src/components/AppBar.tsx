@@ -3,8 +3,7 @@ import { IconButton, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import { Link, history } from 'router'
-import importFirebase from 'services/firebase'
+import { history } from 'router'
 
 const BAR_HEIGHT = 60
 
@@ -53,14 +52,9 @@ export default function NavBar({
   hamburguer: boolean
   opacityThreshold: React.Ref<HTMLElement>
 }) {
-  const installButton = useRef(null)
   const appBar = useRef(null)
   const [transparent, setTransparent] = useState(!!opacityThreshold)
   const classes = useStyles({ transparent })
-
-  useEffect(() => {
-    // promptInstall(installButton.current)
-  }, [])
 
   useEffect(() => {
     const thresholdEl = opacityThreshold && opacityThreshold.current
@@ -75,10 +69,6 @@ export default function NavBar({
       return () => window.removeEventListener('scroll', handler, true)
     }
   }, [opacityThreshold])
-
-  const signOut = () => {
-    importFirebase().then(firebase => firebase.auth().signOut())
-  }
 
   return (
     <>
