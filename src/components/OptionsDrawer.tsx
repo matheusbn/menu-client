@@ -17,6 +17,7 @@ import {
 } from '@material-ui/icons'
 import importFirebase from 'services/firebase'
 import pwaInstaller from 'services/pwaInstaller'
+import UserProfileDialog from 'components/UserProfileDialog'
 
 const useStyles = makeStyles({
   pwaInstall: {
@@ -32,7 +33,11 @@ export default function OptionsDrawer({
   onClose: () => void
 }) {
   const classes = useStyles()
+  const [isUserDialogOpen, setIsUserDialogOpen] = useState(true)
   const installButton = useRef(null)
+
+  const openUserDialog = () => setIsUserDialogOpen(true)
+  const closeUserDialog = () => setIsUserDialogOpen(false)
 
   useEffect(() => {
     if (installButton.current) pwaInstaller.button = installButton.current
@@ -45,7 +50,7 @@ export default function OptionsDrawer({
   const options = (
     <div className={classes.options} role="presentation" onClick={onClose}>
       <List>
-        <ListItem button>
+        <ListItem button onClick={openUserDialog}>
           <ListItemIcon>
             <PermIdentityIcon />
           </ListItemIcon>
@@ -73,8 +78,11 @@ export default function OptionsDrawer({
   )
 
   return (
-    <Drawer anchor={'bottom'} open={open} onClose={onClose}>
-      {options}
-    </Drawer>
+    <>
+      <Drawer anchor={'bottom'} open={open} onClose={onClose}>
+        {options}
+      </Drawer>
+      <UserProfileDialog open={isUserDialogOpen} onClose={closeUserDialog} />
+    </>
   )
 }

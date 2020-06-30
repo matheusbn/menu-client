@@ -2,14 +2,19 @@ import React, { useState, useEffect, useImperativeHandle, useRef } from 'react'
 import useQRCodeScanEffect from 'hooks/useQRCodeScanEffect'
 import {
   Button,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   Dialog,
   Slide,
   AppBar,
   Toolbar,
+  Divider,
   IconButton,
   Typography,
 } from '@material-ui/core'
-import CloseIcon from '@material-ui/icons/Close'
+import { Close as CloseIcon, Edit as EditIcon } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -62,82 +67,59 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-const QRScannerDialog = ({ onScan }: (string) => void, ref) => {
+const UserProfileDialog = ({
+  open,
+  onClose,
+}: {
+  open: boolean
+  onClose: () => void
+}) => {
   const classes = useStyles()
-  const dialogRef = useRef(null)
-  const [open, setOpen] = useState(false)
-
-  const videoRef = useRef(null)
-
-  useImperativeHandle(ref, () => ({
-    open: () => setOpen(true),
-    close: () => setOpen(close),
-  }))
-
-  useEffect(() => {
-    if (!open) return
-
-    const constraints = {
-      audio: false,
-      video: {
-        facingMode: 'environment',
-        // width: 720,
-        // height: 720,
-      },
-    }
-
-    // videoRef.current.setAttribute('autoplay', '')
-    videoRef.current.setAttribute('muted', '')
-    videoRef.current.setAttribute('playsinline', '')
-
-    navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then(stream => {
-        videoRef.current.srcObject = stream
-        videoRef.current.play()
-      })
-      .catch(console.error)
-
-    return () => {
-      if (!videoRef.current.srcObject) return
-
-      const tracks = videoRef.current.srcObject.getTracks()
-      tracks.forEach(track => track.stop())
-    }
-  }, [open])
-
-  useQRCodeScanEffect(videoRef, onScan, [open])
-
-  const handleClose = () => setOpen(false)
 
   return (
     <Dialog
-      ref={dialogRef}
       fullScreen
       open={open}
-      onClose={handleClose}
+      onClose={onClose}
       TransitionComponent={Transition}
       className={classes.root}
     >
       <AppBar>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Escanear QR Code
+            Perfil
           </Typography>
-          <IconButton edge="end" onClick={handleClose} aria-label="close">
+          <IconButton edge="end" onClick={onClose} aria-label="close">
             <CloseIcon style={{ color: 'white' }} />
           </IconButton>
         </Toolbar>
       </AppBar>
       <Toolbar /> {/* prevents elements from disappearing behind the appbar */}
-      <video ref={videoRef}>Video stream not available.</video>
-      <div className={classes.codeOverlay}>
-        <div className="code-box">
-          <div className="dummy"></div>
-        </div>
-      </div>
+      <List>
+        <ListItem button>
+          <ListItemText primary={'Nome'} secondary={'Matheus'} />
+          <ListItemIcon>
+            <EditIcon />
+          </ListItemIcon>
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <ListItem button divider>
+          {/* <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon> */}
+          <ListItemText primary={'Sessões anteriores'} />
+        </ListItem>
+        <ListItem button>
+          {/* <ListItemIcon>
+            <GetAppIcon />
+          </ListItemIcon> */}
+          <ListItemText primary={'Formas de pagamento'} />
+        </ListItem>
+      </List>
     </Dialog>
   )
 }
 
-export default React.forwardRef(QRScannerDialog)
+export default UserProfileDialog
