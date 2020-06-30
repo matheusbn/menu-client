@@ -82,7 +82,7 @@ function ItemProfile(props) {
   const [amount, setAmount] = useState(itemOrder?.amount || 1)
   const [totalPrice, setTotalPrice] = useState(item.price)
   const [observation, setObservation] = useState(itemOrder?.observation || '')
-  const [missingRequiredFields, setMissingRequiredFields] = useState(true)
+  const [missingRequiredFields, setMissingRequiredFields] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
