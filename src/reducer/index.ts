@@ -1,9 +1,16 @@
 import { combineReducers } from 'redux'
 
-const user = (state = null, action) => {
+const user = (state: object | null = null, action) => {
   switch (action.type) {
     case `SUBSCRIBE_USER_DATA_RECEIVE`:
       return action.user || null
+    case `UPDATE_USER`:
+      if (!state) throw new Error("can't update unexisting user")
+
+      return {
+        ...state,
+        ...action.data,
+      }
     default:
       return state
   }

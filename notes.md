@@ -2,11 +2,10 @@
 
 -
 
-1. arrumar pagina 404 aparecendo
-1. completar signup
 1. pagina usuário
-1. cachear dados do usuario
 1.
+1. arrumar pagina 404 aparecendo [n apareceu mais]
+1. cachear dados do usuario
 1. pagamento
 1. disable slide tra nsition to first load
 

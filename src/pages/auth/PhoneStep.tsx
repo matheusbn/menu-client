@@ -19,7 +19,7 @@ const PhoneStep = props => {
   const classes = useStyles()
   const [countryCode, setCountryCode] = useState('+55')
   const [ddd, setDdd] = useState('048')
-  const [phone, setPhone] = useState(null) //991321617)
+  const [phone, setPhone] = useState('')
 
   const handleCountryCode = e => setCountryCode(e.target.value)
   const handleDdd = e => {

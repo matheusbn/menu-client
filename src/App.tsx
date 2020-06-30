@@ -6,6 +6,7 @@ import { CssBaseline, CircularProgress } from '@material-ui/core'
 import Home from 'pages/home'
 import Menu from 'pages/menu'
 import Auth from 'pages/auth'
+import Signup from 'pages/Signup'
 import StagingOrder from 'pages/stagingOrder'
 import SessionCheckout from 'pages/sessionCheckout'
 import ItemProfile from 'pages/itemProfile'
@@ -74,6 +75,8 @@ function App() {
         component={() => <Redirect to="/auth" />}
       />,
     ]
+  } else if (!user.displayName) {
+    routes = [<SlideRoute key={keyGen()} path="/" component={Signup} />]
   } else if (hasOpenSession) {
     routes = [
       <SlideRoute
@@ -112,7 +115,7 @@ function App() {
           {!isFetchingInitialData && (
             <Switch>
               {routes}
-              <Route component={NotFound} />,
+              <Route component={NotFound} />
             </Switch>
           )}
         </DesktopContainer>
