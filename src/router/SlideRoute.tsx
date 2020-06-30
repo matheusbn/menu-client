@@ -14,9 +14,7 @@ export default function SlideRoute({ direction, appear = true, ...props }) {
       mountOnEnter
       unmountOnExit
     >
-      <div>
-        <Route {...props} />
-      </div>
+      <Route {...props} />
     </Slide>
   )
 }
