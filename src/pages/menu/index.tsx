@@ -1,12 +1,18 @@
 import React, { useRef, useState, useContext, useEffect } from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
-import { Typography, IconButton, CircularProgress } from '@material-ui/core'
+import {
+  Typography,
+  ButtonBase,
+  IconButton,
+  CircularProgress,
+} from '@material-ui/core'
 import AppBar from 'components/AppBar'
 import {
   Send as SendIcon,
   CameraAlt as CameraAltIcon,
   Receipt as ReceiptIcon,
   PermIdentity as PermIdentityIcon,
+  MoreVert as MoreVertIcon,
 } from '@material-ui/icons'
 import { history, Route, SlideRoute } from 'router'
 import { useSelector, useDispatch } from 'react-redux'
@@ -14,6 +20,7 @@ import { fetchMenuItems } from 'actions'
 import capitalize from 'lodash/capitalize'
 import Item from './Item'
 import BottomBar from 'components/BottomBar'
+import OptionsDrawer from 'components/OptionsDrawer'
 import { formatMoney } from 'helpers/utils'
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +32,8 @@ const useStyles = makeStyles(theme => ({
   },
   itemsList: {
     paddingTop: theme.spacing(1),
-    paddingBottom: props => (props.emptyOrder ? 50 : 100),
+    paddingBottom: props =>
+      props.emptyOrder ? BottomBar.HEIGHT : BottomBar.HEIGHT * 2,
     backgroundColor: theme.palette.background.default,
     top: '30vh',
     position: 'absolute',
@@ -33,6 +41,15 @@ const useStyles = makeStyles(theme => ({
     borderTopLeftRadius: theme.shape.borderRadius,
     borderTopRightRadius: theme.shape.borderRadius,
     boxShadow: `0 -4px 18px #0008`,
+  },
+  labelIconButton: {
+    marginTop: theme.spacing(1) / 2,
+    ...theme.flex.center,
+    flexDirection: 'column',
+    '& .MuiTypography-root': {
+      fontSize: '0.68rem',
+      color: theme.palette.grey[800],
+    },
   },
   itemsAmount: {
     height: 28,
@@ -49,7 +66,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     color: theme.palette.grey[200],
     backgroundColor: theme.palette.primary.main,
-    bottom: 50,
+    bottom: BottomBar.HEIGHT,
     zIndex: 91,
     padding: theme.spacing(2),
 
@@ -63,6 +80,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     color: theme.palette.primary.main,
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
   },
   cover: {
     position: 'fixed',
@@ -130,7 +149,17 @@ function Menu() {
     state => state.stagingOrder.items
   )
   const opacityThreshold = useRef(null)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const classes = useStyles({ emptyOrder: !stagingItems.length })
+
+  const closeDrawer = () => {
+    console.log('close')
+    setIsDrawerOpen(false)
+  }
+  const openDrawer = () => {
+    console.log('open')
+    setIsDrawerOpen(true)
+  }
 
   useEffect(() => {
     if (restaurant && !menuItems.length) dispatch(fetchMenuItems())
@@ -184,13 +213,29 @@ function Menu() {
         </BottomBar>
       )}
       <BottomBar className={classes.navBottomBar}>
-        <IconButton onClick={() => history.push('/menu/fechar-conta')}>
+        {/* <ButtonBase
+          className={classes.labelIconButton}
+          onClick={() => history.push('/fechar-conta')}
+        >
           <ReceiptIcon />
+          <Typography variant="caption">Pedidos</Typography>
+        </ButtonBase>
+        <ButtonBase className={classes.labelIconButton}>
+          <MoreVertIcon />
+          <Typography variant="caption">Opções</Typography>
+        </ButtonBase> */}
+        <IconButton onClick={() => history.push('/pedidos')}>
+          <ReceiptIcon />
+          <Typography variant="caption" style={{ marginLeft: 4 }}>
+            Pedidos
+          </Typography>
         </IconButton>
-        <IconButton>
-          <PermIdentityIcon />
+        <IconButton onClick={openDrawer}>
+          <MoreVertIcon />
         </IconButton>
       </BottomBar>
+
+      <OptionsDrawer open={isDrawerOpen} onClose={closeDrawer} />
     </div>
   )
 }

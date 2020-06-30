@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     maxHeight: 102,
     maxWidth: '100%',
-    marginBottom: 8,
+    marginBottom: theme.spacing(2),
     '& .MuiListItem-root': {
       padding: 0,
     },

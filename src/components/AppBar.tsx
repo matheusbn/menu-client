@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Button, Typography, IconButton } from '@material-ui/core'
+import { IconButton, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import InstallIcon from 'assets/install.svg'
-// import promptInstall from 'services/install'
 import { Link, history } from 'router'
 import importFirebase from 'services/firebase'
 
@@ -90,12 +88,12 @@ export default function NavBar({
             <ArrowBackIcon className={classes.icon} />
           </IconButton>
         ) : (
-          <Button className={classes.icon} onClick={signOut}>
-            SAIR
-          </Button>
+          <div />
         )}
 
-        <div className={classes.title}>{title}</div>
+        <Typography className={classes.title} variant="body2">
+          {title}
+        </Typography>
 
         {hamburguer ? (
           <IconButton aria-label="menu">

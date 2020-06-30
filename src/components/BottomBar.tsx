@@ -17,11 +17,12 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function BottomBar({
+const HEIGHT = 50
+function BottomBar({
   style,
   className,
   children,
-  height = 50,
+  height = HEIGHT,
   onClick,
 }: {
   style?: object
@@ -47,3 +48,6 @@ export default function BottomBar({
     </>
   )
 }
+BottomBar.HEIGHT = HEIGHT
+
+export default BottomBar

@@ -88,7 +88,7 @@ function App() {
       <SlideRoute
         direction="up"
         key={keyGen()}
-        path="/fechar-conta"
+        path="/pedidos"
         component={SessionCheckout}
       />,
       <SlideRoute
