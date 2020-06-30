@@ -109,7 +109,7 @@ function App() {
       <SlideRoute appear={false} key={keyGen()} path="/" component={Home} />,
     ]
 
-  routes.push(<Route key="redirect" component={NotFound} />)
+  routes.push(<Route key="notfound" component={NotFound} />)
   return (
     <ThemeProvider theme={theme}>
       <ToastContext.Provider value={toast}>

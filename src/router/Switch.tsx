@@ -27,6 +27,8 @@ export default function Switch(props) {
 
   const contextInfo: { match? } = {}
 
+  console.group('nav')
+  console.log(children)
   const route = children.find(route => {
     const { path, exact } = route.props
     if (!path) return true
@@ -40,6 +42,7 @@ export default function Switch(props) {
       return route
     }
 
+    console.log(path, currentRelativeUrl)
     if (exact) return currentRelativeUrl === path
 
     if (currentRelativeUrl.match(new RegExp(path))) {
@@ -49,6 +52,9 @@ export default function Switch(props) {
 
     return false
   })
+
+  console.log('THE CHOSEN ROUTE:', route)
+  console.groupEnd()
 
   return (
     <RouterContext.Provider value={contextInfo}>{route}</RouterContext.Provider>
