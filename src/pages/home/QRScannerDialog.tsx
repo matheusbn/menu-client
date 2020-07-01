@@ -86,7 +86,7 @@ const QRScannerDialog = ({ onScan }: (string) => void, ref) => {
       },
     }
 
-    // videoRef.current.setAttribute('autoplay', '')
+    videoRef.current.setAttribute('autoplay', '')
     videoRef.current.setAttribute('muted', '')
     videoRef.current.setAttribute('playsinline', '')
 
@@ -96,7 +96,9 @@ const QRScannerDialog = ({ onScan }: (string) => void, ref) => {
         videoRef.current.srcObject = stream
         videoRef.current.play()
       })
-      .catch(console.error)
+      .catch(error =>
+        console.error('Error getting user media (opening camera):', error)
+      )
 
     return () => {
       if (!videoRef.current.srcObject) return

@@ -13,21 +13,30 @@ export default function useQRScannerEffect(videoRef, handler, deps = []) {
 
     let intervalID
     const canPlayHandler = () => {
-      intervalID = setInterval(() => {
-        if (video.readyState === video.HAVE_ENOUGH_DATA) {
-          const width = video.videoWidth
-          const height = video.videoHeight
+      try {
+        intervalID = setInterval(() => {
+          if (video.readyState === video.HAVE_ENOUGH_DATA) {
+            const width = video.videoWidth
+            const height = video.videoHeight
 
-          canvas.width = width
-          canvas.height = height
+            canvas.width = width
+            canvas.height = height
 
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-          const code = jsQR(imageData.data, imageData.width, imageData.height)
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+            const imageData = ctx.getImageData(
+              0,
+              0,
+              canvas.width,
+              canvas.height
+            )
+            const code = jsQR(imageData.data, imageData.width, imageData.height)
 
-          if (isFunction(handler)) handler(code?.data)
-        }
-      }, 200)
+            if (isFunction(handler)) handler(code?.data)
+          }
+        }, 200)
+      } catch (error) {
+        console.error('Error interpreting QR Code:', error)
+      }
     }
 
     video.addEventListener('canplay', canPlayHandler)

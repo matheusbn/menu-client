@@ -100,6 +100,8 @@ function Home() {
       .catch(error => {
         if (error.message === 'code not found')
           setCodeError('Não encontramos este código no sistema :(')
+
+        console.error('Error finding code:', error)
       })
       .finally(() => setLoading(false))
   }
