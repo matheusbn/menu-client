@@ -96,15 +96,6 @@ const UserProfileDialog = ({
       </AppBar>
       <Toolbar /> {/* prevents elements from disappearing behind the appbar */}
       <List>
-        <ListItem button>
-          <ListItemText primary={'Nome'} secondary={'Matheus'} />
-          <ListItemIcon>
-            <EditIcon />
-          </ListItemIcon>
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
         <ListItem button divider>
           {/* <ListItemIcon>
             <ExitToAppIcon />
@@ -115,7 +106,10 @@ const UserProfileDialog = ({
           {/* <ListItemIcon>
             <GetAppIcon />
           </ListItemIcon> */}
-          <ListItemText primary={'Formas de pagamento'} />
+          <ListItemText
+            primary={'Formas de pagamento'}
+            secondary={'MASTERCARD **** 9028'}
+          />
         </ListItem>
       </List>
     </Dialog>

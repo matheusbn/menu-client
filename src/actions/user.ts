@@ -1,5 +1,6 @@
 import importFirebase, { getUserCurrentSession } from 'services/firebase'
 import Restaurant from 'models/Restaurant'
+import { Switch, history, SlideRoute, Redirect } from 'router'
 import Session from 'models/Session'
 
 export const subscribeUserData = () => dispatch => {
@@ -11,16 +12,21 @@ export const subscribeUserData = () => dispatch => {
 
   importFirebase().then(firebase => {
     firebase.auth().onAuthStateChanged(async user => {
-      if (!user) return dispatchUserDataReceive()
-      else {
+      if (!user) {
+        history.replace('/auth')
+        return dispatchUserDataReceive()
+      } else {
         const sessionSnapshot = await getUserCurrentSession(user)
         if (sessionSnapshot) {
           const restaurantSnapshot = await sessionSnapshot.ref.parent.parent.get()
           const restaurant = new Restaurant(restaurantSnapshot)
           restaurant.currentSession = new Session(sessionSnapshot)
 
+          history.replace('/menu')
+
           return dispatchUserDataReceive({ user, restaurant })
         } else {
+          history.replace('/')
           return dispatchUserDataReceive({ user })
         }
       }

@@ -96,6 +96,7 @@ function Home() {
   const openSession = async code => {
     setLoading(true)
     dispatch(openSessionAction(code.toUpperCase()))
+      .then(() => history.replace('/menu'))
       .catch(error => {
         if (error.message === 'code not found')
           setCodeError('Não encontramos este código no sistema :(')

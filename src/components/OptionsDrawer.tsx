@@ -33,7 +33,7 @@ export default function OptionsDrawer({
   onClose: () => void
 }) {
   const classes = useStyles()
-  const [isUserDialogOpen, setIsUserDialogOpen] = useState(true)
+  const [isUserDialogOpen, setIsUserDialogOpen] = useState(false)
   const installButton = useRef(null)
 
   const openUserDialog = () => setIsUserDialogOpen(true)
