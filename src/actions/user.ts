@@ -1,6 +1,7 @@
 import importFirebase, { getUserCurrentSession } from 'services/firebase'
+import { fetchMenuItems } from 'actions'
 import Restaurant from 'models/Restaurant'
-import { Switch, history, SlideRoute, Redirect } from 'router'
+import { history } from 'router'
 import Session from 'models/Session'
 
 export const subscribeUserData = () => dispatch => {
@@ -21,6 +22,8 @@ export const subscribeUserData = () => dispatch => {
           const restaurantSnapshot = await sessionSnapshot.ref.parent.parent.get()
           const restaurant = new Restaurant(restaurantSnapshot)
           restaurant.currentSession = new Session(sessionSnapshot)
+
+          dispatch(fetchMenuItems(restaurant))
 
           history.replace('/menu')
 

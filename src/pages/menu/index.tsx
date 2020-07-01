@@ -4,8 +4,7 @@ import { Typography, IconButton, CircularProgress } from '@material-ui/core'
 import AppBar from 'components/AppBar'
 import { Receipt as ReceiptIcon } from '@material-ui/icons'
 import { history } from 'router'
-import { useSelector, useDispatch } from 'react-redux'
-import { fetchMenuItems } from 'actions'
+import { useSelector } from 'react-redux'
 import capitalize from 'lodash/capitalize'
 import Item from './Item'
 import BottomBar from 'components/BottomBar'
@@ -132,17 +131,12 @@ const getOrganizedSections = items => {
 
 function Menu() {
   const restaurant = useSelector(state => state.restaurant)
-  const dispatch = useDispatch()
   const menuItems = useSelector(state => state.menuItems)
   const stagingItems: ItemOrder[] = useSelector(
     state => state.stagingOrder.items
   )
   const opacityThreshold = useRef(null)
   const classes = useStyles({ emptyOrder: !stagingItems.length })
-
-  useEffect(() => {
-    if (restaurant && !menuItems.length) dispatch(fetchMenuItems())
-  }, [restaurant])
 
   const navToStagingOrder = () => history.push('/menu/pedido-atual')
 

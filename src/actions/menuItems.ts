@@ -1,5 +1,4 @@
-export const fetchMenuItems = () => async (dispatch, getState) => {
-  const { restaurant } = getState()
+export const fetchMenuItems = restaurant => async dispatch => {
   const menuItems = await restaurant.getMenuItems()
 
   dispatch({

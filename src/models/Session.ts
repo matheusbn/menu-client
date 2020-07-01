@@ -21,8 +21,6 @@ class Session {
   private async loadOrders() {
     const querySnapshot = await this.snapshot.ref.collection('orders').get()
 
-    if (querySnapshot.empty) return (this.orders = [])
-
     this.orders = querySnapshot.docs.map(snapshot => ({
       id: snapshot.id,
       ...snapshot.data(),
