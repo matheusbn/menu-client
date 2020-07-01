@@ -24,8 +24,8 @@ declare module '@material-ui/core/styles/createMuiTheme' {
 
 const colors = {
   // #c81732 vermelho
-  // primary: '#b4132c',
-  // #ad2137 mais vermelho
+  // #b33200 vermelho alaranjado
+  // #a93e00 vermelho alaranjado
   primary: '#b3000b',
   secondary: '#071E22',
 }

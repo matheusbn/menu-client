@@ -22,17 +22,8 @@ import pwaInstaller from 'services/pwaInstaller'
 
 const keyGen = createKeyGenerator()
 
-const useStyles = makeStyles({
-  loading: {
-    margin: '0 auto',
-    marginTop: '40vh',
-    display: 'block',
-  },
-})
-
 function App() {
   const dispatch = useDispatch()
-  const loaded = useRef(false)
   const user = useSelector(state => state.user)
   const hasOpenSession = useSelector(
     state => !!state.restaurant?.currentSession
@@ -41,7 +32,6 @@ function App() {
     state => state.isFetchingInitialData
   )
   const toast = useRef(null)
-  const classes = useStyles()
 
   useEffect(() => {
     console.log(theme)

@@ -2,11 +2,9 @@
 
 -
 
-1. pagina usuário
+1. adicionar estado dos pedidos
 1.
-1. carregar orders e session no redux
 1. cachear dados do usuario
-1. arrumar pagina 404 aparecendo [n apareceu mais]
 1. disable slide tra nsition on first load
 1. pagamento
 1. remove rerenders
