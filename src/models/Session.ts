@@ -4,6 +4,8 @@ class Session {
 
   constructor(snapshot) {
     this.snapshot = snapshot
+
+    this.loadOrders()
   }
 
   async addOrder(order) {
@@ -14,6 +16,17 @@ class Session {
     } else {
       // do something hehe
     }
+  }
+
+  private async loadOrders() {
+    const querySnapshot = await this.snapshot.ref.collection('orders').get()
+
+    if (querySnapshot.empty) return (this.orders = [])
+
+    this.orders = querySnapshot.docs.map(snapshot => ({
+      id: snapshot.id,
+      ...snapshot.data(),
+    }))
   }
 
   async checkout(totalPrice) {

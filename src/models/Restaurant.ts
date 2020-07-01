@@ -31,9 +31,9 @@ class Restaurant {
   }
 
   async getMenuItems() {
-    const items = await this.snapshot.ref.collection('items').get()
+    const querySnapshot = await this.snapshot.ref.collection('items').get()
 
-    return items.docs.map(snapshot => ({
+    return querySnapshot.docs.map(snapshot => ({
       id: snapshot.id,
       ...snapshot.data(),
     }))

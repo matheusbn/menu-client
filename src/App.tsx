@@ -1,6 +1,4 @@
-// import 'preact/devtools'
 import React, { useEffect, useRef, useState } from 'react'
-// import { hot } from 'react-hot-loader/root';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 import { CssBaseline } from '@material-ui/core'
 import Home from 'pages/home'
@@ -15,7 +13,6 @@ import { Switch, history, Route, SlideRoute, Redirect } from 'router'
 import ToastContext from 'contexts/toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { subscribeUserData } from 'actions'
-import useUpdateEffect from 'hooks/useUpdateEffect'
 import Toast from 'components/Toast'
 import LoadingOverlay from 'components/LoadingOverlay'
 import DesktopContainer from 'components/DesktopContainer'
@@ -53,21 +50,7 @@ function App() {
     dispatch(subscribeUserData())
   }, [])
 
-  useUpdateEffect(() => {
-    // the initial route will be done declaratively by the redirect
-    // components, so the first change on user state must be skipped
-    if (loaded.current) {
-      if (user) {
-        if (hasOpenSession) history.replace('/menu')
-        else history.replace('/')
-      } else history.replace('/auth')
-    }
-
-    loaded.current = true
-  }, [user, hasOpenSession, isFetchingInitialData])
-
   let routes
-
   if (!user) {
     routes = [
       <Route key={keyGen()} path="/auth" component={Auth} />,
@@ -113,6 +96,7 @@ function App() {
     ]
 
   routes.push(<Route key="notfound" component={NotFound} />)
+
   return (
     <ThemeProvider theme={theme}>
       <ToastContext.Provider value={toast}>
