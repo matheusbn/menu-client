@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import { makeStyles } from '@material-ui/core/styles'
+import adapter from 'webrtc-adapter'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,7 +67,6 @@ const QRScannerDialog = ({ onScan }: (string) => void, ref) => {
   const classes = useStyles()
   const dialogRef = useRef(null)
   const [open, setOpen] = useState(false)
-
   const videoRef = useRef(null)
 
   useImperativeHandle(ref, () => ({

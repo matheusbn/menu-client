@@ -50,8 +50,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightMedium,
   },
   option: {
-    marginLeft: theme.spacing(1),
-
     display: 'flex',
     justifyContent: 'space-between',
   },
