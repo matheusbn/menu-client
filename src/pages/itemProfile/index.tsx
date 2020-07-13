@@ -70,8 +70,8 @@ function ItemProfile(props) {
   const dispatch = useDispatch()
   const { itemId } = useParams()
   const itemOrder: ItemOrder = useSelector(state => state.selectedItemOrder)
-  const item = useSelector(state =>
-    state.menuItems.find(item => item.id === itemId)
+  const item: MenuItem = useSelector(state =>
+    state.menuItems.find(item => item.ref.id === itemId)
   )
   if (!item) return history.push('/menu')
   const opacityThreshold = useRef(null)
@@ -99,7 +99,7 @@ function ItemProfile(props) {
         0
       )
 
-      return (totalPrice + item.price) * amount
+      return (totalPrice + item.data.price) * amount
     }
 
     setTotalPrice(calcPrice())
@@ -107,9 +107,9 @@ function ItemProfile(props) {
 
   // validate required fields
   useEffect(() => {
-    if (!item?.optionals) return
+    if (!item?.data.optionals) return
 
-    const isInvalid = item.optionals.some(optional => {
+    const isInvalid = item.data.optionals.some(optional => {
       const { min } = optional.required
       const value = selectedOptionals[optional.name]
 
@@ -127,8 +127,8 @@ function ItemProfile(props) {
   const handleConfirm = () => {
     const newItem: ItemOrder = {
       item: {
-        id: item.id,
-        name: item.name,
+        id: item.ref.id,
+        name: item.data.name,
       },
       amount,
       selectedOptionals,
@@ -149,7 +149,7 @@ function ItemProfile(props) {
       <AppBar backButton opacityThreshold={opacityThreshold} />
 
       <section>
-        <img src={item.pictures[0]} className={classes.picture} />
+        <img src={item.data.pictures[0]} className={classes.picture} />
 
         <div className={classes.itemProfile}>
           <div style={{ margin: '5px 15px' }}>
@@ -159,14 +159,14 @@ function ItemProfile(props) {
               ref={opacityThreshold}
               gutterBottom
             >
-              {item.name}
+              {item.data.name}
             </Typography>
             <Typography className={classes.description}>
-              {item.description}
+              {item.data.description}
             </Typography>
           </div>
 
-          {(item.optionals || []).map(optional => {
+          {(item.data.optionals || []).map(optional => {
             const isRadio = optional.required && optional.required.max === 1
 
             const inputProps = {

@@ -1,12 +1,9 @@
-import importFirebase, {
-  getCurrentUser,
-  getCurrentSession,
-} from 'services/firebase'
+import importFirebase, { getCurrentUser } from 'services/firebase'
 import Session from './Session'
 
 class Restaurant {
   private snapshot
-  currentSession
+  currentSessionRef
 
   constructor(snapshot) {
     this.snapshot = snapshot
@@ -30,13 +27,28 @@ class Restaurant {
     })
   }
 
-  async getMenuItems() {
+  async addOrder(order: Order): Promise<firebase.firestore.DocumentReference> {
+    return this.snapshot.ref.collection('orders').add(order)
+  }
+
+  async getSessionOrders(
+    sessionId
+  ): Promise<firebase.firestore.DocumentReference> {
+    const result = this.snapshot.ref
+      .collection('orders')
+      .where('sessionId', '==', sessionId)
+      .get()
+
+    return result.docs.map(orderSnapshot => ({
+      ref: orderSnapshot,
+      data: orderSnapshot(),
+    }))
+  }
+
+  async getMenuItems(): Promise<firebase.firestore.DocumentSnapshot[]> {
     const querySnapshot = await this.snapshot.ref.collection('items').get()
 
-    return querySnapshot.docs.map(snapshot => ({
-      id: snapshot.id,
-      ...snapshot.data(),
-    }))
+    return querySnapshot.docs
   }
 
   static async fromTableCode(tableCode: string): Promise<Restaurant> {
@@ -62,8 +74,7 @@ class Restaurant {
       userId: user.uid,
     })
 
-    const sessionSnapshot = await sessionRef.get()
-    this.currentSession = new Session(sessionSnapshot)
+    this.currentSessionRef = sessionRef
   }
 }
 

@@ -4,7 +4,6 @@ class PwaInstaller {
   private _button
 
   captureInstallEvent() {
-    console.log(1)
     window.addEventListener('beforeinstallprompt', e => {
       console.log('%c beforeinstallprompt event fired', 'color: #bd8e00')
       this.deferredInstallPrompt = e

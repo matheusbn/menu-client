@@ -68,11 +68,11 @@ function compareAsc(e1, e2) {
 
 function SessionCheckout(props) {
   const classes = useStyles()
-  const session = useSelector(state => state.restaurant.currentSession)
+  const ordersData = useSelector(state => state.orders.map(o => o.data))
   const dispatch = useDispatch(null)
   const showToast = useToast()
 
-  const totalPrice = session.orders.reduce(
+  const totalPrice = ordersData.reduce(
     (sum, order) =>
       sum + order.items.reduce((orderSum, { price }) => orderSum + price, 0),
     0
@@ -96,8 +96,8 @@ function SessionCheckout(props) {
         }
       />
 
-      <section className={classes.section}>
-        {session.orders
+      <section>
+        {ordersData
           .slice()
           .sort(compareAsc)
           .map((order, i) => (

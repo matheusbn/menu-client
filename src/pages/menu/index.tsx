@@ -106,35 +106,35 @@ const MenuSection = withStyles(theme => ({
       {capitalize(section.name)}
     </Typography>
     {section.items.map(item => (
-      <Item item={item} onClick={() => onItemClick(item)} />
+      <Item item={item.data} onClick={() => onItemClick(item.ref.id)} />
     ))}
   </div>
 ))
 
 const getDistinctSections = items =>
-  items.reduce(
-    (acc, { section }) =>
-      !acc.includes(section.toLowerCase())
-        ? [...acc, section.toLowerCase()]
-        : acc,
-    []
-  )
+  items
+    .map(item => item.data)
+    .reduce(
+      (acc, { section }) =>
+        !acc.includes(section.toLowerCase())
+          ? [...acc, section.toLowerCase()]
+          : acc,
+      []
+    )
 
 const getOrganizedSections = items => {
   const sections = getDistinctSections(items)
 
   return sections.map(section => ({
     name: section,
-    items: items.filter(item => item.section.toLowerCase() === section),
+    items: items.filter(item => item.data.section.toLowerCase() === section),
   }))
 }
 
 function Menu() {
-  const restaurant = useSelector(state => state.restaurant)
+  const restaurant = useSelector(state => state.restaurant.data)
   const menuItems = useSelector(state => state.menuItems)
-  const stagingItems: ItemOrder[] = useSelector(
-    state => state.stagingOrder.items
-  )
+  const stagingItems: ItemOrder[] = useSelector(state => state.stagingOrder)
   const opacityThreshold = useRef(null)
   const classes = useStyles({ emptyOrder: !stagingItems.length })
 
@@ -142,8 +142,8 @@ function Menu() {
 
   const menuSections = getOrganizedSections(menuItems)
 
-  const handleItemClick = item => {
-    history.push(`/menu/${item.id}`)
+  const handleItemClick = itemId => {
+    history.push(`/menu/${itemId}`)
   }
 
   return (

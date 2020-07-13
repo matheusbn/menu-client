@@ -55,7 +55,13 @@ export const getCurrentUser = () =>
     return firebase.auth().currentUser
   })
 
-export const getUserCurrentSession = async user => {
+/**
+ * Returns the a ref to the first user session that hasnt been checked out yet, or null
+ * @param user
+ */
+export const getUserCurrentSessionRef = async (
+  user
+): Promise<firebase.firestore.DocumentReference | null> => {
   const firebase = await importFirebase()
 
   const db = firebase.firestore()
@@ -67,5 +73,5 @@ export const getUserCurrentSession = async user => {
 
   if (result.empty) return null
   // TODO: something if result.docs.lenght > 1
-  return result.docs[0]
+  return result.docs[0].ref
 }

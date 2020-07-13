@@ -1,5 +1,10 @@
 # todos:
 
+- fix radio btton nao funcionadno
+- adicioanr readyState em pagina de checkout
+- bug atualizando pedido
+- bug carregando menu
+
 -
 
 1. adicionar estado dos pedidos

@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import { makeStyles } from '@material-ui/core/styles'
+// this is a polyfill to handle difference between browsers implementations of webrtc APIs
 import adapter from 'webrtc-adapter'
 
 const useStyles = makeStyles(theme => ({

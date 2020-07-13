@@ -88,7 +88,7 @@ const OptionalFormControl = ({ children, label, requiredObj }) => {
           <Observation requiredObj={requiredObj} />
         </div>
 
-        {requiredObj && (
+        {requiredObj?.min && (
           <div className={classes.requiredBadge}>Obrigatório</div>
         )}
       </div>

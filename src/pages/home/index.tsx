@@ -16,7 +16,7 @@ import {
 } from '@material-ui/icons'
 import { history } from 'router'
 import { useDispatch } from 'react-redux'
-import { openSession as openSessionAction } from 'actions'
+import { initSession as initSessionAction } from 'actions'
 import QRScannerDialog from './QRScannerDialog'
 import LoadingOverlay from 'components/LoadingOverlay'
 import BottomBarWithOptions from 'components/BottomBarWithOptions'
@@ -62,8 +62,7 @@ const Divider = withStyles(theme => ({
 }))(({ classes }) => <div className={classes.root} />)
 
 function validateCode(code) {
-  // 3 letters followed by 2 numbers
-  return /^[a-zA-Z]{3}\d{2}$/g.test(code)
+  return /^[A-Z0-9]{5}$/gi.test(code)
 }
 
 function Home() {
@@ -95,8 +94,8 @@ function Home() {
 
   const openSession = async code => {
     setLoading(true)
-    dispatch(openSessionAction(code.toUpperCase()))
-      .then(() => history.replace('/menu'))
+    dispatch(initSessionAction(code))
+      .then(() => history.push('/menu'))
       .catch(error => {
         if (error.message === 'code not found')
           setCodeError('Não encontramos este código no sistema :(')

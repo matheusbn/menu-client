@@ -61,7 +61,7 @@ export default ({ item, onClick }) => {
   const classes = useStyles()
 
   return (
-    <Paper elevation={1} className={classes.root}>
+    <Paper elevation={4} className={classes.root}>
       <ListItem button onClick={onClick} disableGutters>
         <img
           src={item.pictures[0]}

@@ -3,6 +3,9 @@ export const fetchMenuItems = restaurant => async dispatch => {
 
   dispatch({
     type: 'FETCH_MENU_ITEMS_RECEIVE',
-    menuItems,
+    menuItems: menuItems.map(snapshot => ({
+      ref: snapshot.ref,
+      data: snapshot.data(),
+    })),
   })
 }

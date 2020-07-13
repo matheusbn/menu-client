@@ -1,5 +1,6 @@
 export * from './user'
-export * from './stagingOrder'
 export * from './restaurant'
+export * from './orders'
 export * from './menuItems'
+export * from './stagingOrder'
 export * from './selectedItemOrder'

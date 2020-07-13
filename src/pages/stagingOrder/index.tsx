@@ -27,15 +27,17 @@ const useStyles = makeStyles(theme => ({
 
 function StagingOrder(props) {
   const classes = useStyles()
-  const stagingOrder: Order = useSelector(state => state.stagingOrder)
+  const stagingOrder: ItemOrder[] = useSelector(state => state.stagingOrder)
   const dispatch = useDispatch()
 
   const handleConfirm = () => {
     history.back()
 
-    stagingOrder.orderedAt = new Date()
-    // prevent list of items disappearing before the page changes
-    setTimeout(() => dispatch(addOrder(stagingOrder)), 50)
+    const orderData: OrderData = {
+      items: stagingOrder,
+    }
+
+    dispatch(addOrder(orderData))
   }
 
   return (
@@ -49,10 +51,7 @@ function StagingOrder(props) {
         }
       />
 
-      <ItemOrderList
-        className={classes.orderList}
-        itemOrders={stagingOrder.items}
-      />
+      <ItemOrderList className={classes.orderList} itemOrders={stagingOrder} />
 
       <BottomBar className={classes.bottomBar}>
         <Button

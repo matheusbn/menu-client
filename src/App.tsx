@@ -25,9 +25,7 @@ const keyGen = createKeyGenerator()
 function App() {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
-  const hasOpenSession = useSelector(
-    state => !!state.restaurant?.currentSession
-  )
+  const hasOpenSession = useSelector(state => !!state.session)
   const isFetchingInitialData = useSelector(
     state => state.isFetchingInitialData
   )
@@ -35,9 +33,12 @@ function App() {
 
   useEffect(() => {
     console.log(theme)
-
-    pwaInstaller.captureInstallEvent()
-    dispatch(subscribeUserData())
+    try {
+      pwaInstaller.captureInstallEvent()
+      dispatch(subscribeUserData())
+    } catch (e) {
+      console.error(e)
+    }
   }, [])
 
   let routes
@@ -80,10 +81,11 @@ function App() {
         component={() => <Redirect to="/menu" />}
       />,
     ]
-  } else
+  } else {
     routes = [
       <SlideRoute appear={false} key={keyGen()} path="/" component={Home} />,
     ]
+  }
 
   routes.push(<Route key="notfound" component={NotFound} />)
 

@@ -1,39 +1,33 @@
-import importFirebase, { getUserCurrentSession } from 'services/firebase'
-import { fetchMenuItems } from 'actions'
-import Restaurant from 'models/Restaurant'
+import importFirebase, { getUserCurrentSessionRef } from 'services/firebase'
+import { resumeSession } from 'actions'
+// import RestaurantService from 'service/restaurant'
 import { history } from 'router'
-import Session from 'models/Session'
+// import Session from 'models/Session'
 
 export const subscribeUserData = () => dispatch => {
-  const dispatchUserDataReceive = (data = {}) =>
-    dispatch({
-      type: 'SUBSCRIBE_USER_DATA_RECEIVE',
-      ...data,
-    })
-
   importFirebase().then(firebase => {
-    firebase.auth().onAuthStateChanged(async user => {
-      if (!user) {
-        history.replace('/auth')
-        return dispatchUserDataReceive()
-      } else {
-        const sessionSnapshot = await getUserCurrentSession(user)
-        if (sessionSnapshot) {
-          const restaurantSnapshot = await sessionSnapshot.ref.parent.parent.get()
-          const restaurant = new Restaurant(restaurantSnapshot)
-          restaurant.currentSession = new Session(sessionSnapshot)
+    try {
+      firebase.auth().onAuthStateChanged(async user => {
+        dispatch({ type: 'SET_USER', user })
 
-          dispatch(fetchMenuItems(restaurant))
-
-          history.replace('/menu')
-
-          return dispatchUserDataReceive({ user, restaurant })
+        if (!user) {
+          history.replace('/auth')
         } else {
-          history.replace('/')
-          return dispatchUserDataReceive({ user })
+          const sessionRef = await getUserCurrentSessionRef(user)
+
+          if (sessionRef) {
+            await dispatch(resumeSession(sessionRef))
+            history.replace('/menu')
+          } else {
+            history.replace('/')
+          }
         }
-      }
-    })
+
+        dispatch({ type: 'FETCH_INITIAL_DATA_SUCCESS' })
+      })
+    } catch (error) {
+      console.error(error)
+    }
   })
 }
 

@@ -2,8 +2,8 @@ import { combineReducers } from 'redux'
 
 const user = (state: object | null = null, action) => {
   switch (action.type) {
-    case `SUBSCRIBE_USER_DATA_RECEIVE`:
-      return action.user || null
+    case `SET_USER`:
+      return action.user
     case `UPDATE_USER`:
       if (!state) throw new Error("can't update unexisting user")
 
@@ -16,11 +16,10 @@ const user = (state: object | null = null, action) => {
   }
 }
 
-const restaurant = (state = null, action) => {
+const restaurant = (state: Restaurant | null = null, action) => {
   switch (action.type) {
-    case `OPEN_SESSION_SUCCESS`:
-    case `SUBSCRIBE_USER_DATA_RECEIVE`:
-      return action.restaurant || null
+    case `SET_RESTAURANT`:
+      return action.restaurant
     case `CHECKOUT`:
       return null
     default:
@@ -28,10 +27,12 @@ const restaurant = (state = null, action) => {
   }
 }
 
-const menuItems = (state: Item[] = [], action) => {
+const menuItems = (state: MenuItem[] = [], action) => {
   switch (action.type) {
-    case `FETCH_MENU_ITEMS_RECEIVE`:
+    case `SET_MENU_ITEMS`:
       return action.menuItems
+    case `CHECKOUT`:
+      return []
     default:
       return state
   }
@@ -42,6 +43,7 @@ const isFetchingInitialData = (state = true, action) => {
   switch (action.type) {
     case `SUBSCRIBE_USER_DATA_RECEIVE`:
     case `FETCH_INITIAL_DATA_FAILURE`:
+    case `FETCH_INITIAL_DATA_SUCCESS`:
       return false
     default:
       return state
@@ -65,38 +67,28 @@ const mockItemOrder: ItemOrder = {
   price: 42.5,
 }
 
-const mockOrder: Order = {
-  items: [{ ...mockItemOrder }, { ...mockItemOrder }],
-}
+// const mockOrder: Order = {
+//   items: [{ ...mockItemOrder }, { ...mockItemOrder }],
+// }
 
 const stagingOrder = (
-  state: Order = { items: [] },
+  state: ItemOrder[] = [],
   // state = mockOrder,
   action
 ) => {
   switch (action.type) {
     case `ADD_ITEM_ORDER`:
-      return {
-        ...state,
-        items: [...state.items, action.item],
-      }
+      console.log(state, action)
+      return [...state, action.item]
     case `UPDATE_ITEM_ORDER`:
-      return {
-        ...state,
-        items: state.items.map(item =>
-          item === action.oldItem ? { ...item, ...action.newItem } : item
-        ),
-      }
+      return state.map(item =>
+        item === action.oldItem ? { ...item, ...action.newItem } : item
+      )
     case `REMOVE_ITEM_ORDER`:
-      return {
-        ...state,
-        items: state.items.filter(item => item !== action.item),
-      }
+      return state.filter(item => item !== action.item)
     case `ADD_ORDER`:
     case `CHECKOUT`:
-      return {
-        items: [],
-      }
+      return []
     default:
       return state
   }
@@ -113,25 +105,36 @@ const selectedItemOrder = (state: ItemOrder | null = null, action) => {
   }
 }
 
-const mockBill = new Array(2).fill(0).map(e => {
-  let arr: Order = { ...mockOrder }
-  arr.orderedAt = new Date()
-  return arr
-})
+const orders = (state: Order[] = [], action) => {
+  switch (action.type) {
+    case `SET_ORDERS`:
+      return action.orders
+    case `ADD_ORDER`:
+      return [...state, action.order]
+    case `CHECKOUT`:
+      return []
+    default:
+      return state
+  }
+}
 
-// const session = (state = null, action) => {
-//   switch (action.type) {
-//     case `ADD_ORDER`:
-//       return [...state, action.order]
-//     default:
-//       return state
-//   }
-// }
+const session = (state: Session | null = null, action) => {
+  switch (action.type) {
+    case `SET_SESSION`:
+      return action.session
+    case `CHECKOUT`:
+      return null
+    default:
+      return state
+  }
+}
 
 export default combineReducers({
   user,
   restaurant,
+  session,
   menuItems,
+  orders,
   isFetchingInitialData,
   stagingOrder,
   selectedItemOrder,
