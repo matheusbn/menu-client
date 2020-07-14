@@ -99,6 +99,7 @@ const selectedItemOrder = (state: ItemOrder | null = null, action) => {
     case `SET_SELECTED_ITEM_ORDER`:
       return action.item
     case `CHECKOUT`:
+    case `ADD_ORDER`:
       return null
     default:
       return state
