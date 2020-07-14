@@ -1,4 +1,3 @@
-import Restaurant from 'models/Restaurant'
 import RestaurantService from 'services/restaurant'
 
 export const checkout = (totalPrice: number) => async (dispatch, getState) => {
@@ -16,6 +15,12 @@ export const checkout = (totalPrice: number) => async (dispatch, getState) => {
 export const resumeSession = (
   sessionRef: firebase.firestore.DocumentReference
 ) => async dispatch => {
+  const sessionSnapshot = await sessionRef.get()
+  const session = {
+    ref: sessionRef,
+    data: sessionSnapshot.data(),
+  }
+
   const restaurantSnapshot = await sessionRef!.parent!.parent!.get()
 
   const restaurantService = new RestaurantService(restaurantSnapshot.ref)
@@ -41,7 +46,7 @@ export const resumeSession = (
   dispatch({ type: 'SET_RESTAURANT', restaurant })
   dispatch({ type: 'SET_MENU_ITEMS', menuItems })
   dispatch({ type: 'SET_ORDERS', orders })
-  dispatch({ type: 'SET_SESSION', session: { ref: sessionRef } })
+  dispatch({ type: 'SET_SESSION', session })
 }
 
 export const initSession = tableCode => async dispatch => {
@@ -50,9 +55,13 @@ export const initSession = tableCode => async dispatch => {
   )
 
   const restaurantService = new RestaurantService(restaurantSnapshot.ref)
-  const sessionRef = await restaurantService
-    .addSession(tableCode)
-    .then(console.log)
+  const sessionRef = await restaurantService.addSession(tableCode)
+
+  const sessionSnapshot = await sessionRef.get()
+  const session = {
+    ref: sessionRef,
+    data: sessionSnapshot.data(),
+  }
 
   const restaurant = {
     ref: restaurantSnapshot.ref,
@@ -68,21 +77,5 @@ export const initSession = tableCode => async dispatch => {
   dispatch({ type: 'SET_RESTAURANT', restaurant })
   dispatch({ type: 'SET_MENU_ITEMS', menuItems })
   dispatch({ type: 'SET_MENU_ITEMS', menuItems })
-  dispatch({ type: 'SET_SESSION', session: { ref: sessionRef } })
-}
-
-export const openSession = code => async dispatch => {
-  dispatch({
-    type: 'OPEN_SESSION_REQUEST',
-  })
-
-  const restaurant = await Restaurant.fromTableCode(code)
-  // TODO: receeive menu items
-  // TODO: receive orders
-  await restaurant.openSession(code)
-
-  return dispatch({
-    type: 'OPEN_SESSION_SUCCESS',
-    restaurant,
-  })
+  dispatch({ type: 'SET_SESSION', session })
 }

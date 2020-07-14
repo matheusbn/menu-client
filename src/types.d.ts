@@ -4,6 +4,9 @@ interface Restaurant {
     name: string
     coverPicture: string
     foodType: string
+    tableCodeMap: {
+      [code: string]: string
+    }
     maxCapacity: number
     address: {
       city: string
@@ -19,11 +22,20 @@ interface Restaurant {
 interface OrderData {
   items: ItemOrder[]
   sessionId?: string
+  status?: string
+  fromTable?: string
   orderedAt?: Date
 }
 
 interface Session {
   ref: firebase.firestore.DocumentReference
+  data: {
+    checkinAt: firebase.firestore.Timestamp
+    checkoutAt?: firebase.firestore.Timestamp
+    tableCode: string
+    totalPrice?: number
+    userId: string
+  }
 }
 
 interface Order {

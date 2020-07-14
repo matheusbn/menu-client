@@ -12,6 +12,9 @@ export const addOrder = (orderData: OrderData) => async (
   const restaurantService = new RestaurantService(restaurant.ref)
 
   orderData.orderedAt = new Date()
+  orderData.status = 'open'
+
+  orderData.fromTable = restaurant.data.tableCodeMap[session.data.tableCode]
   orderData.sessionId = session.ref.id
 
   const orderRef = await restaurantService.addOrder(orderData)

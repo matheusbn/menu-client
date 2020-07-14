@@ -1,6 +1,6 @@
 # todos:
 
-- fix radio btton nao funcionadno
+- remover delay da barra de pedidos atuais
 - adicioanr readyState em pagina de checkout
 - bug atualizando pedido
 - bug carregando menu

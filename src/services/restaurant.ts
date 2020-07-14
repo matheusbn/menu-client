@@ -52,15 +52,12 @@ class RestaurantService {
     const user = await getCurrentUser()
     if (!user) throw new Error('User must be signed in')
 
-    console.log(user)
     const sessionRef = await this.ref.collection('sessions').add({
       checkinAt: new Date(),
       checkoutAt: null,
       tableCode,
       userId: user.uid,
     })
-    console.log(user)
-    sessionRef.get().then(snap => console.log('session', snap.data()))
 
     return sessionRef
   }
