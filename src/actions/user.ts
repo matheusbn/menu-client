@@ -8,8 +8,6 @@ export const subscribeUserData = () => dispatch => {
   importFirebase().then(firebase => {
     try {
       firebase.auth().onAuthStateChanged(async user => {
-        dispatch({ type: 'SET_USER', user })
-
         if (!user) {
           history.replace('/auth')
         } else {
@@ -17,12 +15,14 @@ export const subscribeUserData = () => dispatch => {
 
           if (sessionRef) {
             await dispatch(resumeSession(sessionRef))
+            console.log(1)
             history.replace('/menu')
           } else {
             history.replace('/')
           }
         }
 
+        dispatch({ type: 'SET_USER', user })
         dispatch({ type: 'FETCH_INITIAL_DATA_SUCCESS' })
       })
     } catch (error) {

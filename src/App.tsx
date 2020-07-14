@@ -20,8 +20,6 @@ import { createKeyGenerator } from 'helpers/utils'
 import theme from './theme'
 import pwaInstaller from 'services/pwaInstaller'
 
-const keyGen = createKeyGenerator()
-
 function App() {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
@@ -44,38 +42,38 @@ function App() {
   let routes
   if (!user) {
     routes = [
-      <Route key={keyGen()} path="/auth" component={Auth} />,
+      <Route key="/auth" path="/auth" component={Auth} />,
       <Route
-        key={keyGen()}
+        key="auth-redirect"
         path="/"
         exact
         component={() => <Redirect to="/auth" />}
       />,
     ]
   } else if (!user.displayName) {
-    routes = [<SlideRoute key={keyGen()} path="/" component={Signup} />]
+    routes = [<SlideRoute key="signup" path="/" component={Signup} />]
   } else if (hasOpenSession) {
     routes = [
       <SlideRoute
         direction="up"
-        key={keyGen()}
+        key="/pedido-atual"
         path="/pedido-atual"
         component={StagingOrder}
       />,
       <SlideRoute
         direction="up"
-        key={keyGen()}
+        key="/pedidos"
         path="/pedidos"
         component={SessionCheckout}
       />,
       <SlideRoute
-        key={keyGen()}
+        key="/menu/:itemId"
         path="/menu/:itemId"
         component={ItemProfile}
       />,
-      <SlideRoute key={keyGen()} path="/menu" component={Menu} />,
+      <SlideRoute key="/menu" path="/menu" component={Menu} />,
       <Route
-        key={keyGen()}
+        key="/"
         path="/"
         exact
         component={() => <Redirect to="/menu" />}
@@ -83,7 +81,7 @@ function App() {
     ]
   } else {
     routes = [
-      <SlideRoute appear={false} key={keyGen()} path="/" component={Home} />,
+      <SlideRoute appear={false} key="home" path="/" component={Home} />,
     ]
   }
 

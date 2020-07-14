@@ -4,6 +4,7 @@
 - adicioanr readyState em pagina de checkout
 - bug atualizando pedido
 - bug carregando menu
+- improve routing
 
 -
 
