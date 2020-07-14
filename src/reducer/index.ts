@@ -78,7 +78,6 @@ const stagingOrder = (
 ) => {
   switch (action.type) {
     case `ADD_ITEM_ORDER`:
-      console.log(state, action)
       return [...state, action.item]
     case `UPDATE_ITEM_ORDER`:
       return state.map(item =>

@@ -4,7 +4,7 @@ interface Restaurant {
     name: string
     coverPicture: string
     foodType: string
-    tableCodeMap: {
+    tableCodeMap?: {
       [code: string]: string
     }
     maxCapacity: number
