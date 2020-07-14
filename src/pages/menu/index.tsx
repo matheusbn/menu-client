@@ -18,7 +18,12 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     overflowY: 'scroll',
   },
+  container: {
+    minHeight: '100vh',
+  },
   itemsList: {
+    width: '100%',
+    height: '100%',
     paddingTop: theme.spacing(1),
     paddingBottom: props =>
       props.emptyOrder ? BottomBar.HEIGHT : BottomBar.HEIGHT * 2,
@@ -160,7 +165,7 @@ function Menu() {
       {!restaurant ? (
         <CircularProgress size={50} className={classes.loading} />
       ) : (
-        <section>
+        <section className={classes.container}>
           <img src={restaurant.coverPicture} className={classes.cover} />
 
           <div className={classes.itemsList} ref={opacityThreshold}>
