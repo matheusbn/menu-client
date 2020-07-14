@@ -24,9 +24,7 @@ class RestaurantService {
     return result.docs
   }
 
-  async getMenuItems(): Promise<
-    Promise<firebase.firestore.DocumentSnapshot[]>
-  > {
+  async getMenuItems(): Promise<firebase.firestore.DocumentSnapshot[]> {
     const result = await this.ref.collection('items').get()
 
     return result.docs

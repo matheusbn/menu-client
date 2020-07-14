@@ -15,7 +15,7 @@ export const subscribeUserData = () => dispatch => {
 
           if (sessionRef) {
             await dispatch(resumeSession(sessionRef))
-            console.log(1)
+
             history.replace('/menu')
           } else {
             history.replace('/')

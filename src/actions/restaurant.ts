@@ -19,10 +19,12 @@ export const resumeSession = (
 
   const restaurantService = new RestaurantService(restaurantSnapshot.ref)
 
-  const itemSnapshots = await restaurantService.getMenuItems()
-  const sessionSnapshot = await sessionRef.get()
-  const orderSnapshots = await restaurantService.getSessionOrders(sessionRef.id)
-  console.log(2)
+  const [itemSnapshots, sessionSnapshot, orderSnapshots] = await Promise.all([
+    restaurantService.getMenuItems(),
+    sessionRef.get(),
+    restaurantService.getSessionOrders(sessionRef.id),
+  ])
+
   const restaurant = {
     ref: restaurantSnapshot.ref,
     data: restaurantSnapshot.data(),
@@ -44,7 +46,6 @@ export const resumeSession = (
   dispatch({ type: 'SET_MENU_ITEMS', menuItems })
   dispatch({ type: 'SET_ORDERS', orders })
   dispatch({ type: 'SET_SESSION', session })
-  console.log(3)
 }
 
 export const initSession = tableCode => async dispatch => {
@@ -53,9 +54,14 @@ export const initSession = tableCode => async dispatch => {
   )
 
   const restaurantService = new RestaurantService(restaurantSnapshot.ref)
+
   const sessionRef = await restaurantService.addSession(tableCode)
 
-  const sessionSnapshot = await sessionRef.get()
+  const [itemSnapshots, sessionSnapshot] = await Promise.all([
+    restaurantService.getMenuItems(),
+    sessionRef.get(),
+  ])
+
   const session = {
     ref: sessionRef,
     data: sessionSnapshot.data(),
@@ -66,7 +72,6 @@ export const initSession = tableCode => async dispatch => {
     data: restaurantSnapshot.data(),
   }
 
-  const itemSnapshots = await restaurantService.getMenuItems()
   const menuItems = itemSnapshots.map(itemSnapshot => ({
     ref: itemSnapshot.ref,
     data: itemSnapshot.data(),
