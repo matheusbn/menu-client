@@ -14,8 +14,11 @@ export const addOrder = (orderData: OrderData) => async (
   orderData.orderedAt = new Date()
   orderData.status = 'open'
 
-  if (restaurant.data.tableCodeMap)
-    orderData.fromTable = restaurant.data.tableCodeMap[session.data.tableCode]
+  if (restaurant.data.tableCodeMap) {
+    const table = restaurant.data.tableCodeMap[session.data.tableCode]
+    if (table) orderData.fromTable = table
+  }
+
   orderData.sessionId = session.ref.id
 
   const orderRef = await restaurantService.addOrder(orderData)
