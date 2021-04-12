@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Button, Typography } from '@material-ui/core'
+import { CircularProgress, Button, Typography } from '@material-ui/core'
 import ItemOrderList from 'components/ItemOrderList'
 import AppBar from 'components/AppBar'
 import BottomBar from 'components/BottomBar'
 import { addOrder } from 'actions'
 import { useSelector, useDispatch } from 'react-redux'
+import useToast from 'hooks/useToast'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,16 +29,20 @@ const useStyles = makeStyles(theme => ({
 function StagingOrder(props) {
   const classes = useStyles()
   const stagingOrder: ItemOrder[] = useSelector(state => state.stagingOrder)
+  const showToast = useToast()
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
 
-  const handleConfirm = () => {
-    history.back()
-
+  const handleConfirm = async () => {
+    setLoading(true)
     const orderData: OrderData = {
       items: stagingOrder,
     }
+    await dispatch(addOrder(orderData))
+    setLoading(false)
 
-    dispatch(addOrder(orderData))
+    showToast('Pedido feito com sucesso!')
+    history.back()
   }
 
   return (
@@ -59,6 +64,7 @@ function StagingOrder(props) {
           variant="contained"
           fullWidth
           onClick={handleConfirm}
+          endIcon={loading && <CircularProgress color="white" size={20} />}
         >
           Fazer Pedido
         </Button>
