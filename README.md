@@ -2,6 +2,8 @@
 
 This is a PWA for ordering food at a restaurant. It is part of a digital menu system consisting of this app, a [manager app](https://github.com/matheusbn/menu-manager) and a [kitchen app](https://github.com/matheusbn/menu-kitchen).
 
+<img src="https://firebasestorage.googleapis.com/v0/b/apptodoz.appspot.com/o/menu-app-order.gif?alt=media&token=5da5ffa1-debf-4f93-a70c-2d9d2e32c376" width="340">
+  
 ## Usage
 
 1. The user registers with his phone.  
@@ -15,10 +17,6 @@ This is a PWA for ordering food at a restaurant. It is part of a digital menu sy
 
 4. The user closes his session.  
    <img src="https://lh3.googleusercontent.com/KJDKn42GuSWN2wZaRgRZjHC5fbwvEZ6Y7IPUazaQnKDG5E5FCvCkCi_VKaf_hekK8E4d2kFmdlJ3ENLfDNh_lbOBZcsbTNGA8qDIgj6j" width="200" />
-
-### Page transitions
-
-<img src="https://firebasestorage.googleapis.com/v0/b/apptodoz.appspot.com/o/menu-app-order.gif?alt=media&token=5da5ffa1-debf-4f93-a70c-2d9d2e32c376" width="500">
 
 ## Tech
 
