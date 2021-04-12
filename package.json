@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/compat-data": "^7.9.0",
     "@babel/core": "^7.8.7",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.8.7",
@@ -52,7 +53,7 @@
     "lodash": "^4.17.15",
     "preact": "^10.4.4",
     "qr-scanner": "^1.1.1",
-    "react": "^16.13.1",
+    "react": "16.x",
     "react-hot-loader": "^4.12.19",
     "react-redux": "^7.2.0",
     "reducer": "^0.19.2",
