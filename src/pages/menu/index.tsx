@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
   itemsList: {
     width: '100%',
-    height: '100%',
+    minHeight: '100%',
     paddingTop: theme.spacing(1),
     paddingBottom: props =>
       props.emptyOrder ? BottomBar.HEIGHT : BottomBar.HEIGHT * 2,
